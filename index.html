@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jamaica Cruise Traffic Dashboard</title>
+    <!-- Google Fonts: Inter, Outfit, Oswald, Roboto Condensed -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;600;700;800&family=Oswald:wght@400;500;600;700&family=Roboto+Condensed:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <!-- HEADER -->
+    <header>
+        <img src="./logo2.png" alt="">
+        <div class="jvin-logo">
+            <div class="title">JAMAICA VISITOR</div>
+            <div class="subtitle">INFORMATION NETWORK</div>
+            <div class="tagline">CONNECTING VISITORS. ENHANCING EXPERIENCES.</div>
+        </div>
+    </header>
+
+    <!-- CRUISE BANNER / LIVE JAMAICA TIME -->
+    <section class="cruise">
+        <div class="jamaica-time">
+            <div class="time-row">
+                <div class="clock"></div>
+                <div class="time" id="live-clock">--:--</div>
+                <div class="ampm" id="live-ampm">AM</div>
+            </div>
+            <div class="date" id="live-date">Loading date...</div>
+            <div class="location">LOCAL TIME (EST)</div>
+        </div>
+    </section>
+
+    <!-- DASHBOARD CONTAINER -->
+    <section class="cruise-dashboard">
+        <!-- DASHBOARD HEADER -->
+        <header class="dashboard-header">
+            <!-- Left ship -->
+            <div class="ship-icon ship-left">
+                <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M25 28h30v8H25z" fill="#FFD000" />
+                    <path d="M31 21h18v7H31z" fill="#FFD000" />
+                    <path d="M37 16h6v6h-6z" fill="#FFD000" />
+                    <path d="M20 35h40l-5 28H27z" fill="#FFD000" />
+                    <path transform="translate(-5 3)" d="M16 62c10 8 20 8 30 0 10 8 20 8 30 0" stroke="#FFD000"
+                        stroke-width="5" />
+                    <path d="M40 43v9" stroke="#111" stroke-width="3" />
+                    <circle cx="40" cy="42" r="3" fill="#111" />
+                </svg>
+            </div>
+
+            <div class="dashboard-title">
+                <h1>Jamaica Cruise Traffic Dashboard</h1>
+                <p>Real-Time Cruise Arrivals Across Jamaica</p>
+                <div class="back-btn-wrap">
+                    <a href="../airports/index.html" class="btn-back" id="btnBack" onclick="if(window.history.length > 1){window.history.back(); return false;}">
+                        <span class="back-chevron">&larr;</span>
+                        <span class="back-text">BACK</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Right ship -->
+            <div class="ship-icon ship-right">
+                <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M25 28h30v8H25z" fill="#FFD000" />
+                    <path d="M31 21h18v7H31z" fill="#FFD000" />
+                    <path d="M37 16h6v6h-6z" fill="#FFD000" />
+                    <path d="M20 35h40l-5 28H27z" fill="#FFD000" />
+                    <path transform="translate(-5 3)" d="M16 62c10 8 20 8 30 0 10 8 20 8 30 0" stroke="#FFD000"
+                        stroke-width="5" />
+                    <path d="M40 43v9" stroke="#111" stroke-width="3" />
+                    <circle cx="40" cy="42" r="3" fill="#111" />
+                </svg>
+            </div>
+        </header>
+
+        <!-- STATISTICS PANEL (.stats-panel replacing .kpi-panel) -->
+        <div class="stats-panel">
+            <!-- SHIPS -->
+            <div class="stat ships">
+                <div class="stat-icon">
+                    <svg viewBox="0 0 70 70">
+                        <path d="M18 25h34l-5 30H23z" fill="#78C82A" />
+                        <path transform="translate(-5 3)" d="M13 54c10 7 18 7 27 0 9 7 17 7 27 0" stroke="#78C82A"
+                            stroke-width="5" fill="none" />
+                        <path d="M25 18h20v7H25z M30 11h10v7H30z" fill="#78C82A" />
+                        <path d="M35 34v10" stroke="#111" stroke-width="3" />
+                        <circle cx="35" cy="33" r="3" fill="#111" />
+                    </svg>
+                </div>
+                <div class="stat-content">
+                    <div class="stat-label">Ships Today</div>
+                    <div class="stat-number" id="kpi-ships">0</div>
+                </div>
+            </div>
+
+            <!-- PASSENGERS -->
+            <div class="stat passengers">
+                <div class="stat-icon">
+                    <svg viewBox="0 0 70 70">
+                        <circle cx="35" cy="17" r="9" fill="#1597ED" />
+                        <circle cx="15" cy="22" r="8" fill="#1597ED" />
+                        <circle cx="55" cy="22" r="8" fill="#1597ED" />
+                        <path d="M20 51c0-12 7-19 15-19 s15 7 15 19v5H20z" fill="#1597ED" />
+                        <path d="M2 51c0-9 5-15 13-15 5 0 9 3 11 7 -4 3-6 7-6 13H2z" fill="#1597ED" />
+                        <path d="M68 51c0-9-5-15-13-15 -5 0-9 3-11 7 4 3 6 7 6 13h18z" fill="#1597ED" />
+                    </svg>
+                </div>
+                <div class="stat-content">
+                    <div class="stat-label">Passengers Today</div>
+                    <div class="stat-number" id="kpi-passengers">0</div>
+                </div>
+            </div>
+
+            <!-- PORTS -->
+            <div class="stat ports">
+                <div class="stat-icon">
+                    <svg viewBox="0 0 70 70">
+                        <path d="M35 4 C22 4 12 14 12 27 c0 16 23 39 23 39 s23-23 23-39 C58 14 48 4 35 4z"
+                            fill="#FFD000" />
+                        <circle cx="35" cy="27" r="8" fill="#111" />
+                    </svg>
+                </div>
+                <div class="stat-content">
+                    <div class="stat-label">Ports Active</div>
+                    <div class="stat-number" id="kpi-ports">0</div>
+                </div>
+            </div>
+
+            <!-- LAST UPDATED -->
+            <div class="stat updated">
+                <div class="stat-icon">
+                    <svg viewBox="0 0 70 70">
+                        <rect x="9" y="14" width="52" height="48" rx="5" fill="#78C82A" />
+                        <rect x="9" y="25" width="52" height="5" fill="#02080b" />
+                        <path d="M20 8v13M50 8v13" stroke="#78C82A" stroke-width="6" />
+                        <path d="M20 37h7v7h-7z M32 37h7v7h-7z M44 37h7v7h-7z M20 48h7v7h-7z M32 48h7v7h-7z"
+                            fill="#02080b" />
+                    </svg>
+                </div>
+                <div class="stat-content">
+                    <div class="stat-label">Last Updated</div>
+                    <div class="stat-number" id="kpi-updated-time">--:--</div>
+                    <div class="updated-date" id="kpi-updated-date">----------</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- MAIN DATA TABLE -->
+        <main class="table-container">
+            <table class="arrivals-table">
+                <thead>
+                    <tr>
+                        <th>PORT</th>
+                        <th>ARRIVAL</th>
+                        <th>SHIP</th>
+                        <th>DEPARTURE</th>
+                        <th>GUESTS</th>
+                        <th>STATUS</th>
+                    </tr>
+                </thead>
+                <tbody id="table-body">
+                    <tr class="loading-row">
+                        <td colspan="6">
+                            <div class="spinner"></div>
+                            <div class="loading-text">Fetching Jamaica Arrivals...</div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </main>
+
+        <!-- FOOTER STATUS KEY -->
+        <footer class="footer-legend" style="margin-top: 25px;">
+            <span class="legend-title">STATUS KEY:</span>
+            <div class="legend-items">
+                <span class="status-badge badge-in-port">IN PORT</span>
+                <span class="status-badge badge-expected">EXPECTED</span>
+                <span class="status-badge badge-scheduled">SCHEDULED</span>
+                <span class="status-badge badge-departed">DEPARTED</span>
+                <span class="status-badge badge-cancelled">CANCELLED</span>
+            </div>
+        </footer>
+    </section>
+
+    <!-- CRUISE FOOTER -->
+    <footer class="cruise-footer">
+        <div class="footer-top">
+            <!-- SCHEDULE UPDATED -->
+            <div class="schedule">
+                <div class="schedule-icon">
+                    <svg viewBox="0 0 64 64" fill="none">
+                        <path d="M51 20 A24 24 0 1 0 53 40" stroke="#FFD000" stroke-width="7" stroke-linecap="square" />
+                        <path transform="translate(5 -5)" d="M49 12 L49 27 L34 27" stroke="#FFD000" stroke-width="7"
+                            stroke-linecap="square" />
+                    </svg>
+                </div>
+                <div class="schedule-text">
+                    <div class="schedule-title">Schedule Updated</div>
+                    <div class="schedule-date" id="footer-updated">----------</div>
+                </div>
+            </div>
+
+            <!-- SPONSOR -->
+            <div class="sponsor">
+                <img src="./logo.png" alt="">
+            </div>
+
+            <!-- INFORMATION -->
+            <div class="info">
+                <div class="info-icon">
+                    <svg viewBox="0 0 60 60" fill="none">
+                        <circle cx="30" cy="30" r="24" stroke="#FFD000" stroke-width="4" />
+                        <circle cx="30" cy="18" r="3" fill="#FFD000" />
+                        <path d="M30 27V43" stroke="#FFD000" stroke-width="5" />
+                    </svg>
+                </div>
+                <div class="info-text">
+                    All times are local (EST)<br>
+                    Information subject to change
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <div class="tagline">
+                Powering Smart Visitor Experiences • Welcoming Delegates to Jamaica.
+            </div>
+        </div>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+
+</html>

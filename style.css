@@ -1,0 +1,1067 @@
+/* RESET & BASE STYLES */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+:root {
+    /* Color Palette matching screenshot */
+    --bg-dark: #000100;
+    --card-bg: #070f22;
+    --card-border: #111e3b;
+    --table-header-bg: #091733;
+
+    /* Text Colors */
+    --text-white: #ffffff;
+    --text-muted: #8a9fc4;
+    --text-gold: #ffb74d;
+    --text-green: #72d572;
+    --text-blue: #40c4ff;
+    --text-yellow: #ffd740;
+
+    /* Port Colors */
+    --port-montego: #8ce832;
+    --port-falmouth: #ffb300;
+    --port-ocho: #29b6f6;
+    --port-kingston: #a28df2;
+
+    /* Status Colors (badges) */
+    --status-in-port-bg: #295712;
+    --status-in-port-border: #295712;
+    --status-in-port-text: #ffffff;
+
+    --status-expected-bg: #D08403;
+    --status-expected-border: #D08403;
+    --status-expected-text: #ffffff;
+
+    --status-scheduled-bg: #002673;
+    --status-scheduled-border: #002673;
+    --status-scheduled-text: #ffffff;
+
+    --status-departed-bg: #A1201C;
+    --status-departed-border: #A1201C;
+    --status-departed-text: #ffffff;
+
+    --status-cancelled-bg: #464544;
+    --status-cancelled-border: #464544;
+    --status-cancelled-text: #ffffff;
+
+    /* Status Text Colors (high contrast accessibility) */
+    --status-in-port-text-color: #8ce832;
+    --status-expected-text-color: #ffb300;
+    --status-scheduled-text-color: #29b6f6;
+    --status-departed-text-color: #ff5252;
+    --status-cancelled-text-color: #cbd5e1;
+
+    /* Fonts */
+    --font-heading: 'Outfit', sans-serif;
+    --font-body: 'Inter', sans-serif;
+
+    /* Footer / Header Extra Colors */
+    --yellow: #ffd000;
+    --green: #79c72b;
+    --white: #f2f2f2;
+    --dark: #02080b;
+    --separator: #555;
+}
+
+body {
+    background-color: var(--bg-dark);
+    font-family: var(--font-body);
+    color: var(--text-white);
+    min-height: 100vh;
+    width: 100vw;
+    overflow-x: hidden;
+}
+
+header {
+    width: 100%;
+    position: relative;
+    text-align: right;
+    padding: 15px;
+}
+
+header img {
+    position: absolute;
+    top: 10px;
+    left: 0px;
+    z-index: 1;
+}
+
+.jvin-logo {
+    font-family: "Roboto Condensed", sans-serif;
+    font-weight: 700;
+    line-height: 0.95;
+    background: #000;
+    display: inline-block;
+    padding: 8px 10px;
+    width: 46%;
+    position: relative;
+    z-index: 1;
+    right: 0;
+    top: 0;
+}
+
+.jvin-logo .title {
+    color: #ffd400;
+    font-size: 42px;
+    letter-spacing: 0.5px;
+}
+
+.jvin-logo .subtitle {
+    color: #fff;
+    font-size: 39px;
+    letter-spacing: 0.2px;
+    border-bottom: 2px solid #00a9c7;
+    padding-bottom: 4px;
+}
+
+.jvin-logo .tagline {
+    color: #65c92f;
+    font-size: 20px;
+    letter-spacing: 0.2px;
+    margin-top: 5px;
+}
+
+.cruise {
+    min-height: 230px;
+    height: 230px;
+    width: 100%;
+    position: relative;
+    background-image: url(./cruise_image.png);
+    background-repeat: no-repeat;
+    background-size: 100% auto;
+    background-position: center;
+}
+
+.jamaica-time {
+    width: 284px;
+    height: 166px;
+    box-sizing: border-box;
+    background: #000;
+    border: 2px solid #5c9b18;
+    border-radius: 20px;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #fff;
+    padding: 15px 20px;
+    overflow: hidden;
+    position: absolute;
+    right: 30px;
+    top: 30px;
+}
+
+.time-row {
+    display: flex;
+    align-items: center;
+    height: 62px;
+}
+
+.clock {
+    position: relative;
+    width: 42px;
+    height: 42px;
+    border: 5px solid #ffd500;
+    border-radius: 50%;
+    flex: 0 0 auto;
+    box-sizing: border-box;
+    margin-right: 12px;
+}
+
+.clock::before {
+    content: "";
+    position: absolute;
+    width: 3px;
+    height: 14px;
+    background: #ffd500;
+    left: 50%;
+    top: 7px;
+    transform: translateX(-50%);
+    transform-origin: bottom center;
+}
+
+.clock::after {
+    content: "";
+    position: absolute;
+    width: 13px;
+    height: 3px;
+    background: #ffd500;
+    left: 50%;
+    top: 20px;
+    transform-origin: left center;
+    transform: rotate(40deg);
+}
+
+.time {
+    color: #ffd500;
+    font-size: 48px;
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -2px;
+    white-space: nowrap;
+}
+
+.ampm {
+    color: #ffd500;
+    font-size: 22px;
+    font-weight: 700;
+    margin-left: 7px;
+    align-self: center;
+    letter-spacing: -0.5px;
+}
+
+.date {
+    font-size: 21px;
+    font-weight: 400;
+    line-height: 1.2;
+    margin-top: 1px;
+    white-space: nowrap;
+}
+
+.location {
+    color: #72b82a;
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-top: 11px;
+    white-space: nowrap;
+}
+
+.cruise-dashboard {
+    width: 100%;
+    min-height: 279px;
+    margin: 0 auto;
+    padding: 15px 16px 12px;
+    background: radial-gradient(ellipse at center top, rgba(20, 40, 45, .35), transparent 65%), #02080b;
+    color: var(--text-white);
+    font-family: "Roboto Condensed", Arial, sans-serif;
+    overflow: hidden;
+}
+
+.dashboard-header {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 92px;
+    height: auto;
+    padding: 6px 0 14px;
+}
+
+.dashboard-title {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.dashboard-title h1 {
+    margin: 0;
+    font-size: clamp(32px, 4.2vw, 54px);
+    line-height: .95;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.dashboard-title p {
+    margin: 8px 0 0;
+    color: var(--green);
+    font-size: clamp(16px, 2vw, 25px);
+    line-height: 1;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.back-btn-wrap {
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+}
+
+.btn-back {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 6px 20px;
+    background: rgba(2, 8, 11, 0.85);
+    border: 1.5px solid rgba(255, 208, 0, 0.6);
+    border-radius: 8px;
+    color: #ffffff;
+    text-decoration: none;
+    font-family: "Roboto Condensed", var(--font-body), sans-serif;
+    font-size: clamp(12px, 1.4vw, 15px);
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.45);
+    transition: all 0.2s ease;
+    user-select: none;
+}
+
+.btn-back .back-chevron {
+    font-size: 1.15em;
+    line-height: 1;
+    color: #ffd000;
+    transition: transform 0.2s ease;
+}
+
+.btn-back:hover,
+.btn-back:focus {
+    background: rgba(255, 208, 0, 0.15);
+    border-color: #ffd000;
+    color: #ffd000;
+    box-shadow: 0 0 14px rgba(255, 208, 0, 0.4);
+    transform: translateY(-1px);
+}
+
+.btn-back:hover .back-chevron {
+    transform: translateX(-3px);
+}
+
+.btn-back:active {
+    transform: translateY(1px) scale(0.98);
+}
+
+.ship-icon {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 68px;
+    height: 68px;
+}
+
+.ship-left {
+    left: 25px;
+}
+
+.ship-right {
+    right: 25px;
+}
+
+.ship-icon svg {
+    width: 100%;
+    height: 100%;
+}
+
+.stats-panel {
+    height: 146px;
+    border: 2px solid #515151;
+    border-radius: 13px;
+    display: grid;
+    grid-template-columns: 1fr 1.25fr 1fr 1.1fr;
+    background: rgba(0, 0, 0, .35);
+    margin-bottom: 25px;
+}
+
+.stat {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 0;
+}
+
+.stat:not(:last-child)::after {
+    content: "";
+    position: absolute;
+    right: 0;
+    top: 22px;
+    bottom: 22px;
+    width: 2px;
+    background: #555;
+}
+
+.stat-icon {
+    width: 58px;
+    height: 65px;
+    margin-right: 13px;
+    flex: 0 0 auto;
+}
+
+.stat-icon svg {
+    width: 100%;
+    height: 100%;
+}
+
+.stat-content {
+    text-align: left;
+}
+
+.stat-label {
+    color: #eee;
+    font-size: clamp(16px, 1.9vw, 25px);
+    font-weight: 500;
+    line-height: 1;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.stat-number {
+    margin-top: 6px;
+    font-size: clamp(48px, 5vw, 68px);
+    line-height: .9;
+    font-weight: 700;
+}
+
+.ships .stat-number {
+    color: var(--text-green);
+}
+
+.passengers .stat-number {
+    color: var(--text-blue);
+}
+
+.ports .stat-number {
+    color: var(--text-yellow);
+}
+
+.updated .stat-label {
+    margin-bottom: 7px;
+}
+
+.updated .stat-number {
+    color: var(--text-green);
+    font-size: clamp(29px, 3.2vw, 43px);
+    white-space: nowrap;
+}
+
+.updated-date {
+    margin-top: 8px;
+    color: #eee;
+    font-size: clamp(16px, 1.8vw, 23px);
+    line-height: 1;
+    white-space: nowrap;
+}
+
+@media (max-width: 700px) {
+    .cruise-dashboard {
+        padding: 8px;
+        min-height: auto;
+    }
+
+    .dashboard-header {
+        height: auto;
+        min-height: 75px;
+        padding: 6px 0 10px;
+    }
+
+    .ship-icon {
+        display: none;
+    }
+
+    .dashboard-title h1 {
+        font-size: 29px;
+        white-space: normal;
+    }
+
+    .dashboard-title p {
+        font-size: 14px;
+        margin-top: 6px;
+    }
+
+    .stats-panel {
+        height: auto;
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .stat {
+        min-height: 105px;
+        padding: 10px;
+    }
+
+    .stat:nth-child(2)::after {
+        display: none;
+    }
+
+    .stat:nth-child(-n+2) {
+        border-bottom: 2px solid #555;
+    }
+
+    .stat-icon {
+        width: 40px;
+        height: 48px;
+        margin-right: 8px;
+    }
+
+    .stat-label {
+        font-size: 15px;
+    }
+
+    .stat-number {
+        font-size: 42px;
+    }
+
+    .updated .stat-number {
+        font-size: 25px;
+    }
+
+    .updated-date {
+        font-size: 15px;
+    }
+}
+
+/* DATA TABLE SECTION */
+.table-container {
+    width: 100%;
+    background-color: rgba(7, 15, 34, 0.3);
+    border: 1.5px solid var(--card-border);
+    border-radius: 12px;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: auto;
+    touch-action: pan-y;
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+}
+
+/* Custom Webkit scrollbars for table container */
+.table-container::-webkit-scrollbar {
+    width: 12px;
+}
+
+.table-container::-webkit-scrollbar-track {
+    background: rgba(7, 15, 34, 0.5);
+    border-radius: 6px;
+}
+
+.table-container::-webkit-scrollbar-thumb {
+    background: var(--card-border);
+    border-radius: 6px;
+    border: 2px solid rgba(7, 15, 34, 0.5);
+}
+
+.table-container::-webkit-scrollbar-thumb:hover {
+    background: var(--text-muted);
+}
+
+.arrivals-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+.arrivals-table th {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background-color: var(--table-header-bg);
+    border: 1.5px solid var(--card-border);
+    color: var(--text-muted);
+    font-family: var(--font-heading);
+    font-weight: 700;
+    letter-spacing: 1px;
+    white-space: nowrap;
+}
+
+.arrivals-table td {
+
+    font-weight: 700;
+    color: var(--text-white);
+    border: 1.5px solid var(--card-border);
+    vertical-align: middle;
+    white-space: nowrap;
+    text-transform: uppercase;
+    /* No wrapping of text in columns */
+}
+
+.arrivals-table td,
+.arrivals-table th {
+    padding: 15px;
+    font-size: 26px;
+}
+
+.arrivals-table th:nth-child(3),
+.arrivals-table td:nth-child(3) {
+    white-space: normal;
+    max-width: 30%;
+}
+
+/* Set specific column alignments */
+.arrivals-table td:nth-child(2),
+.arrivals-table td:nth-child(4),
+.arrivals-table td:nth-child(5) {
+    text-align: center;
+}
+
+.arrivals-table td:nth-child(6) {
+    text-align: center;
+}
+
+.arrivals-table tbody tr {
+    transition: background-color 0.2s ease;
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+}
+
+.arrivals-table tbody tr:hover {
+    background-color: rgba(20, 33, 61, 0.4);
+}
+
+/* Port Column Styling */
+.port-montego {
+    color: var(--port-montego);
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+.port-falmouth {
+    color: var(--port-falmouth);
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+.port-ocho {
+    color: var(--port-ocho);
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+.port-kingston {
+    color: var(--port-kingston);
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+/* Style only the first table cell (td:first-child) in the row according to the row's status */
+.arrivals-table tbody tr:has(.badge-in-port) td:first-child {
+    color: var(--status-in-port-text-color);
+}
+
+.arrivals-table tbody tr:has(.badge-expected) td:first-child {
+    color: var(--status-expected-text-color);
+}
+
+.arrivals-table tbody tr:has(.badge-scheduled) td:first-child {
+    color: var(--status-scheduled-text-color);
+}
+
+.arrivals-table tbody tr:has(.badge-departed) td:first-child {
+    color: var(--status-departed-text-color);
+}
+
+.arrivals-table tbody tr:has(.badge-cancelled) td:first-child {
+    color: var(--status-cancelled-text-color);
+}
+
+/* Status Badges - Text Only Capsules */
+.status-badge {
+    display: inline-block;
+    padding: 6px 16px;
+    border-radius: 4px;
+    font-size: 26px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    min-width: 150px;
+    text-align: center;
+    border: 1.5px solid transparent;
+    text-transform: uppercase;
+    width: 100%;
+}
+
+.badge-in-port {
+    background-color: var(--status-in-port-bg);
+    border-color: var(--status-in-port-border);
+    color: var(--status-in-port-text);
+}
+
+.badge-expected {
+    background-color: var(--status-expected-bg);
+    border-color: var(--status-expected-border);
+    color: var(--status-expected-text);
+}
+
+.badge-scheduled {
+    background-color: var(--status-scheduled-bg);
+    border-color: var(--status-scheduled-border);
+    color: var(--status-scheduled-text);
+}
+
+.badge-departed {
+    background-color: var(--status-departed-bg);
+    border-color: var(--status-departed-border);
+    color: var(--status-departed-text);
+}
+
+.badge-cancelled {
+    background-color: var(--status-cancelled-bg);
+    border-color: var(--status-cancelled-border);
+    color: var(--status-cancelled-text);
+}
+
+/* Loading & Error Row styles */
+.loading-row td,
+.error-row td {
+    text-align: center;
+    padding: 50px;
+    color: var(--text-muted);
+    font-size: 16px;
+}
+
+/* FOOTER STATUS KEY */
+.footer-legend {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    background-color: rgba(7, 15, 34, 0.6);
+    border: 1.5px solid var(--card-border);
+    border-radius: 10px;
+    padding: 15px 25px;
+}
+
+.legend-title {
+    font-family: var(--font-heading);
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-muted);
+    letter-spacing: 1px;
+}
+
+.legend-items {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.legend-items .status-badge {
+    padding: 6px 14px;
+    font-size: 20px;
+    width: auto;
+}
+
+/* =========================================
+   MAIN FOOTER
+========================================= */
+
+.cruise-footer {
+    width: 100%;
+    height: 183px;
+    margin: 0 auto;
+    padding: 15px 24px 10px;
+    position: relative;
+    color: var(--white);
+    font-family: "Roboto Condensed", Arial, sans-serif;
+    background: radial-gradient(ellipse at center, rgba(25, 45, 50, .30), transparent 70%), #02080b;
+    border-top: 2px solid #444;
+    overflow: hidden;
+}
+
+/* =========================================
+   TOP CONTENT
+========================================= */
+
+.footer-top {
+    height: 105px;
+    display: grid;
+    grid-template-columns: 1fr 1.2fr 1fr;
+    align-items: center;
+}
+
+/* =========================================
+   LEFT — SCHEDULE
+========================================= */
+
+.schedule {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    padding-right: 25px;
+}
+
+.schedule-icon {
+    width: 62px;
+    height: 62px;
+    margin-right: 15px;
+    flex-shrink: 0;
+}
+
+.schedule-icon svg {
+    width: 100%;
+    height: 100%;
+}
+
+.schedule-text {
+    display: flex;
+    flex-direction: column;
+}
+
+.schedule-title {
+    color: var(--yellow);
+    font-family: "Oswald", sans-serif;
+    font-size: 22px;
+    font-weight: 600;
+    line-height: 1;
+    text-transform: uppercase;
+}
+
+.schedule-date {
+    margin-top: 8px;
+    font-size: 19px;
+    line-height: 1;
+    white-space: nowrap;
+}
+
+/* =========================================
+   CENTER — SPONSOR
+========================================= */
+
+.sponsor {
+    height: 82px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-left: 2px solid var(--separator);
+    border-right: 2px solid var(--separator);
+    padding: 0 28px;
+}
+
+.sponsor img {
+    width: 345px;
+    height: auto;
+}
+
+/* =========================================
+   RIGHT — INFORMATION
+========================================= */
+
+.info {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    padding-left: 25px;
+}
+
+.info-icon {
+    width: 55px;
+    height: 55px;
+    margin-right: 14px;
+    flex-shrink: 0;
+}
+
+.info-icon svg {
+    width: 100%;
+    height: 100%;
+}
+
+.info-text {
+    font-size: 19px;
+    line-height: 1.35;
+    white-space: nowrap;
+}
+
+/* =========================================
+   BOTTOM TAGLINE
+========================================= */
+
+.footer-bottom {
+    height: 53px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.footer-bottom::before,
+.footer-bottom::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    width: 30%;
+    height: 2px;
+    background: var(--yellow);
+}
+
+.footer-bottom::before {
+    left: 0;
+}
+
+.footer-bottom::after {
+    right: 0;
+}
+
+.footer-bottom .tagline {
+    color: var(--green);
+    font-family: "Roboto Condensed", Arial, sans-serif;
+    font-size: 25px;
+    font-style: italic;
+    font-weight: 600;
+    letter-spacing: .7px;
+    text-transform: uppercase;
+    padding: 0 25px;
+    background: #02080b;
+    position: relative;
+    z-index: 2;
+    white-space: nowrap;
+}
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media (max-width: 800px) {
+    .cruise-footer {
+        height: auto;
+        padding: 15px;
+    }
+
+    .footer-top {
+        height: auto;
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+
+    .schedule,
+    .info {
+        justify-content: center;
+        padding: 10px;
+        height: auto;
+    }
+
+    .sponsor {
+        border-left: 0;
+        border-right: 0;
+        border-top: 1px solid #555;
+        border-bottom: 1px solid #555;
+        padding: 15px;
+    }
+
+    .footer-bottom {
+        margin-top: 10px;
+    }
+
+    .footer-bottom .tagline {
+        font-size: 17px;
+        white-space: normal;
+        text-align: center;
+    }
+
+    .footer-bottom::before,
+    .footer-bottom::after {
+        display: none;
+    }
+}
+
+/* =========================================
+   RESPONSIVE TABLE OVERRIDES & ANIMATIONS
+   ========================================= */
+
+.arrivals-table {
+    table-layout: fixed;
+    width: 100%;
+}
+
+.arrivals-table th:nth-child(1) {
+    width: 14%;
+}
+
+/* Date / Port */
+.arrivals-table th:nth-child(2) {
+    width: 15%;
+}
+
+/* Arrival Time */
+.arrivals-table th:nth-child(3) {
+    width: 26%;
+}
+
+/* Ship Name */
+.arrivals-table th:nth-child(4) {
+    width: 15%;
+}
+
+/* Departure Time */
+.arrivals-table th:nth-child(5) {
+    width: 13%;
+}
+
+/* Guests */
+.arrivals-table th:nth-child(6) {
+    width: 17%;
+}
+
+/* Status */
+
+.arrivals-table th,
+.arrivals-table td {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.status-badge {
+    display: inline-block;
+    width: 100%;
+    min-width: 0 !important;
+    text-align: center;
+}
+
+.arrivals-table .loading-row td,
+.arrivals-table .error-row td {
+    white-space: normal !important;
+    text-transform: none !important;
+    font-size: 22px !important;
+    padding: 50px 20px !important;
+    text-align: center;
+}
+
+/* Spinner Styles */
+.spinner {
+    width: 60px;
+    height: 60px;
+    border: 5px solid rgba(255, 208, 0, 0.15);
+    border-top: 5px solid var(--yellow);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 30px auto;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.loading-text {
+    font-family: var(--font-heading);
+    font-size: 22px;
+    color: var(--text-muted);
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    text-align: center;
+}
+
+.table-container {
+    overflow-x: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--yellow) rgba(7, 15, 34, 0.3);
+}
+
+.table-container::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+.table-container::-webkit-scrollbar-track {
+    background: rgba(7, 15, 34, 0.3);
+    border-radius: 4px;
+}
+
+.table-container::-webkit-scrollbar-thumb {
+    background: var(--yellow);
+    border-radius: 4px;
+}

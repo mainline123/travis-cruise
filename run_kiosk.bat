@@ -1,0 +1,3 @@
+@echo off
+echo Launching Jamaica Cruise Traffic Dashboard in Kiosk Mode with API Access...
+start chrome "%CD%\index.html" --disable-web-security --user-data-dir="%TEMP%\chrome-kiosk-profile" --start-maximized
