@@ -599,6 +599,8 @@ header img {
 
 .arrivals-table tbody tr {
     transition: background-color 0.2s ease;
+    content-visibility: auto;
+    contain-intrinsic-size: 0 48px;
     -webkit-transform: translateZ(0);
     transform: translateZ(0);
     -webkit-backface-visibility: hidden;

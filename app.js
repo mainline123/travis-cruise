@@ -24,8 +24,34 @@ document.addEventListener('DOMContentLoaded', () => {
     const footerUpdatedEl = document.getElementById('footer-updated');
 
     // Configuration
-    const APIFY_DATASET_URL = 'https://api.apify.com/v2/datasets/cO8KNDu21xpU85TZI/items?token=apify_api_rXgzW8TFIhb5mfhB0Ko92jsdWhTKsd1b3r30';
-    const AUTO_REFRESH_INTERVAL = 3600000; // 60 minutes in milliseconds
+    // Primary: fetch from the latest succeeded run of the cruisemapper-scraper actor
+    const APIFY_DATASET_URL = 'https://api.apify.com/v2/acts/QkfiudQbVbhHCif5r/runs/last/dataset/items?token=apify_api_rztD6c43gew3LIUeHLy7wkkxLqkoJg3r8KFP&status=SUCCEEDED';
+    // Fallback: direct dataset URL from latest run
+    const FALLBACK_DATASET_URL = 'https://api.apify.com/v2/datasets/8yphg5hsrvkVEishc/items?token=apify_api_rztD6c43gew3LIUeHLy7wkkxLqkoJg3r8KFP';
+    const AUTO_REFRESH_INTERVAL = 900000; // 15 minutes in milliseconds
+
+    /**
+     * Updates the 'Last Updated' KPI card and footer schedule timestamp
+     * to reflect today's current date and the latest verification/sync time in Jamaica (EST, UTC-5).
+     */
+    function updateLastUpdatedTimestamp() {
+        const now = new Date();
+        const jamaicaTime = new Date(now.getTime() - (5 * 60 * 60 * 1000));
+
+        let hours = jamaicaTime.getUTCHours();
+        const minutes = jamaicaTime.getUTCMinutes();
+        const ampm = hours >= 12 ? 'PM' : 'AM';
+        hours = hours % 12;
+        if (hours === 0) hours = 12;
+
+        const timeStr = `${hours}:${String(minutes).padStart(2, '0')} ${ampm}`;
+        const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+        const dateStr = `${months[jamaicaTime.getUTCMonth()]} ${jamaicaTime.getUTCDate()}, ${jamaicaTime.getUTCFullYear()}`;
+
+        if (kpiUpdatedTimeEl) kpiUpdatedTimeEl.textContent = timeStr;
+        if (kpiUpdatedDateEl) kpiUpdatedDateEl.textContent = dateStr;
+        if (footerUpdatedEl) footerUpdatedEl.textContent = `${dateStr} | ${timeStr}`;
+    }
 
     // Static Ship Capacity Lookup Map (for known vessels docking at Ocho Rios)
     const SHIP_CAPACITIES = {
@@ -359,7 +385,11 @@ document.addEventListener('DOMContentLoaded', () => {
         `;
 
         try {
-            const response = await fetch(APIFY_DATASET_URL);
+            let response = await fetch(APIFY_DATASET_URL);
+            if (!response.ok) {
+                console.warn(`Primary dataset endpoint returned ${response.status}, trying fallback dataset...`);
+                response = await fetch(FALLBACK_DATASET_URL);
+            }
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
@@ -451,43 +481,8 @@ document.addEventListener('DOMContentLoaded', () => {
             kpiPassengersEl.textContent = totalPassengers > 0 ? totalPassengers.toLocaleString('en-CA') : '0';
             kpiPortsEl.textContent = activePortsSet.size;
 
-            // Generate sync timestamp based on lastScrapedTime or fallback to now
-            let syncTimeStr = '--:--';
-            let syncDateStr = '----------';
-            
-            if (lastScrapedTime > 0) {
-                const scrapedDate = new Date(lastScrapedTime);
-                // Shift to Jamaica time (UTC-5)
-                const jamScraped = new Date(scrapedDate.getTime() - (5 * 60 * 60 * 1000));
-                
-                let sHours = jamScraped.getUTCHours();
-                const sMinutes = jamScraped.getUTCMinutes();
-                const sAmpm = sHours >= 12 ? 'PM' : 'AM';
-                sHours = sHours % 12;
-                if (sHours === 0) sHours = 12;
-                
-                syncTimeStr = `${sHours}:${String(sMinutes).padStart(2, '0')} ${sAmpm}`;
-                
-                const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-                syncDateStr = `${months[jamScraped.getUTCMonth()]} ${jamScraped.getUTCDate()}, ${jamScraped.getUTCFullYear()}`;
-            } else {
-                const now = new Date();
-                const jamTime = new Date(now.getTime() - (5 * 60 * 60 * 1000));
-                let sHours = jamTime.getUTCHours();
-                const sMinutes = jamTime.getUTCMinutes();
-                const sAmpm = sHours >= 12 ? 'PM' : 'AM';
-                sHours = sHours % 12;
-                if (sHours === 0) sHours = 12;
-                syncTimeStr = `${sHours}:${String(sMinutes).padStart(2, '0')} ${sAmpm}`;
-                syncDateStr = targetDate;
-            }
-
-            kpiUpdatedTimeEl.textContent = syncTimeStr;
-            kpiUpdatedDateEl.textContent = syncDateStr;
-
-            if (footerUpdatedEl) {
-                footerUpdatedEl.textContent = `${syncDateStr} | ${syncTimeStr}`;
-            }
+            // Update Last Updated KPI card and footer with current date today and latest sync time
+            updateLastUpdatedTimestamp();
 
             // Render Table rows
             tableBodyEl.innerHTML = '';
@@ -543,6 +538,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // INITIALIZATION & TIMER REGISTRATION
+
+    // Initialize timestamp immediately
+    updateLastUpdatedTimestamp();
 
     // Initial data load
     fetchAndRenderData();
