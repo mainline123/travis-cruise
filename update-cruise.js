@@ -1,8 +1,6 @@
 const fs = require("fs");
 
 const APIFY_TOKEN = process.env.APIFY_TOKEN;
-
-// Existing CruiseMapper Scraper Actor
 const ACTOR_ID = "QkfiudQbVbhHCif5r";
 
 if (!APIFY_TOKEN) {
@@ -19,89 +17,27 @@ function sleep(ms) {
 // ============================================================
 
 const JAMAICA_PORTS = [
-    {
-        name: "Ocho Rios",
-        matches: [
-            "ocho rios"
-        ]
-    },
-    {
-        name: "Montego Bay",
-        matches: [
-            "montego bay"
-        ]
-    },
-    {
-        name: "Falmouth",
-        matches: [
-            "falmouth"
-        ]
-    },
-    {
-        name: "Kingston",
-        matches: [
-            "kingston"
-        ]
-    },
-    {
-        name: "Port Antonio",
-        matches: [
-            "port antonio"
-        ]
-    }
+    { name: "Ocho Rios", matches: ["ocho rios"] },
+    { name: "Montego Bay", matches: ["montego bay"] },
+    { name: "Falmouth", matches: ["falmouth"] },
+    { name: "Kingston", matches: ["kingston"] },
+    { name: "Port Antonio", matches: ["port antonio"] }
 ];
 
 function identifyJamaicaPort(port) {
+    const portName = String(
+        port?.portName ||
+        port?.name ||
+        ""
+    ).toLowerCase().trim();
 
-    const portName =
-        String(
-            port?.portName ||
-            port?.name ||
-            ""
-        )
-        .toLowerCase()
-        .trim();
-
-    const country =
-        String(
-            port?.country ||
-            ""
-        )
-        .toLowerCase()
-        .trim();
-
-    // First check the port name.
     for (const jamaicaPort of JAMAICA_PORTS) {
-
-        const matched =
-            jamaicaPort.matches.some(
-                match =>
-                    portName.includes(match)
-            );
-
-        if (matched) {
+        if (
+            jamaicaPort.matches.some(match =>
+                portName.includes(match)
+            )
+        ) {
             return jamaicaPort.name;
-        }
-    }
-
-    // If CruiseMapper explicitly identifies Jamaica,
-    // keep checking known Jamaican port names.
-    if (
-        country === "jamaica" ||
-        country.includes("jamaica")
-    ) {
-
-        for (const jamaicaPort of JAMAICA_PORTS) {
-
-            const matched =
-                jamaicaPort.matches.some(
-                    match =>
-                        portName.includes(match)
-                );
-
-            if (matched) {
-                return jamaicaPort.name;
-            }
         }
     }
 
@@ -109,28 +45,109 @@ function identifyJamaicaPort(port) {
 }
 
 // ============================================================
-// NORMALIZE DATES
+// DATE HANDLING
 // ============================================================
 
-function normalizeDate(value) {
+const MONTHS = {
+    jan: "01",
+    feb: "02",
+    mar: "03",
+    apr: "04",
+    may: "05",
+    jun: "06",
+    jul: "07",
+    aug: "08",
+    sep: "09",
+    oct: "10",
+    nov: "11",
+    dec: "12"
+};
 
+/*
+CruiseMapper may return:
+
+23 Sep 08:00 - 16:00
+
+We need:
+
+2026-09-23
+*/
+
+function normalizeDate(value) {
     if (!value) {
         return "";
     }
 
-    const text =
-        String(value).trim();
+    const text = String(value).trim();
 
-    // Already YYYY-MM-DD
+    // Already correct
     if (/^\d{4}-\d{2}-\d{2}$/.test(text)) {
         return text;
     }
 
-    const parsed =
-        new Date(text);
+    // Look for:
+    // 23 Sep
+    // 23 September
+    const match = text.match(
+        /(\d{1,2})\s+([A-Za-z]{3,9})/i
+    );
+
+    if (match) {
+        const day = String(
+            parseInt(match[1], 10)
+        ).padStart(2, "0");
+
+        const monthText =
+            match[2]
+                .substring(0, 3)
+                .toLowerCase();
+
+        const month =
+            MONTHS[monthText];
+
+        if (month) {
+            /*
+            Determine year.
+
+            Cruise schedules may cross New Year.
+            If the cruise month is far behind the
+            current month, treat it as next year.
+            */
+
+            const now = new Date();
+
+            const jamaicaNow = new Date(
+                now.getTime() -
+                (5 * 60 * 60 * 1000)
+            );
+
+            let year =
+                jamaicaNow.getUTCFullYear();
+
+            const currentMonth =
+                jamaicaNow.getUTCMonth() + 1;
+
+            const cruiseMonth =
+                parseInt(month, 10);
+
+            // Example:
+            // December current date + January cruise
+            // means January of next year.
+            if (
+                cruiseMonth <
+                currentMonth - 6
+            ) {
+                year += 1;
+            }
+
+            return `${year}-${month}-${day}`;
+        }
+    }
+
+    // Last attempt for other date formats
+    const parsed = new Date(text);
 
     if (!Number.isNaN(parsed.getTime())) {
-
         const year =
             parsed.getUTCFullYear();
 
@@ -147,15 +164,18 @@ function normalizeDate(value) {
         return `${year}-${month}-${day}`;
     }
 
-    return text;
+    console.warn(
+        `Could not normalize date: ${text}`
+    );
+
+    return "";
 }
 
 // ============================================================
-// NORMALIZE TIME
+// TIME HANDLING
 // ============================================================
 
 function normalizeTime(value) {
-
     if (!value) {
         return "--:--";
     }
@@ -163,74 +183,98 @@ function normalizeTime(value) {
     const text =
         String(value).trim();
 
-    // HH:MM
-    const match24 =
+    // Find HH:MM anywhere in the value
+    const match =
         text.match(
-            /^(\d{1,2}):(\d{2})$/
+            /(\d{1,2}):(\d{2})/
         );
 
-    if (match24) {
-
+    if (match) {
         return (
-            `${String(match24[1]).padStart(2, "0")}:` +
-            `${match24[2]}`
+            `${String(
+                parseInt(match[1], 10)
+            ).padStart(2, "0")}:` +
+            `${match[2]}`
         );
     }
 
-    // 12-hour time such as 8:00 AM
-    const match12 =
-        text.match(
-            /^(\d{1,2}):(\d{2})\s*(AM|PM)$/i
-        );
+    return "--:--";
+}
 
-    if (match12) {
+function extractDepartureTime(port) {
+    const direct =
+        port.departureTime ||
+        port.departTime ||
+        port.departure ||
+        port.timeOut;
 
-        let hour =
-            parseInt(
-                match12[1],
-                10
-            );
-
-        const minute =
-            match12[2];
-
-        const ampm =
-            match12[3]
-                .toUpperCase();
-
-        if (
-            ampm === "PM" &&
-            hour < 12
-        ) {
-            hour += 12;
-        }
-
-        if (
-            ampm === "AM" &&
-            hour === 12
-        ) {
-            hour = 0;
-        }
-
-        return (
-            `${String(hour).padStart(2, "0")}:` +
-            `${minute}`
-        );
+    if (direct) {
+        return normalizeTime(direct);
     }
 
-    return text;
+    /*
+    CruiseMapper may put both times into:
+
+    23 Sep 08:00 - 16:00
+    */
+
+    const combined = String(
+        port.date ||
+        port.arrivalDate ||
+        port.portDate ||
+        ""
+    );
+
+    const match =
+        combined.match(
+            /(\d{1,2}:\d{2})\s*-\s*(\d{1,2}:\d{2})/
+        );
+
+    if (match) {
+        return normalizeTime(match[2]);
+    }
+
+    return "--:--";
+}
+
+function extractArrivalTime(port) {
+    const direct =
+        port.arrivalTime ||
+        port.arriveTime ||
+        port.arrival ||
+        port.timeIn;
+
+    if (direct) {
+        return normalizeTime(direct);
+    }
+
+    const combined = String(
+        port.date ||
+        port.arrivalDate ||
+        port.portDate ||
+        ""
+    );
+
+    const match =
+        combined.match(
+            /(\d{1,2}:\d{2})\s*-\s*(\d{1,2}:\d{2})/
+        );
+
+    if (match) {
+        return normalizeTime(match[1]);
+    }
+
+    return "--:--";
 }
 
 // ============================================================
-// CONVERT CRUISEMAPPER DATA INTO DASHBOARD FORMAT
+// CONVERT TO DASHBOARD FORMAT
 // ============================================================
 
 function buildJamaicaDataset(rawData) {
-
     const portMap = new Map();
 
     for (const jamaicaPort of JAMAICA_PORTS) {
-
         portMap.set(
             jamaicaPort.name,
             {
@@ -244,7 +288,6 @@ function buildJamaicaDataset(rawData) {
     }
 
     for (const cruise of rawData) {
-
         const shipName =
             cruise.shipName ||
             cruise.ship ||
@@ -264,7 +307,6 @@ function buildJamaicaDataset(rawData) {
         }
 
         for (const port of ports) {
-
             const jamaicaPortName =
                 identifyJamaicaPort(port);
 
@@ -272,30 +314,29 @@ function buildJamaicaDataset(rawData) {
                 continue;
             }
 
+            const rawDate =
+                port.date ||
+                port.arrivalDate ||
+                port.arriveDate ||
+                port.portDate ||
+                port.day ||
+                "";
+
             const date =
-                normalizeDate(
-                    port.date ||
-                    port.arrivalDate ||
-                    port.arriveDate ||
-                    port.portDate ||
-                    port.day
-                );
+                normalizeDate(rawDate);
 
             const arrivalTime =
-                normalizeTime(
-                    port.arrivalTime ||
-                    port.arriveTime ||
-                    port.arrival ||
-                    port.timeIn
-                );
+                extractArrivalTime(port);
 
             const departureTime =
-                normalizeTime(
-                    port.departureTime ||
-                    port.departTime ||
-                    port.departure ||
-                    port.timeOut
+                extractDepartureTime(port);
+
+            if (!date) {
+                console.warn(
+                    `Skipping ${shipName} at ${jamaicaPortName}: bad date "${rawDate}"`
                 );
+                continue;
+            }
 
             const portRecord =
                 portMap.get(
@@ -310,28 +351,27 @@ function buildJamaicaDataset(rawData) {
             });
 
             console.log(
-                `JAMAICA: ${date} | ${jamaicaPortName} | ${shipName} | ${arrivalTime}-${departureTime}`
+                `JAMAICA: ${date} | ` +
+                `${jamaicaPortName} | ` +
+                `${shipName} | ` +
+                `${arrivalTime}-${departureTime}`
             );
         }
     }
 
-    // Remove duplicate port calls.
+    // Remove duplicates
     for (const portRecord of portMap.values()) {
-
-        const seen =
-            new Set();
+        const seen = new Set();
 
         portRecord.upcomingArrivals =
             portRecord.upcomingArrivals.filter(
                 arrival => {
-
-                    const key =
-                        [
-                            arrival.shipName,
-                            arrival.date,
-                            arrival.arrivalTime,
-                            arrival.departureTime
-                        ].join("|");
+                    const key = [
+                        arrival.shipName,
+                        arrival.date,
+                        arrival.arrivalTime,
+                        arrival.departureTime
+                    ].join("|");
 
                     if (seen.has(key)) {
                         return false;
@@ -344,7 +384,6 @@ function buildJamaicaDataset(rawData) {
 
         portRecord.upcomingArrivals.sort(
             (a, b) => {
-
                 if (a.date !== b.date) {
                     return a.date.localeCompare(
                         b.date
@@ -364,11 +403,10 @@ function buildJamaicaDataset(rawData) {
 }
 
 // ============================================================
-// MAIN UPDATE
+// MAIN
 // ============================================================
 
 async function main() {
-
     console.log(
         "Jamaica CruiseMapper updater starting..."
     );
@@ -377,7 +415,7 @@ async function main() {
         new Date().toISOString()
     );
 
-    // Start ONE paid CruiseMapper run.
+    // Start ONE Apify run
     const startResponse =
         await fetch(
             `https://api.apify.com/v2/acts/${ACTOR_ID}/runs?token=${APIFY_TOKEN}`,
@@ -391,7 +429,6 @@ async function main() {
         );
 
     if (!startResponse.ok) {
-
         throw new Error(
             `Could not start CruiseMapper Actor: HTTP ${startResponse.status}`
         );
@@ -413,7 +450,6 @@ async function main() {
         `Started Apify run: ${runId}`
     );
 
-    // Wait for scraper to finish.
     let run = null;
 
     for (
@@ -421,7 +457,6 @@ async function main() {
         attempt <= 40;
         attempt++
     ) {
-
         await sleep(5000);
 
         const statusResponse =
@@ -430,7 +465,6 @@ async function main() {
             );
 
         if (!statusResponse.ok) {
-
             throw new Error(
                 `Could not check Apify run: HTTP ${statusResponse.status}`
             );
@@ -458,7 +492,6 @@ async function main() {
             run.status === "ABORTED" ||
             run.status === "TIMED-OUT"
         ) {
-
             throw new Error(
                 `CruiseMapper Actor ended with status ${run.status}`
             );
@@ -469,7 +502,6 @@ async function main() {
         !run ||
         run.status !== "SUCCEEDED"
     ) {
-
         throw new Error(
             "CruiseMapper Actor did not finish in time."
         );
@@ -479,20 +511,17 @@ async function main() {
         run.defaultDatasetId;
 
     if (!datasetId) {
-
         throw new Error(
             "Completed run did not provide a dataset ID."
         );
     }
 
-    // Download THIS run's results.
     const dataResponse =
         await fetch(
             `https://api.apify.com/v2/datasets/${datasetId}/items?clean=true&format=json&token=${APIFY_TOKEN}`
         );
 
     if (!dataResponse.ok) {
-
         throw new Error(
             `Could not download CruiseMapper dataset: HTTP ${dataResponse.status}`
         );
@@ -502,7 +531,6 @@ async function main() {
         await dataResponse.json();
 
     if (!Array.isArray(rawData)) {
-
         throw new Error(
             "CruiseMapper returned an unexpected dataset."
         );
@@ -512,7 +540,6 @@ async function main() {
         `CruiseMapper returned ${rawData.length} raw records.`
     );
 
-    // Convert to Jamaica-only port records.
     const jamaicaData =
         buildJamaicaDataset(
             rawData
@@ -530,19 +557,16 @@ async function main() {
         `Jamaica cruise calls found: ${totalJamaicaCalls}`
     );
 
-    jamaicaData.forEach(
-        port => {
+    jamaicaData.forEach(port => {
+        console.log(
+            `${port.name}: ` +
+            `${port.upcomingArrivals.length}`
+        );
+    });
 
-            console.log(
-                `${port.name}: ${port.upcomingArrivals.length}`
-            );
-        }
-    );
-
-    // Safety check:
-    // Do NOT overwrite working data with an empty file.
+    // Never overwrite working data
+    // if the scraper unexpectedly returns nothing.
     if (totalJamaicaCalls === 0) {
-
         throw new Error(
             "No Jamaica cruise calls were found. Existing cruise-data.json was NOT overwritten."
         );
@@ -558,21 +582,16 @@ async function main() {
     );
 
     console.log(
-        "cruise-data.json updated with Jamaica-only cruise calls."
+        "cruise-data.json updated successfully."
     );
 }
 
-main().catch(
-    error => {
+main().catch(error => {
+    console.error(
+        "CRUISE UPDATE FAILED:"
+    );
 
-        console.error(
-            "CRUISE UPDATE FAILED:"
-        );
+    console.error(error);
 
-        console.error(
-            error
-        );
-
-        process.exit(1);
-    }
-);
+    process.exit(1);
+});
