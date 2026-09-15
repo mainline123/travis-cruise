@@ -1,0 +1,975 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Jamaica Cruise Traffic Dashboard - Landscape</title>
+
+<style>
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+
+    html, body {
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        font-family: Arial, Helvetica, sans-serif;
+        background:
+            linear-gradient(
+                135deg,
+                #071b2b 0%,
+                #0b3046 55%,
+                #0d4158 100%
+            );
+        color: white;
+    }
+
+    body {
+        display: flex;
+        flex-direction: column;
+        padding: 24px 32px 18px;
+    }
+
+    /* ==============================
+       HEADER
+    ============================== */
+
+    .header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        min-height: 110px;
+        border-bottom: 2px solid rgba(255,255,255,0.16);
+        padding-bottom: 16px;
+    }
+
+    .brand {
+        display: flex;
+        align-items: center;
+        gap: 22px;
+    }
+
+    .logo {
+        width: 110px;
+        height: 80px;
+        object-fit: contain;
+        background: white;
+        border-radius: 10px;
+        padding: 7px;
+    }
+
+    .title-block h1 {
+        font-size: clamp(28px, 2.7vw, 50px);
+        font-weight: 800;
+        letter-spacing: 1px;
+        line-height: 1;
+    }
+
+    .title-block p {
+        margin-top: 10px;
+        color: #b9d8e5;
+        font-size: clamp(14px, 1.2vw, 22px);
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+    }
+
+    .clock {
+        text-align: right;
+    }
+
+    #time {
+        font-size: clamp(30px, 3vw, 54px);
+        font-weight: 800;
+    }
+
+    #date {
+        margin-top: 5px;
+        color: #b9d8e5;
+        font-size: clamp(14px, 1.2vw, 21px);
+    }
+
+    /* ==============================
+       SUMMARY CARDS
+    ============================== */
+
+    .summary {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 18px;
+        padding: 18px 0;
+    }
+
+    .card {
+        background: rgba(255,255,255,0.08);
+        border: 1px solid rgba(255,255,255,0.14);
+        border-radius: 14px;
+        padding: 13px 20px;
+        text-align: center;
+    }
+
+    .card .number {
+        font-size: clamp(28px, 2.8vw, 48px);
+        font-weight: 800;
+        color: #ffffff;
+    }
+
+    .card .label {
+        margin-top: 4px;
+        color: #b9d8e5;
+        font-size: clamp(12px, 1vw, 18px);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    /* ==============================
+       TABLE
+    ============================== */
+
+    .board {
+        flex: 1;
+        min-height: 0;
+        display: flex;
+        flex-direction: column;
+        background: rgba(0,0,0,0.17);
+        border: 1px solid rgba(255,255,255,0.13);
+        border-radius: 14px;
+        overflow: hidden;
+    }
+
+    .table-header,
+    .row {
+        display: grid;
+        grid-template-columns:
+            0.9fr
+            1.25fr
+            0.75fr
+            2.25fr
+            0.75fr
+            0.8fr
+            1fr;
+        align-items: center;
+        column-gap: 12px;
+    }
+
+    .table-header {
+        min-height: 55px;
+        padding: 0 22px;
+        background: rgba(0,0,0,0.32);
+        color: #a9d5e6;
+        font-size: clamp(12px, 1vw, 18px);
+        font-weight: bold;
+        text-transform: uppercase;
+        letter-spacing: 0.7px;
+    }
+
+    #rows {
+        flex: 1;
+        min-height: 0;
+        overflow: hidden;
+    }
+
+    .row {
+        min-height: 62px;
+        padding: 9px 22px;
+        border-top: 1px solid rgba(255,255,255,0.09);
+        font-size: clamp(14px, 1.2vw, 21px);
+    }
+
+    .row:nth-child(even) {
+        background: rgba(255,255,255,0.035);
+    }
+
+    .ship {
+        font-weight: 800;
+        font-size: clamp(15px, 1.3vw, 23px);
+    }
+
+    .port {
+        font-weight: 700;
+        color: #9eddf1;
+    }
+
+    .guests {
+        font-weight: 700;
+    }
+
+    .status {
+        display: inline-block;
+        width: fit-content;
+        padding: 7px 13px;
+        border-radius: 18px;
+        font-size: clamp(11px, 0.9vw, 16px);
+        font-weight: bold;
+        text-transform: uppercase;
+        white-space: nowrap;
+    }
+
+    .status-upcoming {
+        background: #1976d2;
+        color: white;
+    }
+
+    .status-today {
+        background: #148b72;
+        color: white;
+    }
+
+    .status-inport {
+        background: #138a4a;
+        color: white;
+    }
+
+    .empty {
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        color: #b9d8e5;
+        font-size: clamp(22px, 2vw, 36px);
+        font-weight: bold;
+    }
+
+    /* ==============================
+       FOOTER
+    ============================== */
+
+    .footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-top: 12px;
+        color: #91b6c5;
+        font-size: clamp(11px, 0.9vw, 16px);
+    }
+
+    .live {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: #2bd17e;
+        box-shadow: 0 0 8px #2bd17e;
+    }
+
+    @media (max-width: 1100px) {
+        body {
+            padding: 16px 20px 12px;
+        }
+
+        .logo {
+            width: 85px;
+            height: 65px;
+        }
+
+        .row {
+            min-height: 52px;
+        }
+    }
+</style>
+</head>
+
+<body>
+
+<header class="header">
+
+    <div class="brand">
+        <img src="logo.png"
+             class="logo"
+             alt="Virtual Media Masters">
+
+        <div class="title-block">
+            <h1>JAMAICA CRUISE TRAFFIC</h1>
+            <p>Upcoming Cruise Arrivals Across Jamaica</p>
+        </div>
+    </div>
+
+    <div class="clock">
+        <div id="time">--:--</div>
+        <div id="date">Loading...</div>
+    </div>
+
+</header>
+
+
+<section class="summary">
+
+    <div class="card">
+        <div class="number"
+             id="shipCount">0</div>
+        <div class="label">
+            Upcoming Ships
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="number"
+             id="guestCount">0</div>
+        <div class="label">
+            Upcoming Guests
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="number"
+             id="portCount">0</div>
+        <div class="label">
+            Active Ports
+        </div>
+    </div>
+
+</section>
+
+
+<main class="board">
+
+    <div class="table-header">
+        <div>Date</div>
+        <div>Port</div>
+        <div>Arrival</div>
+        <div>Ship</div>
+        <div>Departure</div>
+        <div>Guests</div>
+        <div>Status</div>
+    </div>
+
+    <div id="rows">
+        <div class="empty">
+            Loading Jamaica cruise schedule...
+        </div>
+    </div>
+
+</main>
+
+
+<footer class="footer">
+
+    <div class="live">
+        <span class="dot"></span>
+        <span>LIVE CRUISE SCHEDULE</span>
+    </div>
+
+    <div>
+        Last Updated:
+        <span id="lastUpdated">--</span>
+    </div>
+
+</footer>
+
+
+<script>
+
+/* ============================================================
+   DATA
+============================================================ */
+
+const DATA_URL = "cruise-data.json";
+
+const REFRESH_INTERVAL = 15 * 60 * 1000;
+
+
+/* ============================================================
+   SHIP CAPACITY
+   Approximate passenger capacities used for dashboard totals.
+============================================================ */
+
+const SHIP_CAPACITY = {
+
+    "Margaritaville At Sea Islander": 2680,
+    "Carnival Horizon": 3960,
+
+    "Carnival Celebration": 5374,
+    "Carnival Sunrise": 2984,
+    "Carnival Vista": 3934,
+    "Carnival Magic": 3690,
+    "Carnival Dream": 3646,
+    "Carnival Breeze": 3690,
+
+    "Harmony of the Seas": 5479,
+    "Oasis of the Seas": 5592,
+    "Symphony of the Seas": 5518,
+    "Wonder of the Seas": 5734,
+    "Icon of the Seas": 5610,
+    "Adventure of the Seas": 3114,
+    "Freedom of the Seas": 3634,
+    "Independence of the Seas": 3634,
+    "Liberty of the Seas": 3634,
+    "Explorer of the Seas": 3114,
+    "Grandeur of the Seas": 1992,
+
+    "MSC Seascape": 4540,
+    "MSC Seaside": 4134,
+    "MSC Divina": 3502,
+    "MSC Meraviglia": 4488,
+
+    "Norwegian Escape": 4266,
+    "Norwegian Encore": 3998,
+    "Norwegian Joy": 3804,
+    "Norwegian Breakaway": 3963,
+    "Norwegian Getaway": 3963,
+
+    "Disney Treasure": 4000,
+    "Disney Fantasy": 4000,
+    "Disney Dream": 4000
+};
+
+
+/* ============================================================
+   JAMAICA TIME
+============================================================ */
+
+function getJamaicaNow() {
+
+    const now = new Date();
+
+    return new Date(
+        now.toLocaleString(
+            "en-US",
+            {
+                timeZone:
+                    "America/Jamaica"
+            }
+        )
+    );
+}
+
+
+function getJamaicaDateString() {
+
+    const now = getJamaicaNow();
+
+    const year =
+        now.getFullYear();
+
+    const month =
+        String(
+            now.getMonth() + 1
+        ).padStart(2, "0");
+
+    const day =
+        String(
+            now.getDate()
+        ).padStart(2, "0");
+
+    return `${year}-${month}-${day}`;
+}
+
+
+/* ============================================================
+   CLOCK
+============================================================ */
+
+function updateClock() {
+
+    const now = new Date();
+
+    document.getElementById("time")
+        .textContent =
+        now.toLocaleTimeString(
+            "en-US",
+            {
+                timeZone:
+                    "America/Jamaica",
+                hour: "numeric",
+                minute: "2-digit",
+                hour12: true
+            }
+        );
+
+    document.getElementById("date")
+        .textContent =
+        now.toLocaleDateString(
+            "en-US",
+            {
+                timeZone:
+                    "America/Jamaica",
+                weekday: "long",
+                month: "long",
+                day: "numeric",
+                year: "numeric"
+            }
+        );
+}
+
+
+/* ============================================================
+   FORMATTING
+============================================================ */
+
+function formatDate(dateString) {
+
+    if (!dateString) {
+        return "—";
+    }
+
+    const parts =
+        dateString.split("-");
+
+    if (parts.length !== 3) {
+        return dateString;
+    }
+
+    const date =
+        new Date(
+            Number(parts[0]),
+            Number(parts[1]) - 1,
+            Number(parts[2])
+        );
+
+    return date.toLocaleDateString(
+        "en-US",
+        {
+            month: "short",
+            day: "numeric"
+        }
+    );
+}
+
+
+function formatNumber(value) {
+
+    return Number(value || 0)
+        .toLocaleString("en-US");
+}
+
+
+function getCapacity(shipName) {
+
+    if (!shipName) {
+        return 0;
+    }
+
+    if (SHIP_CAPACITY[shipName]) {
+        return SHIP_CAPACITY[shipName];
+    }
+
+    const lower =
+        shipName.toLowerCase();
+
+    for (
+        const [name, capacity]
+        of Object.entries(SHIP_CAPACITY)
+    ) {
+
+        if (
+            lower.includes(
+                name.toLowerCase()
+            ) ||
+            name.toLowerCase()
+                .includes(lower)
+        ) {
+            return capacity;
+        }
+    }
+
+    return 0;
+}
+
+
+/* ============================================================
+   STATUS
+============================================================ */
+
+function timeToMinutes(time) {
+
+    if (
+        !time ||
+        time === "--:--"
+    ) {
+        return null;
+    }
+
+    const match =
+        String(time).match(
+            /(\d{1,2}):(\d{2})/
+        );
+
+    if (!match) {
+        return null;
+    }
+
+    return (
+        Number(match[1]) * 60 +
+        Number(match[2])
+    );
+}
+
+
+function getStatus(arrival) {
+
+    const today =
+        getJamaicaDateString();
+
+    if (arrival.date > today) {
+
+        return {
+            text: "Upcoming",
+            className:
+                "status-upcoming"
+        };
+    }
+
+    if (arrival.date < today) {
+
+        return {
+            text: "Completed",
+            className:
+                "status-upcoming"
+        };
+    }
+
+    const now =
+        getJamaicaNow();
+
+    const currentMinutes =
+        now.getHours() * 60 +
+        now.getMinutes();
+
+    const arrivalMinutes =
+        timeToMinutes(
+            arrival.arrivalTime
+        );
+
+    const departureMinutes =
+        timeToMinutes(
+            arrival.departureTime
+        );
+
+    if (
+        arrivalMinutes !== null &&
+        departureMinutes !== null &&
+        currentMinutes >= arrivalMinutes &&
+        currentMinutes <= departureMinutes
+    ) {
+
+        return {
+            text: "In Port",
+            className:
+                "status-inport"
+        };
+    }
+
+    return {
+        text: "Today",
+        className:
+            "status-today"
+    };
+}
+
+
+/* ============================================================
+   BUILD FLAT ARRIVAL LIST
+============================================================ */
+
+function flattenData(data) {
+
+    const arrivals = [];
+
+    if (!Array.isArray(data)) {
+        return arrivals;
+    }
+
+    data.forEach(port => {
+
+        if (
+            port.recordType !== "port"
+        ) {
+            return;
+        }
+
+        if (
+            !Array.isArray(
+                port.upcomingArrivals
+            )
+        ) {
+            return;
+        }
+
+        port.upcomingArrivals.forEach(
+            arrival => {
+
+                arrivals.push({
+                    ...arrival,
+                    portName:
+                        port.name
+                });
+            }
+        );
+    });
+
+    return arrivals;
+}
+
+
+/* ============================================================
+   RENDER
+============================================================ */
+
+function render(data) {
+
+    const today =
+        getJamaicaDateString();
+
+    let arrivals =
+        flattenData(data);
+
+    /*
+       Only today and future cruise calls.
+    */
+
+    arrivals =
+        arrivals.filter(
+            arrival =>
+                arrival.date &&
+                arrival.date >= today
+        );
+
+    arrivals.sort(
+        (a, b) => {
+
+            if (
+                a.date !== b.date
+            ) {
+                return a.date.localeCompare(
+                    b.date
+                );
+            }
+
+            return String(
+                a.arrivalTime
+            ).localeCompare(
+                String(
+                    b.arrivalTime
+                )
+            );
+        }
+    );
+
+
+    /* SUMMARY */
+
+    const shipCount =
+        arrivals.length;
+
+    const activePorts =
+        new Set(
+            arrivals.map(
+                arrival =>
+                    arrival.portName
+            )
+        ).size;
+
+    const guestCount =
+        arrivals.reduce(
+            (total, arrival) =>
+                total +
+                getCapacity(
+                    arrival.shipName
+                ),
+            0
+        );
+
+    document.getElementById(
+        "shipCount"
+    ).textContent =
+        formatNumber(shipCount);
+
+    document.getElementById(
+        "guestCount"
+    ).textContent =
+        formatNumber(guestCount);
+
+    document.getElementById(
+        "portCount"
+    ).textContent =
+        formatNumber(activePorts);
+
+
+    /* ROWS */
+
+    const rows =
+        document.getElementById(
+            "rows"
+        );
+
+    if (
+        arrivals.length === 0
+    ) {
+
+        rows.innerHTML =
+            `<div class="empty">
+                No upcoming Jamaica cruise arrivals found.
+             </div>`;
+
+        return;
+    }
+
+
+    /*
+       Landscape display:
+       show up to 10 upcoming calls.
+    */
+
+    const displayArrivals =
+        arrivals.slice(0, 10);
+
+
+    rows.innerHTML =
+        displayArrivals
+            .map(arrival => {
+
+                const capacity =
+                    getCapacity(
+                        arrival.shipName
+                    );
+
+                const status =
+                    getStatus(arrival);
+
+                return `
+                    <div class="row">
+
+                        <div>
+                            ${formatDate(
+                                arrival.date
+                            )}
+                        </div>
+
+                        <div class="port">
+                            ${arrival.portName}
+                        </div>
+
+                        <div>
+                            ${arrival.arrivalTime || "—"}
+                        </div>
+
+                        <div class="ship">
+                            ${arrival.shipName}
+                        </div>
+
+                        <div>
+                            ${arrival.departureTime || "—"}
+                        </div>
+
+                        <div class="guests">
+                            ${
+                                capacity
+                                ? formatNumber(
+                                    capacity
+                                  )
+                                : "—"
+                            }
+                        </div>
+
+                        <div>
+                            <span class="
+                                status
+                                ${status.className}
+                            ">
+                                ${status.text}
+                            </span>
+                        </div>
+
+                    </div>
+                `;
+            })
+            .join("");
+}
+
+
+/* ============================================================
+   LOAD DATA
+============================================================ */
+
+async function loadCruiseData() {
+
+    try {
+
+        const response =
+            await fetch(
+                `${DATA_URL}?t=${Date.now()}`,
+                {
+                    cache:
+                        "no-store"
+                }
+            );
+
+        if (!response.ok) {
+
+            throw new Error(
+                `HTTP ${response.status}`
+            );
+        }
+
+        const data =
+            await response.json();
+
+        render(data);
+
+        document.getElementById(
+            "lastUpdated"
+        ).textContent =
+            new Date()
+                .toLocaleTimeString(
+                    "en-US",
+                    {
+                        timeZone:
+                            "America/Jamaica",
+                        hour:
+                            "numeric",
+                        minute:
+                            "2-digit",
+                        hour12:
+                            true
+                    }
+                );
+
+    }
+    catch (error) {
+
+        console.error(
+            "Cruise data error:",
+            error
+        );
+
+        document.getElementById(
+            "rows"
+        ).innerHTML =
+            `<div class="empty">
+                Cruise schedule temporarily unavailable.
+             </div>`;
+    }
+}
+
+
+/* ============================================================
+   START
+============================================================ */
+
+updateClock();
+
+setInterval(
+    updateClock,
+    30000
+);
+
+loadCruiseData();
+
+setInterval(
+    loadCruiseData,
+    REFRESH_INTERVAL
+);
+
+</script>
+
+</body>
+</html>
