@@ -18,12 +18,7 @@ html, body {
     height: 100%;
     overflow: hidden;
     font-family: Arial, Helvetica, sans-serif;
-    background: linear-gradient(
-        135deg,
-        #071b2b 0%,
-        #0b3046 55%,
-        #0d4158 100%
-    );
+    background: linear-gradient(135deg, #071b2b 0%, #0b3046 55%, #0d4158 100%);
     color: white;
 }
 
@@ -32,8 +27,6 @@ body {
     flex-direction: column;
     padding: 24px 32px 18px;
 }
-
-/* HEADER */
 
 .header {
     display: flex;
@@ -89,8 +82,6 @@ body {
     font-size: clamp(14px, 1.2vw, 21px);
 }
 
-/* SUMMARY */
-
 .summary {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -119,8 +110,6 @@ body {
     letter-spacing: 1px;
 }
 
-/* TABLE */
-
 .board {
     flex: 1;
     min-height: 0;
@@ -135,14 +124,7 @@ body {
 .table-header,
 .row {
     display: grid;
-    grid-template-columns:
-        0.9fr
-        1.25fr
-        0.75fr
-        2.25fr
-        0.75fr
-        0.8fr
-        1fr;
+    grid-template-columns: 0.9fr 1.25fr 0.75fr 2.25fr 0.75fr 0.8fr 1fr;
     align-items: center;
     column-gap: 12px;
 }
@@ -223,8 +205,6 @@ body {
     font-weight: bold;
 }
 
-/* FOOTER */
-
 .footer {
     display: flex;
     justify-content: space-between;
@@ -271,11 +251,7 @@ body {
 
     <div class="brand">
 
-        <img
-            src="logo.png"
-            class="logo"
-            alt="Virtual Media Masters"
-        >
+        <img src="logo.png" class="logo" alt="Virtual Media Masters">
 
         <div class="title-block">
             <h1>JAMAICA CRUISE TRAFFIC</h1>
@@ -290,7 +266,6 @@ body {
     </div>
 
 </header>
-
 
 <section class="summary">
 
@@ -311,7 +286,6 @@ body {
 
 </section>
 
-
 <main class="board">
 
     <div class="table-header">
@@ -325,13 +299,10 @@ body {
     </div>
 
     <div id="rows">
-        <div class="empty">
-            Loading Jamaica cruise schedule...
-        </div>
+        <div class="empty">Loading Jamaica cruise schedule...</div>
     </div>
 
 </main>
-
 
 <footer class="footer">
 
@@ -347,68 +318,41 @@ body {
 
 </footer>
 
-
 <script>
 
 const DATA_URL = "cruise-data.json";
-
-const REFRESH_INTERVAL =
-    15 * 60 * 1000;
-
-const TIME_ZONE =
-    "America/Jamaica";
-
-
-/* ============================================================
-   JAMAICA DATE
-============================================================ */
+const REFRESH_INTERVAL = 15 * 60 * 1000;
+const TIME_ZONE = "America/Jamaica";
+const MAX_SHIPS = 10;
 
 function getJamaicaDateString() {
 
-    const parts =
-        new Intl.DateTimeFormat(
-            "en-CA",
-            {
-                timeZone: TIME_ZONE,
-                year: "numeric",
-                month: "2-digit",
-                day: "2-digit"
-            }
-        ).formatToParts(new Date());
+    const parts = new Intl.DateTimeFormat(
+        "en-CA",
+        {
+            timeZone: TIME_ZONE,
+            year: "numeric",
+            month: "2-digit",
+            day: "2-digit"
+        }
+    ).formatToParts(new Date());
 
     const values = {};
 
     parts.forEach(part => {
-
         if (part.type !== "literal") {
-            values[part.type] =
-                part.value;
+            values[part.type] = part.value;
         }
-
     });
 
-    return (
-        values.year +
-        "-" +
-        values.month +
-        "-" +
-        values.day
-    );
+    return values.year + "-" + values.month + "-" + values.day;
 }
-
-
-/* ============================================================
-   CLOCK
-============================================================ */
 
 function updateClock() {
 
-    const now =
-        new Date();
+    const now = new Date();
 
-    document.getElementById(
-        "time"
-    ).textContent =
+    document.getElementById("time").textContent =
         now.toLocaleTimeString(
             "en-US",
             {
@@ -419,9 +363,7 @@ function updateClock() {
             }
         );
 
-    document.getElementById(
-        "date"
-    ).textContent =
+    document.getElementById("date").textContent =
         now.toLocaleDateString(
             "en-US",
             {
@@ -434,30 +376,19 @@ function updateClock() {
         );
 }
 
-
-/* ============================================================
-   FORMATTING
-============================================================ */
-
 function formatDate(dateString) {
 
-    if (!dateString) {
-        return "—";
-    }
+    if (!dateString) return "—";
 
-    const parts =
-        dateString.split("-");
+    const parts = dateString.split("-");
 
-    if (parts.length !== 3) {
-        return dateString;
-    }
+    if (parts.length !== 3) return dateString;
 
-    const date =
-        new Date(
-            Number(parts[0]),
-            Number(parts[1]) - 1,
-            Number(parts[2])
-        );
+    const date = new Date(
+        Number(parts[0]),
+        Number(parts[1]) - 1,
+        Number(parts[2])
+    );
 
     return date.toLocaleDateString(
         "en-US",
@@ -468,106 +399,56 @@ function formatDate(dateString) {
     );
 }
 
-
 function formatNumber(value) {
-
-    return Number(
-        value || 0
-    ).toLocaleString(
-        "en-US"
-    );
+    return Number(value || 0).toLocaleString("en-US");
 }
-
 
 function formatTime(time) {
 
-    if (
-        !time ||
-        time === "--:--"
-    ) {
+    if (!time || time === "--:--") {
         return "—";
     }
 
-    const match =
-        String(time).match(
-            /^(\d{1,2}):(\d{2})$/
-        );
+    const match = String(time).match(/^(\d{1,2}):(\d{2})$/);
 
-    if (!match) {
-        return time;
-    }
+    if (!match) return time;
 
-    let hour =
-        Number(match[1]);
+    let hour = Number(match[1]);
+    const minute = match[2];
 
-    const minute =
-        match[2];
+    const period = hour >= 12 ? "PM" : "AM";
 
-    const period =
-        hour >= 12
-            ? "PM"
-            : "AM";
+    hour = hour % 12;
 
-    hour =
-        hour % 12;
+    if (hour === 0) hour = 12;
 
-    if (hour === 0) {
-        hour = 12;
-    }
-
-    return (
-        hour +
-        ":" +
-        minute +
-        " " +
-        period
-    );
+    return hour + ":" + minute + " " + period;
 }
-
-
-/* ============================================================
-   STATUS
-============================================================ */
 
 function timeToMinutes(time) {
 
-    if (
-        !time ||
-        time === "--:--"
-    ) {
+    if (!time || time === "--:--") {
         return null;
     }
 
-    const match =
-        String(time).match(
-            /(\d{1,2}):(\d{2})/
-        );
+    const match = String(time).match(/(\d{1,2}):(\d{2})/);
 
-    if (!match) {
-        return null;
-    }
+    if (!match) return null;
 
-    return (
-        Number(match[1]) * 60 +
-        Number(match[2])
-    );
+    return Number(match[1]) * 60 + Number(match[2]);
 }
-
 
 function getJamaicaMinutes() {
 
-    const parts =
-        new Intl.DateTimeFormat(
-            "en-US",
-            {
-                timeZone: TIME_ZONE,
-                hour: "2-digit",
-                minute: "2-digit",
-                hourCycle: "h23"
-            }
-        ).formatToParts(
-            new Date()
-        );
+    const parts = new Intl.DateTimeFormat(
+        "en-US",
+        {
+            timeZone: TIME_ZONE,
+            hour: "2-digit",
+            minute: "2-digit",
+            hourCycle: "h23"
+        }
+    ).formatToParts(new Date());
 
     let hour = 0;
     let minute = 0;
@@ -575,61 +456,38 @@ function getJamaicaMinutes() {
     parts.forEach(part => {
 
         if (part.type === "hour") {
-            hour =
-                Number(part.value);
+            hour = Number(part.value);
         }
 
         if (part.type === "minute") {
-            minute =
-                Number(part.value);
+            minute = Number(part.value);
         }
-
     });
 
-    return (
-        hour * 60 +
-        minute
-    );
+    return hour * 60 + minute;
 }
-
 
 function getStatus(arrival) {
 
-    const today =
-        getJamaicaDateString();
+    const today = getJamaicaDateString();
 
-    if (
-        arrival.date > today
-    ) {
+    if (arrival.date > today) {
         return {
             text: "Upcoming",
-            className:
-                "status-upcoming"
+            className: "status-upcoming"
         };
     }
 
-    if (
-        arrival.date < today
-    ) {
+    if (arrival.date < today) {
         return {
             text: "Completed",
-            className:
-                "status-upcoming"
+            className: "status-upcoming"
         };
     }
 
-    const currentMinutes =
-        getJamaicaMinutes();
-
-    const arrivalMinutes =
-        timeToMinutes(
-            arrival.arrivalTime
-        );
-
-    const departureMinutes =
-        timeToMinutes(
-            arrival.departureTime
-        );
+    const currentMinutes = getJamaicaMinutes();
+    const arrivalMinutes = timeToMinutes(arrival.arrivalTime);
+    const departureMinutes = timeToMinutes(arrival.departureTime);
 
     if (
         arrivalMinutes !== null &&
@@ -639,22 +497,15 @@ function getStatus(arrival) {
     ) {
         return {
             text: "In Port",
-            className:
-                "status-inport"
+            className: "status-inport"
         };
     }
 
     return {
         text: "Today",
-        className:
-            "status-today"
+        className: "status-today"
     };
 }
-
-
-/* ============================================================
-   FLATTEN DATA
-============================================================ */
 
 function flattenData(data) {
 
@@ -666,147 +517,92 @@ function flattenData(data) {
 
     data.forEach(port => {
 
-        if (
-            port.recordType !== "port"
-        ) {
+        if (port.recordType !== "port") {
             return;
         }
 
-        if (
-            !Array.isArray(
-                port.upcomingArrivals
-            )
-        ) {
+        if (!Array.isArray(port.upcomingArrivals)) {
             return;
         }
 
-        port.upcomingArrivals
-            .forEach(arrival => {
+        port.upcomingArrivals.forEach(arrival => {
 
-                arrivals.push({
-                    ...arrival,
-                    portName:
-                        port.name
-                });
-
+            arrivals.push({
+                ...arrival,
+                portName: port.name
             });
+
+        });
     });
 
     return arrivals;
 }
 
-
-/* ============================================================
-   RENDER
-============================================================ */
-
 function render(data) {
 
-    const today =
-        getJamaicaDateString();
+    const today = getJamaicaDateString();
 
-    let arrivals =
-        flattenData(data);
+    let arrivals = flattenData(data);
 
-
-    /* TODAY AND FUTURE ONLY */
-
-    arrivals =
-        arrivals.filter(
-            arrival =>
-                arrival.date &&
-                arrival.date >= today
-        );
-
-
-    /* SORT */
-
-    arrivals.sort(
-        (a, b) => {
-
-            if (
-                a.date !== b.date
-            ) {
-                return (
-                    a.date.localeCompare(
-                        b.date
-                    )
-                );
-            }
-
-            return String(
-                a.arrivalTime
-            ).localeCompare(
-                String(
-                    b.arrivalTime
-                )
-            );
-        }
+    arrivals = arrivals.filter(
+        arrival =>
+            arrival.date &&
+            arrival.date >= today
     );
 
+    arrivals.sort((a, b) => {
 
-    /* SUMMARY */
+        if (a.date !== b.date) {
+            return a.date.localeCompare(b.date);
+        }
+
+        return String(a.arrivalTime)
+            .localeCompare(String(b.arrivalTime));
+    });
+
+
+    /* ONLY THE NEXT 10 SHIPS */
+
+    const displayArrivals =
+        arrivals.slice(0, MAX_SHIPS);
+
+
+    /* SUMMARY NUMBERS MATCH THE SAME 10 SHIPS */
 
     const shipCount =
-        arrivals.length;
-
+        displayArrivals.length;
 
     const guestCount =
-        arrivals.reduce(
+        displayArrivals.reduce(
             (total, arrival) =>
-                total +
-                Number(
-                    arrival.passengers ||
-                    0
-                ),
+                total + Number(arrival.passengers || 0),
             0
         );
 
-
     const activePorts =
         new Set(
-            arrivals.map(
-                arrival =>
-                    arrival.portName
+            displayArrivals.map(
+                arrival => arrival.portName
             )
         ).size;
 
 
-    document.getElementById(
-        "shipCount"
-    ).textContent =
-        formatNumber(
-            shipCount
-        );
+    document.getElementById("shipCount").textContent =
+        formatNumber(shipCount);
+
+    document.getElementById("guestCount").textContent =
+        formatNumber(guestCount);
+
+    document.getElementById("portCount").textContent =
+        formatNumber(activePorts);
 
 
-    document.getElementById(
-        "guestCount"
-    ).textContent =
-        formatNumber(
-            guestCount
-        );
-
-
-    document.getElementById(
-        "portCount"
-    ).textContent =
-        formatNumber(
-            activePorts
-        );
-
-
-    /* ROWS */
+    /* DISPLAY SAME 10 SHIPS */
 
     const rows =
-        document.getElementById(
-            "rows"
-        );
+        document.getElementById("rows");
 
-
-    if (
-        arrivals.length === 0
-    ) {
+    if (displayArrivals.length === 0) {
 
         rows.innerHTML =
             `<div class="empty">
@@ -816,27 +612,18 @@ function render(data) {
         return;
     }
 
-
-    const displayArrivals =
-        arrivals.slice(0, 10);
-
-
     rows.innerHTML =
         displayArrivals
             .map(arrival => {
 
                 const status =
-                    getStatus(
-                        arrival
-                    );
+                    getStatus(arrival);
 
                 return `
                     <div class="row">
 
                         <div>
-                            ${formatDate(
-                                arrival.date
-                            )}
+                            ${formatDate(arrival.date)}
                         </div>
 
                         <div class="port">
@@ -844,9 +631,7 @@ function render(data) {
                         </div>
 
                         <div>
-                            ${formatTime(
-                                arrival.arrivalTime
-                            )}
+                            ${formatTime(arrival.arrivalTime)}
                         </div>
 
                         <div class="ship">
@@ -854,29 +639,21 @@ function render(data) {
                         </div>
 
                         <div>
-                            ${formatTime(
-                                arrival.departureTime
-                            )}
+                            ${formatTime(arrival.departureTime)}
                         </div>
 
                         <div class="guests">
-                            ${arrival.passengers
-                                ? formatNumber(
-                                    arrival.passengers
-                                  )
+                            ${
+                                arrival.passengers
+                                ? formatNumber(arrival.passengers)
                                 : "—"
                             }
                         </div>
 
                         <div>
-
-                            <span class="
-                                status
-                                ${status.className}
-                            ">
+                            <span class="status ${status.className}">
                                 ${status.text}
                             </span>
-
                         </div>
 
                     </div>
@@ -884,11 +661,6 @@ function render(data) {
             })
             .join("");
 }
-
-
-/* ============================================================
-   LOAD DATA
-============================================================ */
 
 async function loadCruiseData() {
 
@@ -898,16 +670,12 @@ async function loadCruiseData() {
             await fetch(
                 `${DATA_URL}?t=${Date.now()}`,
                 {
-                    cache:
-                        "no-store"
+                    cache: "no-store"
                 }
             );
 
         if (!response.ok) {
-
-            throw new Error(
-                `HTTP ${response.status}`
-            );
+            throw new Error(`HTTP ${response.status}`);
         }
 
         const data =
@@ -915,82 +683,53 @@ async function loadCruiseData() {
 
         render(data);
 
-
-        /* USE ACTUAL SCRAPE TIME */
-
         let scrapedAt = null;
 
-        if (
-            Array.isArray(data) &&
-            data.length
-        ) {
+        if (Array.isArray(data) && data.length) {
 
             scrapedAt =
                 data
-                    .map(port =>
-                        port.scrapedAt
-                    )
+                    .map(port => port.scrapedAt)
                     .filter(Boolean)
                     .sort()
                     .pop();
         }
 
-
         if (scrapedAt) {
 
-            document.getElementById(
-                "lastUpdated"
-            ).textContent =
-                new Date(
-                    scrapedAt
-                ).toLocaleString(
-                    "en-US",
-                    {
-                        timeZone:
-                            TIME_ZONE,
-                        month:
-                            "short",
-                        day:
-                            "numeric",
-                        hour:
-                            "numeric",
-                        minute:
-                            "2-digit",
-                        hour12:
-                            true
-                    }
-                );
+            document.getElementById("lastUpdated").textContent =
+                new Date(scrapedAt)
+                    .toLocaleString(
+                        "en-US",
+                        {
+                            timeZone: TIME_ZONE,
+                            month: "short",
+                            day: "numeric",
+                            hour: "numeric",
+                            minute: "2-digit",
+                            hour12: true
+                        }
+                    );
 
         } else {
 
-            document.getElementById(
-                "lastUpdated"
-            ).textContent =
+            document.getElementById("lastUpdated").textContent =
                 "Live";
         }
 
-    }
-
-    catch (error) {
+    } catch (error) {
 
         console.error(
             "Cruise data error:",
             error
         );
 
-        document.getElementById(
-            "rows"
-        ).innerHTML =
+        document.getElementById("rows").innerHTML =
             `<div class="empty">
                 Cruise schedule temporarily unavailable.
              </div>`;
     }
 }
-
-
-/* ============================================================
-   START
-============================================================ */
 
 updateClock();
 
