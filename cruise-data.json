@@ -11,11 +11,11 @@
         "passengers": 3974
       },
       {
-        "shipName": "留",
-        "date": "2026-10-23",
+        "shipName": "Carnival Horizon",
+        "date": "2026-10-21",
         "arrivalTime": "--:--",
         "departureTime": "--:--",
-        "passengers": 930
+        "passengers": 3974
       },
       {
         "shipName": "Viking Mars",
@@ -23,13 +23,6 @@
         "arrivalTime": "--:--",
         "departureTime": "--:--",
         "passengers": 930
-      },
-      {
-        "shipName": "留留",
-        "date": "2026-11-03",
-        "arrivalTime": "--:--",
-        "departureTime": "--:--",
-        "passengers": 3776
       },
       {
         "shipName": "Norwegian Joy",
@@ -46,11 +39,11 @@
         "passengers": 3974
       },
       {
-        "shipName": "留留",
-        "date": "2026-11-08",
+        "shipName": "Carnival Horizon",
+        "date": "2026-11-04",
         "arrivalTime": "--:--",
         "departureTime": "--:--",
-        "passengers": 3776
+        "passengers": 3974
       },
       {
         "shipName": "Norwegian Joy",
@@ -67,11 +60,11 @@
         "passengers": 2894
       },
       {
-        "shipName": "留",
-        "date": "2026-11-10",
+        "shipName": "Mein Schiff 1",
+        "date": "2026-11-09",
         "arrivalTime": "--:--",
         "departureTime": "--:--",
-        "passengers": 1850
+        "passengers": 2894
       },
       {
         "shipName": "Eurodam",
@@ -95,6 +88,27 @@
         "passengers": 3974
       },
       {
+        "shipName": "Artania",
+        "date": "2026-11-18",
+        "arrivalTime": "--:--",
+        "departureTime": "--:--",
+        "passengers": 1122
+      },
+      {
+        "shipName": "Carnival Horizon",
+        "date": "2026-11-18",
+        "arrivalTime": "--:--",
+        "departureTime": "--:--",
+        "passengers": 3974
+      },
+      {
+        "shipName": "a early morning d evening",
+        "date": "2026-11-20",
+        "arrivalTime": "--:--",
+        "departureTime": "--:--",
+        "passengers": 2080
+      },
+      {
         "shipName": "Queen Elizabeth",
         "date": "2026-11-20",
         "arrivalTime": "--:--",
@@ -106,6 +120,13 @@
         "date": "2026-11-21",
         "arrivalTime": "09:00",
         "departureTime": "19:00",
+        "passengers": 606
+      },
+      {
+        "shipName": "Crystal Symphony",
+        "date": "2026-11-21",
+        "arrivalTime": "--:--",
+        "departureTime": "--:--",
         "passengers": 606
       },
       {
@@ -123,10 +144,31 @@
         "passengers": 750
       },
       {
+        "shipName": "AIDAdiva",
+        "date": "2026-11-22",
+        "arrivalTime": "--:--",
+        "departureTime": "--:--",
+        "passengers": 2030
+      },
+      {
+        "shipName": "Seven Seas Splendor",
+        "date": "2026-11-22",
+        "arrivalTime": "--:--",
+        "departureTime": "--:--",
+        "passengers": 750
+      },
+      {
         "shipName": "Mein Schiff 1",
         "date": "2026-11-23",
         "arrivalTime": "07:00",
         "departureTime": "22:00",
+        "passengers": 2894
+      },
+      {
+        "shipName": "Mein Schiff 1",
+        "date": "2026-11-23",
+        "arrivalTime": "--:--",
+        "departureTime": "--:--",
         "passengers": 2894
       },
       {
@@ -137,6 +179,13 @@
         "passengers": 3646
       },
       {
+        "shipName": "Carnival Dream",
+        "date": "2026-11-24",
+        "arrivalTime": "--:--",
+        "departureTime": "--:--",
+        "passengers": 3646
+      },
+      {
         "shipName": "Norwegian Epic",
         "date": "2026-11-25",
         "arrivalTime": "08:00",
@@ -144,11 +193,11 @@
         "passengers": 4070
       },
       {
-        "shipName": "Viking Mars",
-        "date": "2026-11-26",
+        "shipName": "Norwegian Epic",
+        "date": "2026-11-25",
         "arrivalTime": "--:--",
         "departureTime": "--:--",
-        "passengers": 930
+        "passengers": 4070
       },
       {
         "shipName": "Norwegian Getaway",
@@ -156,6 +205,20 @@
         "arrivalTime": "07:00",
         "departureTime": "17:00",
         "passengers": 3903
+      },
+      {
+        "shipName": "Norwegian Getaway",
+        "date": "2026-11-26",
+        "arrivalTime": "--:--",
+        "departureTime": "--:--",
+        "passengers": 3903
+      },
+      {
+        "shipName": "Viking Mars",
+        "date": "2026-11-26",
+        "arrivalTime": "--:--",
+        "departureTime": "--:--",
+        "passengers": 930
       },
       {
         "shipName": "AIDAbella",
@@ -169,6 +232,20 @@
         "date": "2026-11-29",
         "arrivalTime": "08:00",
         "departureTime": "16:00",
+        "passengers": 2134
+      },
+      {
+        "shipName": "AIDAbella",
+        "date": "2026-11-29",
+        "arrivalTime": "--:--",
+        "departureTime": "--:--",
+        "passengers": 2030
+      },
+      {
+        "shipName": "Carnival Miracle",
+        "date": "2026-11-29",
+        "arrivalTime": "--:--",
+        "departureTime": "--:--",
         "passengers": 2134
       },
       {
@@ -186,10 +263,31 @@
         "passengers": 4070
       },
       {
+        "shipName": "Carnival Liberty",
+        "date": "2026-12-02",
+        "arrivalTime": "--:--",
+        "departureTime": "--:--",
+        "passengers": 2974
+      },
+      {
+        "shipName": "Norwegian Epic",
+        "date": "2026-12-02",
+        "arrivalTime": "--:--",
+        "departureTime": "--:--",
+        "passengers": 4070
+      },
+      {
         "shipName": "Carnival Legend",
         "date": "2026-12-03",
         "arrivalTime": "08:00",
         "departureTime": "16:00",
+        "passengers": 2134
+      },
+      {
+        "shipName": "Carnival Legend",
+        "date": "2026-12-03",
+        "arrivalTime": "--:--",
+        "departureTime": "--:--",
         "passengers": 2134
       },
       {
@@ -200,10 +298,24 @@
         "passengers": 2894
       },
       {
+        "shipName": "Mein Schiff 1",
+        "date": "2026-12-07",
+        "arrivalTime": "--:--",
+        "departureTime": "--:--",
+        "passengers": 2894
+      },
+      {
         "shipName": "Seven Seas Mariner",
         "date": "2026-12-08",
         "arrivalTime": "10:00",
         "departureTime": "18:00",
+        "passengers": 700
+      },
+      {
+        "shipName": "Seven Seas Mariner",
+        "date": "2026-12-08",
+        "arrivalTime": "--:--",
+        "departureTime": "--:--",
         "passengers": 700
       },
       {
@@ -212,6 +324,20 @@
         "arrivalTime": "09:00",
         "departureTime": "17:00",
         "passengers": 3690
+      },
+      {
+        "shipName": "Carnival Magic",
+        "date": "2026-12-09",
+        "arrivalTime": "--:--",
+        "departureTime": "--:--",
+        "passengers": 3690
+      },
+      {
+        "shipName": "a early morning d evening",
+        "date": "2026-12-11",
+        "arrivalTime": "--:--",
+        "departureTime": "--:--",
+        "passengers": 2080
       },
       {
         "shipName": "Queen Elizabeth",
@@ -225,6 +351,13 @@
         "date": "2026-12-13",
         "arrivalTime": "08:00",
         "departureTime": "21:00",
+        "passengers": 2030
+      },
+      {
+        "shipName": "AIDAbella",
+        "date": "2026-12-13",
+        "arrivalTime": "--:--",
+        "departureTime": "--:--",
         "passengers": 2030
       },
       {
@@ -242,6 +375,20 @@
         "passengers": 750
       },
       {
+        "shipName": "Seven Seas Mariner",
+        "date": "2026-12-14",
+        "arrivalTime": "--:--",
+        "departureTime": "--:--",
+        "passengers": 700
+      },
+      {
+        "shipName": "Seven Seas Splendor",
+        "date": "2026-12-14",
+        "arrivalTime": "--:--",
+        "departureTime": "--:--",
+        "passengers": 750
+      },
+      {
         "shipName": "Carnival Horizon",
         "date": "2026-12-16",
         "arrivalTime": "08:00",
@@ -256,10 +403,31 @@
         "passengers": 746
       },
       {
+        "shipName": "Carnival Horizon",
+        "date": "2026-12-16",
+        "arrivalTime": "--:--",
+        "departureTime": "--:--",
+        "passengers": 3974
+      },
+      {
+        "shipName": "Seven Seas Grandeur",
+        "date": "2026-12-16",
+        "arrivalTime": "--:--",
+        "departureTime": "--:--",
+        "passengers": 746
+      },
+      {
         "shipName": "AIDAdiva",
         "date": "2026-12-20",
         "arrivalTime": "08:00",
         "departureTime": "21:00",
+        "passengers": 2030
+      },
+      {
+        "shipName": "AIDAdiva",
+        "date": "2026-12-20",
+        "arrivalTime": "--:--",
+        "departureTime": "--:--",
         "passengers": 2030
       },
       {
@@ -270,10 +438,24 @@
         "passengers": 2894
       },
       {
+        "shipName": "Mein Schiff 1",
+        "date": "2026-12-21",
+        "arrivalTime": "--:--",
+        "departureTime": "--:--",
+        "passengers": 2894
+      },
+      {
         "shipName": "Mariner Of The Seas",
         "date": "2026-12-23",
         "arrivalTime": "08:00",
         "departureTime": "17:00",
+        "passengers": 3114
+      },
+      {
+        "shipName": "Mariner Of The Seas",
+        "date": "2026-12-23",
+        "arrivalTime": "--:--",
+        "departureTime": "--:--",
         "passengers": 3114
       },
       {
@@ -284,6 +466,13 @@
         "passengers": 3646
       },
       {
+        "shipName": "Carnival Dream",
+        "date": "2026-12-24",
+        "arrivalTime": "--:--",
+        "departureTime": "--:--",
+        "passengers": 3646
+      },
+      {
         "shipName": "Oceania Marina",
         "date": "2026-12-25",
         "arrivalTime": "08:00",
@@ -291,11 +480,11 @@
         "passengers": 1258
       },
       {
-        "shipName": "留",
-        "date": "2026-12-30",
+        "shipName": "Oceania Marina",
+        "date": "2026-12-25",
         "arrivalTime": "--:--",
         "departureTime": "--:--",
-        "passengers": 930
+        "passengers": 1258
       },
       {
         "shipName": "Viking Mars",
@@ -310,9 +499,16 @@
         "arrivalTime": "08:00",
         "departureTime": "17:00",
         "passengers": 1200
+      },
+      {
+        "shipName": "Oceania Vista",
+        "date": "2026-12-31",
+        "arrivalTime": "--:--",
+        "departureTime": "--:--",
+        "passengers": 1200
       }
     ],
-    "scrapedAt": "2026-10-20T05:51:07.003Z"
+    "scrapedAt": "2026-10-20T06:03:45.584Z"
   },
   {
     "recordType": "port",
@@ -326,6 +522,13 @@
         "passengers": 2446
       },
       {
+        "shipName": "MSC Poesia",
+        "date": "2026-10-20",
+        "arrivalTime": "--:--",
+        "departureTime": "--:--",
+        "passengers": 2446
+      },
+      {
         "shipName": "Norwegian Joy",
         "date": "2026-10-21",
         "arrivalTime": "07:00",
@@ -333,10 +536,24 @@
         "passengers": 3776
       },
       {
+        "shipName": "Norwegian Joy",
+        "date": "2026-10-21",
+        "arrivalTime": "--:--",
+        "departureTime": "--:--",
+        "passengers": 3776
+      },
+      {
         "shipName": "Carnival Dream",
         "date": "2026-10-28",
         "arrivalTime": "08:00",
         "departureTime": "16:00",
+        "passengers": 3646
+      },
+      {
+        "shipName": "Carnival Dream",
+        "date": "2026-10-28",
+        "arrivalTime": "--:--",
+        "departureTime": "--:--",
         "passengers": 3646
       },
       {
@@ -348,9 +565,23 @@
       },
       {
         "shipName": "MSC Poesia",
+        "date": "2026-10-30",
+        "arrivalTime": "--:--",
+        "departureTime": "--:--",
+        "passengers": 2446
+      },
+      {
+        "shipName": "MSC Poesia",
         "date": "2026-11-03",
         "arrivalTime": "09:00",
         "departureTime": "18:00",
+        "passengers": 2446
+      },
+      {
+        "shipName": "MSC Poesia",
+        "date": "2026-11-03",
+        "arrivalTime": "--:--",
+        "departureTime": "--:--",
         "passengers": 2446
       },
       {
@@ -361,6 +592,13 @@
         "passengers": 2700
       },
       {
+        "shipName": "Resilient Lady",
+        "date": "2026-11-04",
+        "arrivalTime": "--:--",
+        "departureTime": "--:--",
+        "passengers": 2700
+      },
+      {
         "shipName": "Mein Schiff 1",
         "date": "2026-11-08",
         "arrivalTime": "07:00",
@@ -368,11 +606,11 @@
         "passengers": 2894
       },
       {
-        "shipName": "留留",
-        "date": "2026-11-14",
+        "shipName": "Mein Schiff 1",
+        "date": "2026-11-08",
         "arrivalTime": "--:--",
         "departureTime": "--:--",
-        "passengers": 3776
+        "passengers": 2894
       },
       {
         "shipName": "Norwegian Joy",
@@ -396,6 +634,20 @@
         "passengers": 3560
       },
       {
+        "shipName": "Eurodam",
+        "date": "2026-11-17",
+        "arrivalTime": "--:--",
+        "departureTime": "--:--",
+        "passengers": 1850
+      },
+      {
+        "shipName": "Regal Princess",
+        "date": "2026-11-17",
+        "arrivalTime": "--:--",
+        "departureTime": "--:--",
+        "passengers": 3560
+      },
+      {
         "shipName": "Nieuw Amsterdam",
         "date": "2026-11-18",
         "arrivalTime": "08:00",
@@ -410,10 +662,31 @@
         "passengers": 4070
       },
       {
+        "shipName": "Nieuw Amsterdam",
+        "date": "2026-11-18",
+        "arrivalTime": "--:--",
+        "departureTime": "--:--",
+        "passengers": 2106
+      },
+      {
+        "shipName": "Norwegian Epic",
+        "date": "2026-11-18",
+        "arrivalTime": "--:--",
+        "departureTime": "--:--",
+        "passengers": 4070
+      },
+      {
         "shipName": "Mein Schiff 1",
         "date": "2026-11-22",
         "arrivalTime": "07:00",
         "departureTime": "20:00",
+        "passengers": 2894
+      },
+      {
+        "shipName": "Mein Schiff 1",
+        "date": "2026-11-22",
+        "arrivalTime": "--:--",
+        "departureTime": "--:--",
         "passengers": 2894
       },
       {
@@ -431,6 +704,20 @@
         "passengers": 2446
       },
       {
+        "shipName": "MSC Poesia",
+        "date": "2026-11-24",
+        "arrivalTime": "--:--",
+        "departureTime": "--:--",
+        "passengers": 2446
+      },
+      {
+        "shipName": "Zuiderdam",
+        "date": "2026-11-24",
+        "arrivalTime": "--:--",
+        "departureTime": "--:--",
+        "passengers": 1964
+      },
+      {
         "shipName": "MSC Seashore",
         "date": "2026-11-25",
         "arrivalTime": "08:00",
@@ -445,10 +732,31 @@
         "passengers": 2860
       },
       {
+        "shipName": "MSC Seashore",
+        "date": "2026-11-25",
+        "arrivalTime": "--:--",
+        "departureTime": "--:--",
+        "passengers": 4540
+      },
+      {
+        "shipName": "Scarlet Lady",
+        "date": "2026-11-25",
+        "arrivalTime": "--:--",
+        "departureTime": "--:--",
+        "passengers": 2860
+      },
+      {
         "shipName": "Carnival Sunrise",
         "date": "2026-11-26",
         "arrivalTime": "08:00",
         "departureTime": "16:00",
+        "passengers": 2984
+      },
+      {
+        "shipName": "Carnival Sunrise",
+        "date": "2026-11-26",
+        "arrivalTime": "--:--",
+        "departureTime": "--:--",
         "passengers": 2984
       },
       {
@@ -459,11 +767,32 @@
         "passengers": 2700
       },
       {
+        "shipName": "Resilient Lady",
+        "date": "2026-12-01",
+        "arrivalTime": "--:--",
+        "departureTime": "--:--",
+        "passengers": 2700
+      },
+      {
         "shipName": "Carnival Horizon",
         "date": "2026-12-02",
         "arrivalTime": "08:00",
         "departureTime": "16:00",
         "passengers": 3974
+      },
+      {
+        "shipName": "Carnival Horizon",
+        "date": "2026-12-02",
+        "arrivalTime": "--:--",
+        "departureTime": "--:--",
+        "passengers": 3974
+      },
+      {
+        "shipName": "a early morning d early evening",
+        "date": "2026-12-03",
+        "arrivalTime": "--:--",
+        "departureTime": "--:--",
+        "passengers": 3648
       },
       {
         "shipName": "Britannia",
@@ -480,10 +809,24 @@
         "passengers": 2894
       },
       {
+        "shipName": "Mein Schiff 1",
+        "date": "2026-12-06",
+        "arrivalTime": "--:--",
+        "departureTime": "--:--",
+        "passengers": 2894
+      },
+      {
         "shipName": "Eurodam",
         "date": "2026-12-08",
         "arrivalTime": "08:00",
         "departureTime": "16:00",
+        "passengers": 1850
+      },
+      {
+        "shipName": "Eurodam",
+        "date": "2026-12-08",
+        "arrivalTime": "--:--",
+        "departureTime": "--:--",
         "passengers": 1850
       },
       {
@@ -494,10 +837,24 @@
         "passengers": 3114
       },
       {
+        "shipName": "Mariner Of The Seas",
+        "date": "2026-12-09",
+        "arrivalTime": "--:--",
+        "departureTime": "--:--",
+        "passengers": 3114
+      },
+      {
         "shipName": "MSC Poesia",
         "date": "2026-12-10",
         "arrivalTime": "10:00",
         "departureTime": "18:00",
+        "passengers": 2446
+      },
+      {
+        "shipName": "MSC Poesia",
+        "date": "2026-12-10",
+        "arrivalTime": "--:--",
+        "departureTime": "--:--",
         "passengers": 2446
       },
       {
@@ -515,6 +872,20 @@
         "passengers": 1964
       },
       {
+        "shipName": "Seven Seas Splendor",
+        "date": "2026-12-15",
+        "arrivalTime": "--:--",
+        "departureTime": "--:--",
+        "passengers": 750
+      },
+      {
+        "shipName": "Zuiderdam",
+        "date": "2026-12-15",
+        "arrivalTime": "--:--",
+        "departureTime": "--:--",
+        "passengers": 1964
+      },
+      {
         "shipName": "Resilient Lady",
         "date": "2026-12-16",
         "arrivalTime": "08:00",
@@ -529,10 +900,31 @@
         "passengers": 2446
       },
       {
+        "shipName": "MSC Poesia",
+        "date": "2026-12-16",
+        "arrivalTime": "--:--",
+        "departureTime": "--:--",
+        "passengers": 2446
+      },
+      {
+        "shipName": "Resilient Lady",
+        "date": "2026-12-16",
+        "arrivalTime": "--:--",
+        "departureTime": "--:--",
+        "passengers": 2700
+      },
+      {
         "shipName": "Europa",
         "date": "2026-12-17",
         "arrivalTime": "12:00",
         "departureTime": "19:00",
+        "passengers": 408
+      },
+      {
+        "shipName": "Europa",
+        "date": "2026-12-17",
+        "arrivalTime": "--:--",
+        "departureTime": "--:--",
         "passengers": 408
       },
       {
@@ -543,10 +935,24 @@
         "passengers": 2894
       },
       {
+        "shipName": "Mein Schiff 1",
+        "date": "2026-12-20",
+        "arrivalTime": "--:--",
+        "departureTime": "--:--",
+        "passengers": 2894
+      },
+      {
         "shipName": "Explora III",
         "date": "2026-12-22",
         "arrivalTime": "09:00",
         "departureTime": "18:00",
+        "passengers": 926
+      },
+      {
+        "shipName": "Explora III",
+        "date": "2026-12-22",
+        "arrivalTime": "--:--",
+        "departureTime": "--:--",
         "passengers": 926
       },
       {
@@ -564,6 +970,20 @@
         "passengers": 2666
       },
       {
+        "shipName": "MSC Seashore",
+        "date": "2026-12-23",
+        "arrivalTime": "--:--",
+        "departureTime": "--:--",
+        "passengers": 4540
+      },
+      {
+        "shipName": "Nieuw Statendam",
+        "date": "2026-12-23",
+        "arrivalTime": "--:--",
+        "departureTime": "--:--",
+        "passengers": 2666
+      },
+      {
         "shipName": "Independence Of The Seas",
         "date": "2026-12-24",
         "arrivalTime": "08:00",
@@ -578,10 +998,31 @@
         "passengers": 700
       },
       {
+        "shipName": "Independence Of The Seas",
+        "date": "2026-12-24",
+        "arrivalTime": "--:--",
+        "departureTime": "--:--",
+        "passengers": 3858
+      },
+      {
+        "shipName": "Seven Seas Mariner",
+        "date": "2026-12-24",
+        "arrivalTime": "--:--",
+        "departureTime": "--:--",
+        "passengers": 700
+      },
+      {
         "shipName": "MSC Poesia",
         "date": "2026-12-25",
         "arrivalTime": "09:00",
         "departureTime": "18:00",
+        "passengers": 2446
+      },
+      {
+        "shipName": "MSC Poesia",
+        "date": "2026-12-25",
+        "arrivalTime": "--:--",
+        "departureTime": "--:--",
         "passengers": 2446
       },
       {
@@ -599,6 +1040,20 @@
         "passengers": 1850
       },
       {
+        "shipName": "AIDAdiva",
+        "date": "2026-12-29",
+        "arrivalTime": "--:--",
+        "departureTime": "--:--",
+        "passengers": 2030
+      },
+      {
+        "shipName": "Eurodam",
+        "date": "2026-12-29",
+        "arrivalTime": "--:--",
+        "departureTime": "--:--",
+        "passengers": 1850
+      },
+      {
         "shipName": "Norwegian Epic",
         "date": "2026-12-30",
         "arrivalTime": "07:00",
@@ -613,14 +1068,35 @@
         "passengers": 2700
       },
       {
+        "shipName": "Norwegian Epic",
+        "date": "2026-12-30",
+        "arrivalTime": "--:--",
+        "departureTime": "--:--",
+        "passengers": 4070
+      },
+      {
+        "shipName": "Resilient Lady",
+        "date": "2026-12-30",
+        "arrivalTime": "--:--",
+        "departureTime": "--:--",
+        "passengers": 2700
+      },
+      {
         "shipName": "Carnival Legend",
         "date": "2026-12-31",
         "arrivalTime": "08:00",
         "departureTime": "16:00",
         "passengers": 2134
+      },
+      {
+        "shipName": "Carnival Legend",
+        "date": "2026-12-31",
+        "arrivalTime": "--:--",
+        "departureTime": "--:--",
+        "passengers": 2134
       }
     ],
-    "scrapedAt": "2026-10-20T05:51:07.346Z"
+    "scrapedAt": "2026-10-20T06:03:45.745Z"
   },
   {
     "recordType": "port",
@@ -634,10 +1110,24 @@
         "passengers": 2500
       },
       {
+        "shipName": "Disney Treasure",
+        "date": "2026-10-21",
+        "arrivalTime": "--:--",
+        "departureTime": "--:--",
+        "passengers": 2500
+      },
+      {
         "shipName": "Norwegian Bliss",
         "date": "2026-10-27",
         "arrivalTime": "07:00",
         "departureTime": "15:00",
+        "passengers": 4010
+      },
+      {
+        "shipName": "Norwegian Bliss",
+        "date": "2026-10-27",
+        "arrivalTime": "--:--",
+        "departureTime": "--:--",
         "passengers": 4010
       },
       {
@@ -655,10 +1145,31 @@
         "passengers": 3100
       },
       {
+        "shipName": "Norwegian Prima",
+        "date": "2026-10-28",
+        "arrivalTime": "--:--",
+        "departureTime": "--:--",
+        "passengers": 3099
+      },
+      {
+        "shipName": "Norwegian Viva",
+        "date": "2026-10-28",
+        "arrivalTime": "--:--",
+        "departureTime": "--:--",
+        "passengers": 3100
+      },
+      {
         "shipName": "Rotterdam",
         "date": "2026-11-03",
         "arrivalTime": "08:00",
         "departureTime": "17:00",
+        "passengers": 2668
+      },
+      {
+        "shipName": "Rotterdam",
+        "date": "2026-11-03",
+        "arrivalTime": "--:--",
+        "departureTime": "--:--",
         "passengers": 2668
       },
       {
@@ -669,10 +1180,24 @@
         "passengers": 2500
       },
       {
+        "shipName": "Disney Treasure",
+        "date": "2026-11-04",
+        "arrivalTime": "--:--",
+        "departureTime": "--:--",
+        "passengers": 2500
+      },
+      {
         "shipName": "Mariner Of The Seas",
         "date": "2026-11-11",
         "arrivalTime": "08:00",
         "departureTime": "17:00",
+        "passengers": 3114
+      },
+      {
+        "shipName": "Mariner Of The Seas",
+        "date": "2026-11-11",
+        "arrivalTime": "--:--",
+        "departureTime": "--:--",
         "passengers": 3114
       },
       {
@@ -683,11 +1208,11 @@
         "passengers": 3858
       },
       {
-        "shipName": "留留",
-        "date": "2026-11-13",
+        "shipName": "Independence Of The Seas",
+        "date": "2026-11-12",
         "arrivalTime": "--:--",
         "departureTime": "--:--",
-        "passengers": 3776
+        "passengers": 3858
       },
       {
         "shipName": "Norwegian Joy",
@@ -704,10 +1229,24 @@
         "passengers": 1200
       },
       {
+        "shipName": "Oceania Vista",
+        "date": "2026-11-14",
+        "arrivalTime": "--:--",
+        "departureTime": "--:--",
+        "passengers": 1200
+      },
+      {
         "shipName": "Freedom Of The Seas",
         "date": "2026-11-17",
         "arrivalTime": "07:00",
         "departureTime": "16:00",
+        "passengers": 3634
+      },
+      {
+        "shipName": "Freedom Of The Seas",
+        "date": "2026-11-17",
+        "arrivalTime": "--:--",
+        "departureTime": "--:--",
         "passengers": 3634
       },
       {
@@ -722,6 +1261,20 @@
         "date": "2026-11-18",
         "arrivalTime": "08:00",
         "departureTime": "17:00",
+        "passengers": 3114
+      },
+      {
+        "shipName": "Disney Treasure",
+        "date": "2026-11-18",
+        "arrivalTime": "--:--",
+        "departureTime": "--:--",
+        "passengers": 2500
+      },
+      {
+        "shipName": "Mariner Of The Seas",
+        "date": "2026-11-18",
+        "arrivalTime": "--:--",
+        "departureTime": "--:--",
         "passengers": 3114
       },
       {
@@ -732,10 +1285,24 @@
         "passengers": 5400
       },
       {
+        "shipName": "Allure Of The Seas",
+        "date": "2026-11-19",
+        "arrivalTime": "--:--",
+        "departureTime": "--:--",
+        "passengers": 5400
+      },
+      {
         "shipName": "Rotterdam",
         "date": "2026-11-24",
         "arrivalTime": "08:00",
         "departureTime": "17:00",
+        "passengers": 2668
+      },
+      {
+        "shipName": "Rotterdam",
+        "date": "2026-11-24",
+        "arrivalTime": "--:--",
+        "departureTime": "--:--",
         "passengers": 2668
       },
       {
@@ -750,6 +1317,20 @@
         "date": "2026-11-25",
         "arrivalTime": "08:00",
         "departureTime": "17:00",
+        "passengers": 3114
+      },
+      {
+        "shipName": "Independence Of The Seas",
+        "date": "2026-11-25",
+        "arrivalTime": "--:--",
+        "departureTime": "--:--",
+        "passengers": 3858
+      },
+      {
+        "shipName": "Mariner Of The Seas",
+        "date": "2026-11-25",
+        "arrivalTime": "--:--",
+        "departureTime": "--:--",
         "passengers": 3114
       },
       {
@@ -760,6 +1341,13 @@
         "passengers": 1936
       },
       {
+        "shipName": "Norwegian Sun",
+        "date": "2026-11-26",
+        "arrivalTime": "--:--",
+        "departureTime": "--:--",
+        "passengers": 1936
+      },
+      {
         "shipName": "Disney Treasure",
         "date": "2026-12-02",
         "arrivalTime": "07:30",
@@ -774,6 +1362,20 @@
         "passengers": 3114
       },
       {
+        "shipName": "Disney Treasure",
+        "date": "2026-12-02",
+        "arrivalTime": "--:--",
+        "departureTime": "--:--",
+        "passengers": 2500
+      },
+      {
+        "shipName": "Mariner Of The Seas",
+        "date": "2026-12-02",
+        "arrivalTime": "--:--",
+        "departureTime": "--:--",
+        "passengers": 3114
+      },
+      {
         "shipName": "Allure Of The Seas",
         "date": "2026-12-03",
         "arrivalTime": "08:00",
@@ -781,10 +1383,24 @@
         "passengers": 5400
       },
       {
+        "shipName": "Allure Of The Seas",
+        "date": "2026-12-03",
+        "arrivalTime": "--:--",
+        "departureTime": "--:--",
+        "passengers": 5400
+      },
+      {
         "shipName": "Norwegian Jewel",
         "date": "2026-12-05",
         "arrivalTime": "07:00",
         "departureTime": "17:00",
+        "passengers": 2368
+      },
+      {
+        "shipName": "Norwegian Jewel",
+        "date": "2026-12-05",
+        "arrivalTime": "--:--",
+        "departureTime": "--:--",
         "passengers": 2368
       },
       {
@@ -802,10 +1418,31 @@
         "passengers": 2382
       },
       {
+        "shipName": "Norwegian Gem",
+        "date": "2026-12-07",
+        "arrivalTime": "--:--",
+        "departureTime": "--:--",
+        "passengers": 2382
+      },
+      {
+        "shipName": "Norwegian Sun",
+        "date": "2026-12-07",
+        "arrivalTime": "--:--",
+        "departureTime": "--:--",
+        "passengers": 1936
+      },
+      {
         "shipName": "Caribbean Princess",
         "date": "2026-12-08",
         "arrivalTime": "09:00",
         "departureTime": "17:00",
+        "passengers": 3140
+      },
+      {
+        "shipName": "Caribbean Princess",
+        "date": "2026-12-08",
+        "arrivalTime": "--:--",
+        "departureTime": "--:--",
         "passengers": 3140
       },
       {
@@ -816,6 +1453,13 @@
         "passengers": 4070
       },
       {
+        "shipName": "Norwegian Epic",
+        "date": "2026-12-09",
+        "arrivalTime": "--:--",
+        "departureTime": "--:--",
+        "passengers": 4070
+      },
+      {
         "shipName": "Independence Of The Seas",
         "date": "2026-12-10",
         "arrivalTime": "08:00",
@@ -823,10 +1467,24 @@
         "passengers": 3858
       },
       {
+        "shipName": "Independence Of The Seas",
+        "date": "2026-12-10",
+        "arrivalTime": "--:--",
+        "departureTime": "--:--",
+        "passengers": 3858
+      },
+      {
         "shipName": "Norwegian Sun",
         "date": "2026-12-12",
         "arrivalTime": "09:00",
         "departureTime": "18:00",
+        "passengers": 1936
+      },
+      {
+        "shipName": "Norwegian Sun",
+        "date": "2026-12-12",
+        "arrivalTime": "--:--",
+        "departureTime": "--:--",
         "passengers": 1936
       },
       {
@@ -844,6 +1502,20 @@
         "passengers": 2668
       },
       {
+        "shipName": "Norwegian Jewel",
+        "date": "2026-12-15",
+        "arrivalTime": "--:--",
+        "departureTime": "--:--",
+        "passengers": 2368
+      },
+      {
+        "shipName": "Rotterdam",
+        "date": "2026-12-15",
+        "arrivalTime": "--:--",
+        "departureTime": "--:--",
+        "passengers": 2668
+      },
+      {
         "shipName": "Disney Treasure",
         "date": "2026-12-16",
         "arrivalTime": "07:30",
@@ -858,10 +1530,31 @@
         "passengers": 3114
       },
       {
+        "shipName": "Disney Treasure",
+        "date": "2026-12-16",
+        "arrivalTime": "--:--",
+        "departureTime": "--:--",
+        "passengers": 2500
+      },
+      {
+        "shipName": "Mariner Of The Seas",
+        "date": "2026-12-16",
+        "arrivalTime": "--:--",
+        "departureTime": "--:--",
+        "passengers": 3114
+      },
+      {
         "shipName": "Allure Of The Seas",
         "date": "2026-12-17",
         "arrivalTime": "08:00",
         "departureTime": "17:00",
+        "passengers": 5400
+      },
+      {
+        "shipName": "Allure Of The Seas",
+        "date": "2026-12-17",
+        "arrivalTime": "--:--",
+        "departureTime": "--:--",
         "passengers": 5400
       },
       {
@@ -872,10 +1565,24 @@
         "passengers": 2382
       },
       {
+        "shipName": "Norwegian Gem",
+        "date": "2026-12-18",
+        "arrivalTime": "--:--",
+        "departureTime": "--:--",
+        "passengers": 2382
+      },
+      {
         "shipName": "Norwegian Epic",
         "date": "2026-12-23",
         "arrivalTime": "08:00",
         "departureTime": "18:00",
+        "passengers": 4070
+      },
+      {
+        "shipName": "Norwegian Epic",
+        "date": "2026-12-23",
+        "arrivalTime": "--:--",
+        "departureTime": "--:--",
         "passengers": 4070
       },
       {
@@ -886,10 +1593,24 @@
         "passengers": 3114
       },
       {
+        "shipName": "Explorer Of The Seas",
+        "date": "2026-12-24",
+        "arrivalTime": "--:--",
+        "departureTime": "--:--",
+        "passengers": 3114
+      },
+      {
         "shipName": "Independence Of The Seas",
         "date": "2026-12-25",
         "arrivalTime": "07:00",
         "departureTime": "15:00",
+        "passengers": 3858
+      },
+      {
+        "shipName": "Independence Of The Seas",
+        "date": "2026-12-25",
+        "arrivalTime": "--:--",
+        "departureTime": "--:--",
         "passengers": 3858
       },
       {
@@ -900,10 +1621,24 @@
         "passengers": 5400
       },
       {
+        "shipName": "Oasis Of The Seas",
+        "date": "2026-12-26",
+        "arrivalTime": "--:--",
+        "departureTime": "--:--",
+        "passengers": 5400
+      },
+      {
         "shipName": "Freedom Of The Seas",
         "date": "2026-12-29",
         "arrivalTime": "07:00",
         "departureTime": "16:00",
+        "passengers": 3634
+      },
+      {
+        "shipName": "Freedom Of The Seas",
+        "date": "2026-12-29",
+        "arrivalTime": "--:--",
+        "departureTime": "--:--",
         "passengers": 3634
       },
       {
@@ -918,6 +1653,20 @@
         "date": "2026-12-30",
         "arrivalTime": "08:00",
         "departureTime": "17:00",
+        "passengers": 3114
+      },
+      {
+        "shipName": "Disney Treasure",
+        "date": "2026-12-30",
+        "arrivalTime": "--:--",
+        "departureTime": "--:--",
+        "passengers": 2500
+      },
+      {
+        "shipName": "Mariner Of The Seas",
+        "date": "2026-12-30",
+        "arrivalTime": "--:--",
+        "departureTime": "--:--",
         "passengers": 3114
       },
       {
@@ -933,8 +1682,22 @@
         "arrivalTime": "11:00",
         "departureTime": "19:00",
         "passengers": 4132
+      },
+      {
+        "shipName": "Independence Of The Seas",
+        "date": "2026-12-31",
+        "arrivalTime": "--:--",
+        "departureTime": "--:--",
+        "passengers": 3858
+      },
+      {
+        "shipName": "MSC Seaside",
+        "date": "2026-12-31",
+        "arrivalTime": "--:--",
+        "departureTime": "--:--",
+        "passengers": 4132
       }
     ],
-    "scrapedAt": "2026-10-20T05:51:07.643Z"
+    "scrapedAt": "2026-10-20T06:03:45.894Z"
   }
 ]
