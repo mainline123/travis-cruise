@@ -1,60 +1,119 @@
 [
   {
     "recordType": "port",
-    "name": "Ocho Rios",
+    "name": "Charlottetown",
     "upcomingArrivals": [
       {
-        "shipName": "Margaritaville At Sea Islander",
-        "date": "2026-09-23",
+        "shipName": "Silver Shadow",
+        "date": "2026-10-20",
         "arrivalTime": "08:00",
-        "departureTime": "16:00"
-      }
-    ],
-    "scrapedAt": "2026-09-15T15:55:39.431Z"
-  },
-  {
-    "recordType": "port",
-    "name": "Montego Bay",
-    "upcomingArrivals": [
+        "departureTime": "16:00",
+        "passengers": 392,
+        "crew": 302,
+        "cruiseLine": "Silversea",
+        "status": "On Time"
+      },
       {
-        "shipName": "Carnival Horizon",
-        "date": "2026-09-23",
+        "shipName": "Carnival Sunshine",
+        "date": "2026-10-21",
+        "arrivalTime": "07:00",
+        "departureTime": "17:00",
+        "passengers": 3002,
+        "crew": 1040,
+        "cruiseLine": "Carnival",
+        "status": "On Time"
+      },
+      {
+        "shipName": "Zuiderdam",
+        "date": "2026-10-21",
+        "arrivalTime": "08:00",
+        "departureTime": "18:00",
+        "passengers": 1964,
+        "crew": 842,
+        "cruiseLine": "Holland America",
+        "status": "On Time"
+      },
+      {
+        "shipName": "Hanseatic Inspiration",
+        "date": "2026-10-23",
         "arrivalTime": "09:00",
-        "departureTime": "17:00"
-      }
-    ],
-    "scrapedAt": "2026-09-15T15:55:39.431Z"
-  },
-  {
-    "recordType": "port",
-    "name": "Falmouth",
-    "upcomingArrivals": [
+        "departureTime": "18:00",
+        "passengers": 230,
+        "crew": 175,
+        "cruiseLine": "Hapag Lloyd",
+        "status": "Time Change"
+      },
       {
-        "shipName": "Disney Treasure",
-        "date": "2026-09-23",
+        "shipName": "Azamara Journey",
+        "date": "2026-10-23",
+        "arrivalTime": "13:00",
+        "departureTime": "22:00",
+        "passengers": 690,
+        "crew": 408,
+        "cruiseLine": "Azamara",
+        "status": "On Time"
+      },
+      {
+        "shipName": "Seven Seas Splendor",
+        "date": "2026-10-25",
+        "arrivalTime": "11:00",
+        "departureTime": "20:00",
+        "passengers": 746,
+        "crew": 548,
+        "cruiseLine": "Regent Seven Seas",
+        "status": "On Time"
+      },
+      {
+        "shipName": "Seabourn Ovation",
+        "date": "2026-10-26",
+        "arrivalTime": "07:00",
+        "departureTime": "16:00",
+        "passengers": 600,
+        "crew": 450,
+        "cruiseLine": "Seabourn",
+        "status": "Time Change"
+      },
+      {
+        "shipName": "Sapphire Princess",
+        "date": "2026-10-26",
+        "arrivalTime": "09:00",
+        "departureTime": "17:00",
+        "passengers": 2680,
+        "crew": 1100,
+        "cruiseLine": "Princess",
+        "status": "Time Change"
+      },
+      {
+        "shipName": "Pearl Mist",
+        "date": "2026-10-28",
         "arrivalTime": "07:30",
-        "departureTime": "16:45"
-      }
-    ],
-    "scrapedAt": "2026-09-15T15:55:39.431Z"
-  },
-  {
-    "recordType": "port",
-    "name": "Kingston",
-    "upcomingArrivals": [],
-    "scrapedAt": "2026-09-15T15:55:39.431Z"
-  },
-  {
-    "recordType": "port",
-    "name": "Port Antonio",
-    "upcomingArrivals": [
+        "departureTime": "23:00",
+        "passengers": 210,
+        "crew": 70,
+        "cruiseLine": "Pearl Seas",
+        "status": "On Time"
+      },
       {
-        "shipName": "Viking Polaris",
-        "date": "2026-10-31",
-        "arrivalTime": "--:--",
-        "departureTime": "--:--"
+        "shipName": "Silver Shadow",
+        "date": "2026-10-28",
+        "arrivalTime": "08:00",
+        "departureTime": "20:00",
+        "passengers": 392,
+        "crew": 302,
+        "cruiseLine": "Silversea",
+        "status": "On Time"
+      },
+      {
+        "shipName": "Victory I",
+        "date": "2026-11-02",
+        "arrivalTime": "10:00",
+        "departureTime": "19:00",
+        "passengers": 190,
+        "crew": 80,
+        "cruiseLine": "Victory Cruise Line",
+        "status": "On Time"
       }
     ],
-    "scrapedAt": "2026-09-15T15:55:39.431Z"
+    "scrapedAt": "2026-10-20T05:35:01.720Z"
   }
 ]
