@@ -99,7 +99,6 @@ function normalizeTime(value) {
             .replace(/\D/g, "");
 
     if (digits.length === 3) {
-
         return (
             "0" +
             digits[0] +
@@ -109,7 +108,6 @@ function normalizeTime(value) {
     }
 
     if (digits.length === 4) {
-
         return (
             digits.slice(0, 2) +
             ":" +
@@ -121,8 +119,19 @@ function normalizeTime(value) {
 }
 
 
+function hasRealTimes(arrival) {
+
+    return (
+        arrival.arrivalTime &&
+        arrival.departureTime &&
+        arrival.arrivalTime !== "--:--" &&
+        arrival.departureTime !== "--:--"
+    );
+}
+
+
 /* ============================================================
-   SHIP NAME VALIDATION
+   SHIP NAME
 ============================================================ */
 
 function isValidShipName(name) {
@@ -144,9 +153,7 @@ function isValidShipName(name) {
         return false;
     }
 
-    if (
-        cleaned.length > 80
-    ) {
+    if (cleaned.length > 80) {
         return false;
     }
 
@@ -172,8 +179,7 @@ function isValidShipName(name) {
 
     if (
         badText.some(
-            item =>
-                lower === item
+            item => lower === item
         )
     ) {
         return false;
@@ -183,8 +189,16 @@ function isValidShipName(name) {
 }
 
 
+function normalizeShipName(name) {
+
+    return String(name || "")
+        .toLowerCase()
+        .replace(/[^a-z0-9]/g, "");
+}
+
+
 /* ============================================================
-   PARSE SCHEDULE
+   PARSE SOURCE
 ============================================================ */
 
 function parseScheduleText(text, portName) {
@@ -237,12 +251,11 @@ function parseScheduleText(text, portName) {
                 /^(?:Mon|Tue|Wed|Thu|Fri|Sat|Sun)\s+(\d{1,2})$/i
             );
 
+
         if (dayMatch) {
 
             currentDay =
-                Number(
-                    dayMatch[1]
-                );
+                Number(dayMatch[1]);
 
             continue;
         }
@@ -257,7 +270,7 @@ function parseScheduleText(text, portName) {
 
 
         /* ====================================================
-           RECORD WITH PUBLISHED TIMES
+           RECORD WITH TIMES
         ==================================================== */
 
         const timeMatch =
@@ -273,10 +286,7 @@ function parseScheduleText(text, portName) {
 
             for (
                 let back = i - 1;
-                back >= Math.max(
-                    0,
-                    i - 5
-                );
+                back >= Math.max(0, i - 5);
                 back--
             ) {
 
@@ -285,9 +295,7 @@ function parseScheduleText(text, portName) {
 
 
                 if (
-                    isValidShipName(
-                        candidate
-                    )
+                    isValidShipName(candidate)
                 ) {
 
                     shipName =
@@ -322,15 +330,11 @@ function parseScheduleText(text, portName) {
 
 
                 if (
-                    /^\d{2,5}$/.test(
-                        candidate
-                    )
+                    /^\d{2,5}$/.test(candidate)
                 ) {
 
                     passengers =
-                        Number(
-                            candidate
-                        );
+                        Number(candidate);
 
                     break;
                 }
@@ -369,13 +373,11 @@ function parseScheduleText(text, portName) {
 
 
         /* ====================================================
-           RECORD WITHOUT PUBLISHED TIMES
+           POSSIBLE RECORD WITHOUT TIMES
         ==================================================== */
 
         if (
-            isValidShipName(
-                line
-            )
+            isValidShipName(line)
         ) {
 
             let passengers = null;
@@ -397,15 +399,11 @@ function parseScheduleText(text, portName) {
 
 
                 if (
-                    /^\d{2,5}$/.test(
-                        candidate
-                    )
+                    /^\d{2,5}$/.test(candidate)
                 ) {
 
                     passengers =
-                        Number(
-                            candidate
-                        );
+                        Number(candidate);
 
                     break;
                 }
@@ -413,9 +411,7 @@ function parseScheduleText(text, portName) {
 
                 if (
                     /^(?:Mon|Tue|Wed|Thu|Fri|Sat|Sun)\s+\d{1,2}$/i
-                        .test(
-                            lines[forward]
-                        )
+                        .test(lines[forward])
                 ) {
 
                     break;
@@ -461,259 +457,7 @@ function parseScheduleText(text, portName) {
 
 
 /* ============================================================
-   DETERMINE WHICH DUPLICATE IS BETTER
-============================================================ */
-
-function hasRealTimes(arrival) {
-
-    return (
-        arrival.arrivalTime &&
-        arrival.departureTime &&
-        arrival.arrivalTime !== "--:--" &&
-        arrival.departureTime !== "--:--"
-    );
-}
-
-
-/* ============================================================
-   CLEAN + REMOVE DUPLICATES
-============================================================ */
-
-function cleanArrivals(arrivals, portName) {
-
-    /*
-       STEP 1:
-       Remove junk ship names such as 留.
-    */
-
-    const validArrivals =
-        arrivals.filter(
-            arrival => {
-
-                const shipName =
-                    String(
-                        arrival.shipName || ""
-                    ).trim();
-
-
-                if (
-                    !/[A-Za-z]/.test(
-                        shipName
-                    )
-                ) {
-
-                    console.log(
-                        `${portName}: removed junk ship "${shipName}"`
-                    );
-
-                    return false;
-                }
-
-
-                return true;
-            }
-        );
-
-
-    /*
-       STEP 2:
-       One record per:
-
-       DATE + SHIP NAME
-
-       If we encounter the same ship twice,
-       prefer the record containing real
-       arrival/departure times.
-    */
-
-    const unique =
-        new Map();
-
-
-    validArrivals.forEach(
-        arrival => {
-
-            const shipKey =
-                String(
-                    arrival.shipName
-                )
-                    .toLowerCase()
-                    .replace(/\s+/g, " ")
-                    .trim();
-
-
-            const key =
-                arrival.date +
-                "|" +
-                shipKey;
-
-
-            if (
-                !unique.has(
-                    key
-                )
-            ) {
-
-                unique.set(
-                    key,
-                    arrival
-                );
-
-                return;
-            }
-
-
-            const existing =
-                unique.get(
-                    key
-                );
-
-
-            const existingHasTimes =
-                hasRealTimes(
-                    existing
-                );
-
-
-            const newHasTimes =
-                hasRealTimes(
-                    arrival
-                );
-
-
-            /*
-               Replace the no-time version
-               with the timed version.
-            */
-
-            if (
-                !existingHasTimes &&
-                newHasTimes
-            ) {
-
-                console.log(
-                    `${portName}: keeping timed version of ${arrival.shipName}`
-                );
-
-                unique.set(
-                    key,
-                    arrival
-                );
-
-                return;
-            }
-
-
-            /*
-               If existing version already
-               has times, keep it.
-            */
-
-            if (
-                existingHasTimes &&
-                !newHasTimes
-            ) {
-
-                console.log(
-                    `${portName}: removed duplicate no-time version of ${arrival.shipName}`
-                );
-
-                return;
-            }
-
-
-            /*
-               If both versions have the same
-               time quality, keep the one with
-               a passenger count.
-            */
-
-            if (
-                !existing.passengers &&
-                arrival.passengers
-            ) {
-
-                unique.set(
-                    key,
-                    arrival
-                );
-            }
-        }
-    );
-
-
-    const cleaned =
-        Array.from(
-            unique.values()
-        );
-
-
-    /*
-       STEP 3:
-       Sort chronologically.
-    */
-
-    cleaned.sort(
-        (a, b) => {
-
-            if (
-                a.date !== b.date
-            ) {
-
-                return (
-                    a.date.localeCompare(
-                        b.date
-                    )
-                );
-            }
-
-
-            const timeA =
-                hasRealTimes(a)
-                    ? a.arrivalTime
-                    : "99:99";
-
-
-            const timeB =
-                hasRealTimes(b)
-                    ? b.arrivalTime
-                    : "99:99";
-
-
-            if (
-                timeA !== timeB
-            ) {
-
-                return (
-                    timeA.localeCompare(
-                        timeB
-                    )
-                );
-            }
-
-
-            return String(
-                a.shipName
-            ).localeCompare(
-                String(
-                    b.shipName
-                )
-            );
-        }
-    );
-
-
-    console.log(
-        `${portName}: ${cleaned.length} unique cruise calls after cleanup`
-    );
-
-
-    return cleaned;
-}
-
-
-/* ============================================================
-   DOWNLOAD ONE PORT
+   DOWNLOAD PORT
 ============================================================ */
 
 async function downloadPort(port) {
@@ -757,21 +501,12 @@ async function downloadPort(port) {
 
 
     const text =
-        cleanText(
-            html
-        );
-
-
-    const rawArrivals =
-        parseScheduleText(
-            text,
-            port.name
-        );
+        cleanText(html);
 
 
     const arrivals =
-        cleanArrivals(
-            rawArrivals,
+        parseScheduleText(
+            text,
             port.name
         );
 
@@ -804,6 +539,241 @@ async function downloadPort(port) {
 
 
 /* ============================================================
+   FINAL CLEANUP
+
+   THIS IS THE IMPORTANT PART.
+
+   AFTER ALL PORT DATA HAS BEEN CREATED:
+
+   PORT + DATE + SHIP = ONE RECORD
+
+   IF ONE RECORD HAS TIMES AND THE OTHER DOES NOT,
+   THE RECORD WITH TIMES WINS.
+============================================================ */
+
+function finalCleanup(results) {
+
+    results.forEach(
+        port => {
+
+            const unique =
+                new Map();
+
+
+            port.upcomingArrivals
+                .forEach(
+                    arrival => {
+
+                        const shipName =
+                            String(
+                                arrival.shipName || ""
+                            ).trim();
+
+
+                        /* REMOVE JUNK */
+
+                        if (
+                            !/[A-Za-z]/.test(
+                                shipName
+                            )
+                        ) {
+
+                            console.log(
+                                `REMOVED JUNK: ${port.name} | ${arrival.date} | ${shipName}`
+                            );
+
+                            return;
+                        }
+
+
+                        const normalizedShip =
+                            normalizeShipName(
+                                shipName
+                            );
+
+
+                        if (!normalizedShip) {
+                            return;
+                        }
+
+
+                        /*
+                           SAME PORT IS ALREADY GUARANTEED
+                           BECAUSE WE ARE INSIDE ONE PORT.
+
+                           KEY = DATE + NORMALIZED SHIP NAME
+                        */
+
+                        const key =
+                            arrival.date +
+                            "|" +
+                            normalizedShip;
+
+
+                        /*
+                           FIRST COPY
+                        */
+
+                        if (
+                            !unique.has(key)
+                        ) {
+
+                            unique.set(
+                                key,
+                                arrival
+                            );
+
+                            return;
+                        }
+
+
+                        /*
+                           DUPLICATE FOUND
+                        */
+
+                        const existing =
+                            unique.get(key);
+
+
+                        const existingTimed =
+                            hasRealTimes(
+                                existing
+                            );
+
+
+                        const newTimed =
+                            hasRealTimes(
+                                arrival
+                            );
+
+
+                        /*
+                           TIMED RECORD ALWAYS BEATS
+                           THE NO-TIME RECORD.
+                        */
+
+                        if (
+                            newTimed &&
+                            !existingTimed
+                        ) {
+
+                            console.log(
+                                `DUPLICATE REMOVED: ${port.name} | ${arrival.date} | ${arrival.shipName} | keeping timed record`
+                            );
+
+
+                            unique.set(
+                                key,
+                                arrival
+                            );
+
+                            return;
+                        }
+
+
+                        if (
+                            existingTimed &&
+                            !newTimed
+                        ) {
+
+                            console.log(
+                                `DUPLICATE REMOVED: ${port.name} | ${arrival.date} | ${arrival.shipName} | discarded no-time record`
+                            );
+
+                            return;
+                        }
+
+
+                        /*
+                           IF BOTH HAVE TIMES OR BOTH DO NOT,
+                           KEEP THE ONE WITH THE BETTER
+                           PASSENGER COUNT.
+                        */
+
+                        if (
+                            Number(arrival.passengers || 0) >
+                            Number(existing.passengers || 0)
+                        ) {
+
+                            unique.set(
+                                key,
+                                arrival
+                            );
+                        }
+                    }
+                );
+
+
+            port.upcomingArrivals =
+                Array.from(
+                    unique.values()
+                );
+
+
+            /*
+               SORT CLEAN RECORDS
+            */
+
+            port.upcomingArrivals.sort(
+                (a, b) => {
+
+                    if (
+                        a.date !== b.date
+                    ) {
+
+                        return (
+                            a.date.localeCompare(
+                                b.date
+                            )
+                        );
+                    }
+
+
+                    const timeA =
+                        hasRealTimes(a)
+                            ? a.arrivalTime
+                            : "99:99";
+
+
+                    const timeB =
+                        hasRealTimes(b)
+                            ? b.arrivalTime
+                            : "99:99";
+
+
+                    if (
+                        timeA !== timeB
+                    ) {
+
+                        return (
+                            timeA.localeCompare(
+                                timeB
+                            )
+                        );
+                    }
+
+
+                    return (
+                        a.shipName.localeCompare(
+                            b.shipName
+                        )
+                    );
+                }
+            );
+
+
+            console.log(
+                `${port.name}: ${port.upcomingArrivals.length} records after FINAL cleanup`
+            );
+        }
+    );
+
+
+    return results;
+}
+
+
+/* ============================================================
    MAIN
 ============================================================ */
 
@@ -814,7 +784,7 @@ async function main() {
     );
 
 
-    const results = [];
+    let results = [];
 
 
     for (
@@ -822,19 +792,11 @@ async function main() {
     ) {
 
         const result =
-            await downloadPort(
-                port
-            );
+            await downloadPort(port);
 
-        results.push(
-            result
-        );
+        results.push(result);
     }
 
-
-    /*
-       DO NOT WRITE PARTIAL DATA
-    */
 
     if (
         results.length !==
@@ -848,31 +810,11 @@ async function main() {
 
 
     /*
-       FINAL SAFETY CHECK
+       FINAL DEDUPLICATION HAPPENS HERE
     */
 
-    results.forEach(
-        port => {
-
-            port.upcomingArrivals =
-                port.upcomingArrivals.filter(
-                    arrival => {
-
-                        const shipName =
-                            String(
-                                arrival.shipName || ""
-                            ).trim();
-
-
-                        return (
-                            /[A-Za-z]/.test(
-                                shipName
-                            )
-                        );
-                    }
-                );
-        }
-    );
+    results =
+        finalCleanup(results);
 
 
     const totalCalls =
@@ -895,7 +837,7 @@ async function main() {
 
 
     /*
-       WRITE CLEAN DATA
+       SAVE ONLY THE CLEAN DATA
     */
 
     fs.writeFileSync(
@@ -911,13 +853,12 @@ async function main() {
 
     console.log("");
     console.log(
-        `Saved ${totalCalls} unique Jamaica cruise calls to ${OUTPUT_FILE}`
+        `Saved ${totalCalls} CLEAN Jamaica cruise calls to ${OUTPUT_FILE}`
     );
 
 
     /*
-       SHOW FIRST 15 RECORDS
-       IN GITHUB ACTION LOG
+       DISPLAY FIRST 15 CLEAN RECORDS
     */
 
     const allCalls =
@@ -971,7 +912,7 @@ async function main() {
 
     console.log("");
     console.log(
-        "Next Jamaica cruise calls:"
+        "NEXT CLEAN JAMAICA CRUISE CALLS:"
     );
 
 
