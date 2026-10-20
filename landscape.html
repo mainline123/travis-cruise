@@ -25,44 +25,47 @@ html, body {
 body {
     display: flex;
     flex-direction: column;
-    padding: 24px 32px 18px;
+    padding: 12px 24px 8px;
 }
+
+/* HEADER */
 
 .header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    min-height: 110px;
+    height: 105px;
+    flex-shrink: 0;
     border-bottom: 2px solid rgba(255,255,255,0.16);
-    padding-bottom: 16px;
+    padding-bottom: 10px;
 }
 
 .brand {
     display: flex;
     align-items: center;
-    gap: 22px;
+    gap: 18px;
 }
 
 .logo {
-    width: 110px;
-    height: 80px;
+    width: 100px;
+    height: 72px;
     object-fit: contain;
     background: white;
-    border-radius: 10px;
-    padding: 7px;
+    border-radius: 9px;
+    padding: 6px;
 }
 
 .title-block h1 {
-    font-size: clamp(28px, 2.7vw, 50px);
+    font-size: clamp(28px, 2.6vw, 48px);
     font-weight: 800;
     letter-spacing: 1px;
     line-height: 1;
 }
 
 .title-block p {
-    margin-top: 10px;
+    margin-top: 7px;
     color: #b9d8e5;
-    font-size: clamp(14px, 1.2vw, 22px);
+    font-size: clamp(13px, 1.1vw, 20px);
     letter-spacing: 1.5px;
     text-transform: uppercase;
 }
@@ -72,43 +75,54 @@ body {
 }
 
 #time {
-    font-size: clamp(30px, 3vw, 54px);
+    font-size: clamp(28px, 2.8vw, 50px);
     font-weight: 800;
 }
 
 #date {
-    margin-top: 5px;
+    margin-top: 3px;
     color: #b9d8e5;
-    font-size: clamp(14px, 1.2vw, 21px);
+    font-size: clamp(13px, 1.1vw, 19px);
 }
+
+/* SUMMARY */
 
 .summary {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 18px;
-    padding: 18px 0;
+    gap: 16px;
+    height: 105px;
+    flex-shrink: 0;
+    padding: 10px 0;
 }
 
 .card {
     background: rgba(255,255,255,0.08);
     border: 1px solid rgba(255,255,255,0.14);
-    border-radius: 14px;
-    padding: 13px 20px;
+    border-radius: 12px;
+    padding: 8px 16px;
     text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
 .card .number {
-    font-size: clamp(28px, 2.8vw, 48px);
+    font-size: clamp(26px, 2.5vw, 44px);
     font-weight: 800;
+    line-height: 1;
 }
 
 .card .label {
-    margin-top: 4px;
+    margin-top: 5px;
     color: #b9d8e5;
-    font-size: clamp(12px, 1vw, 18px);
+    font-size: clamp(11px, 0.9vw, 16px);
     text-transform: uppercase;
     letter-spacing: 1px;
 }
+
+/* TABLE */
 
 .board {
     flex: 1;
@@ -117,24 +131,32 @@ body {
     flex-direction: column;
     background: rgba(0,0,0,0.17);
     border: 1px solid rgba(255,255,255,0.13);
-    border-radius: 14px;
+    border-radius: 12px;
     overflow: hidden;
 }
 
 .table-header,
 .row {
     display: grid;
-    grid-template-columns: 0.9fr 1.25fr 0.75fr 2.25fr 0.75fr 0.8fr 1fr;
+    grid-template-columns:
+        0.9fr
+        1.25fr
+        0.75fr
+        2.25fr
+        0.75fr
+        0.8fr
+        1fr;
     align-items: center;
-    column-gap: 12px;
+    column-gap: 10px;
 }
 
 .table-header {
-    min-height: 55px;
-    padding: 0 22px;
+    height: 42px;
+    flex-shrink: 0;
+    padding: 0 20px;
     background: rgba(0,0,0,0.32);
     color: #a9d5e6;
-    font-size: clamp(12px, 1vw, 18px);
+    font-size: clamp(11px, 0.9vw, 16px);
     font-weight: bold;
     text-transform: uppercase;
     letter-spacing: 0.7px;
@@ -143,14 +165,16 @@ body {
 #rows {
     flex: 1;
     min-height: 0;
+    display: grid;
+    grid-template-rows: repeat(10, 1fr);
     overflow: hidden;
 }
 
 .row {
-    min-height: 62px;
-    padding: 9px 22px;
+    min-height: 0;
+    padding: 3px 20px;
     border-top: 1px solid rgba(255,255,255,0.09);
-    font-size: clamp(14px, 1.2vw, 21px);
+    font-size: clamp(12px, 1vw, 18px);
 }
 
 .row:nth-child(even) {
@@ -159,7 +183,7 @@ body {
 
 .ship {
     font-weight: 800;
-    font-size: clamp(15px, 1.3vw, 23px);
+    font-size: clamp(13px, 1.1vw, 20px);
 }
 
 .port {
@@ -174,9 +198,9 @@ body {
 .status {
     display: inline-block;
     width: fit-content;
-    padding: 7px 13px;
-    border-radius: 18px;
-    font-size: clamp(11px, 0.9vw, 16px);
+    padding: 4px 10px;
+    border-radius: 16px;
+    font-size: clamp(10px, 0.75vw, 14px);
     font-weight: bold;
     text-transform: uppercase;
     white-space: nowrap;
@@ -201,46 +225,34 @@ body {
     justify-content: center;
     text-align: center;
     color: #b9d8e5;
-    font-size: clamp(22px, 2vw, 36px);
+    font-size: clamp(20px, 1.8vw, 32px);
     font-weight: bold;
 }
 
+/* FOOTER */
+
 .footer {
+    height: 30px;
+    flex-shrink: 0;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding-top: 12px;
     color: #91b6c5;
-    font-size: clamp(11px, 0.9vw, 16px);
+    font-size: clamp(10px, 0.8vw, 14px);
 }
 
 .live {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 7px;
 }
 
 .dot {
-    width: 10px;
-    height: 10px;
+    width: 9px;
+    height: 9px;
     border-radius: 50%;
     background: #2bd17e;
     box-shadow: 0 0 8px #2bd17e;
-}
-
-@media (max-width: 1100px) {
-    body {
-        padding: 16px 20px 12px;
-    }
-
-    .logo {
-        width: 85px;
-        height: 65px;
-    }
-
-    .row {
-        min-height: 52px;
-    }
 }
 </style>
 </head>
@@ -560,14 +572,8 @@ function render(data) {
             .localeCompare(String(b.arrivalTime));
     });
 
-
-    /* ONLY THE NEXT 10 SHIPS */
-
     const displayArrivals =
         arrivals.slice(0, MAX_SHIPS);
-
-
-    /* SUMMARY NUMBERS MATCH THE SAME 10 SHIPS */
 
     const shipCount =
         displayArrivals.length;
@@ -586,7 +592,6 @@ function render(data) {
             )
         ).size;
 
-
     document.getElementById("shipCount").textContent =
         formatNumber(shipCount);
 
@@ -595,9 +600,6 @@ function render(data) {
 
     document.getElementById("portCount").textContent =
         formatNumber(activePorts);
-
-
-    /* DISPLAY SAME 10 SHIPS */
 
     const rows =
         document.getElementById("rows");
@@ -719,10 +721,7 @@ async function loadCruiseData() {
 
     } catch (error) {
 
-        console.error(
-            "Cruise data error:",
-            error
-        );
+        console.error("Cruise data error:", error);
 
         document.getElementById("rows").innerHTML =
             `<div class="empty">
