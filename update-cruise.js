@@ -25,71 +25,90 @@ function cleanText(value) {
         .trim();
 }
 
-function monthNumber(month) {
-    const months = {
-        january: "01",
-        february: "02",
-        march: "03",
-        april: "04",
-        may: "05",
-        june: "06",
-        july: "07",
-        august: "08",
-        september: "09",
-        october: "10",
-        november: "11",
-        december: "12"
-    };
-
-    return months[
-        String(month).toLowerCase()
-    ] || "";
-}
-
 function normalizeDate(value) {
 
     const text = cleanText(value);
 
-    /*
-       Examples supported:
+    const months = {
+        jan: "01",
+        january: "01",
+        feb: "02",
+        february: "02",
+        mar: "03",
+        march: "03",
+        apr: "04",
+        april: "04",
+        may: "05",
+        jun: "06",
+        june: "06",
+        jul: "07",
+        july: "07",
+        aug: "08",
+        august: "08",
+        sep: "09",
+        sept: "09",
+        september: "09",
+        oct: "10",
+        october: "10",
+        nov: "11",
+        november: "11",
+        dec: "12",
+        december: "12"
+    };
 
-       October 20, 2026
-       Oct 20, 2026
-       20 October 2026
+    /*
+       Port Charlottetown format:
+       Oct 23, 2026 1:00 pm
     */
 
     let match = text.match(
-        /(January|February|March|April|May|June|July|August|September|October|November|December)\s+(\d{1,2}),?\s+(\d{4})/i
+        /\b([A-Za-z]{3,9})\s+(\d{1,2}),?\s+(\d{4})\b/i
     );
 
     if (match) {
 
         const month =
-            monthNumber(match[1]);
+            months[
+                match[1].toLowerCase()
+            ];
 
-        const day =
-            String(
-                Number(match[2])
-            ).padStart(2, "0");
+        if (month) {
 
-        return `${match[3]}-${month}-${day}`;
+            const day =
+                String(
+                    Number(match[2])
+                ).padStart(2, "0");
+
+            return `${match[3]}-${month}-${day}`;
+        }
     }
 
+    /*
+       Also support:
+       23 Oct 2026
+       23 October 2026
+    */
+
     match = text.match(
-        /(\d{1,2})\s+(January|February|March|April|May|June|July|August|September|October|November|December)\s+(\d{4})/i
+        /\b(\d{1,2})\s+([A-Za-z]{3,9})\s+(\d{4})\b/i
     );
 
     if (match) {
 
         const month =
-            monthNumber(match[2]);
+            months[
+                match[2].toLowerCase()
+            ];
 
-        const day =
-            String(
-                Number(match[1])
-            ).padStart(2, "0");
+        if (month) {
 
-        return `${match[3]}-${month}-${day}`;
+            const day =
+                String(
+                    Number(match[1])
+                ).padStart(2, "0");
+
+            return `${match[3]}-${month}-${day}`;
+        }
     }
 
     return "";
@@ -101,12 +120,13 @@ function normalizeTime(value) {
         cleanText(value);
 
     /*
+       Supports:
        08:00
        8:00 AM
        4:30 PM
     */
 
-    let match =
+    const match =
         text.match(
             /(\d{1,2}):(\d{2})\s*(AM|PM)?/i
         );
@@ -126,11 +146,17 @@ function normalizeTime(value) {
             ? match[3].toUpperCase()
             : "";
 
-    if (period === "PM" && hour < 12) {
+    if (
+        period === "PM" &&
+        hour < 12
+    ) {
         hour += 12;
     }
 
-    if (period === "AM" && hour === 12) {
+    if (
+        period === "AM" &&
+        hour === 12
+    ) {
         hour = 0;
     }
 
@@ -147,9 +173,7 @@ function extractNumber(value) {
         cleanText(value);
 
     const match =
-        text.match(
-            /[\d,]+/
-        );
+        text.match(/[\d,]+/);
 
     if (!match) {
         return 0;
@@ -213,22 +237,18 @@ function extractRows(html) {
 
 /*
 ============================================================
-INTERPRET PORT CHARLOTTETOWN TABLE
+BUILD PORT CHARLOTTETOWN DATA
 ============================================================
 */
 
 function buildDataset(rows) {
 
     if (!rows.length) {
+
         throw new Error(
             "No table rows found on Port Charlottetown schedule page."
         );
     }
-
-    /*
-       Find the header row instead of assuming
-       exact column positions.
-    */
 
     let headerIndex = -1;
     let headers = [];
@@ -255,7 +275,10 @@ function buildDataset(rows) {
                 value.includes("arrival")
             );
 
-        if (hasShip && hasArrival) {
+        if (
+            hasShip &&
+            hasArrival
+        ) {
 
             headerIndex = i;
             headers = lower;
@@ -297,7 +320,10 @@ function buildDataset(rows) {
         findColumn(["departure"]);
 
     const shipColumn =
-        findColumn(["ship", "vessel"]);
+        findColumn([
+            "ship",
+            "vessel"
+        ]);
 
     const passengersColumn =
         findColumn([
@@ -346,14 +372,30 @@ function buildDataset(rows) {
         }
 
         /*
-           Date may be in its own column.
-           If not, search the whole row.
+           Port Charlottetown puts the date
+           together with the arrival time.
+
+           Example:
+           Oct 23, 2026 1:00 pm
         */
 
         let rawDate =
+            arrivalColumn >= 0
+                ? cells[arrivalColumn]
+                : "";
+
+        if (
+            !rawDate &&
             dateColumn >= 0
-                ? cells[dateColumn]
-                : cells.join(" ");
+        ) {
+            rawDate =
+                cells[dateColumn];
+        }
+
+        if (!rawDate) {
+            rawDate =
+                cells.join(" ");
+        }
 
         let date =
             normalizeDate(rawDate);
@@ -427,7 +469,7 @@ function buildDataset(rows) {
     }
 
     /*
-       Remove duplicates.
+       REMOVE DUPLICATES
     */
 
     const unique = [];
@@ -435,7 +477,10 @@ function buildDataset(rows) {
     const seen =
         new Set();
 
-    for (const arrival of arrivals) {
+    for (
+        const arrival
+        of arrivals
+    ) {
 
         const key = [
             arrival.shipName,
@@ -453,10 +498,16 @@ function buildDataset(rows) {
         unique.push(arrival);
     }
 
+    /*
+       SORT BY DATE AND ARRIVAL TIME
+    */
+
     unique.sort(
         (a, b) => {
 
-            if (a.date !== b.date) {
+            if (
+                a.date !== b.date
+            ) {
 
                 return a.date.localeCompare(
                     b.date
@@ -512,6 +563,7 @@ async function main() {
                 headers: {
                     "User-Agent":
                         "Mozilla/5.0 (compatible; VMM-Cruise-Schedule/1.0)",
+
                     "Accept":
                         "text/html,application/xhtml+xml"
                 }
@@ -563,9 +615,9 @@ async function main() {
     );
 
     /*
-       IMPORTANT:
-       Never destroy the existing working JSON
-       if the website changes or blocks GitHub.
+       SAFETY:
+       Never overwrite existing data with
+       an empty schedule if scraping fails.
     */
 
     if (total === 0) {
@@ -583,7 +635,8 @@ async function main() {
                 `${arrival.date} | ` +
                 `${arrival.shipName} | ` +
                 `${arrival.arrivalTime}-${arrival.departureTime} | ` +
-                `${arrival.passengers} passengers`
+                `${arrival.passengers} passengers | ` +
+                `${arrival.status}`
             );
         });
 
