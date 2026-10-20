@@ -3,6 +3,9 @@ name: Update Cruise Schedule
 on:
   workflow_dispatch:
 
+  schedule:
+    - cron: "*/30 * * * *"
+
 permissions:
   contents: write
 
@@ -19,9 +22,7 @@ jobs:
         with:
           node-version: 20
 
-      - name: Run CruiseMapper updater
-        env:
-          APIFY_TOKEN: ${{ secrets.APIFY_TOKEN }}
+      - name: Update Port Charlottetown cruise schedule
         run: node update-cruise.js
 
       - name: Commit updated cruise data
@@ -34,7 +35,7 @@ jobs:
           if git diff --cached --quiet; then
             echo "No cruise data changes to commit"
           else
-            git commit -m "Automatic cruise schedule update"
+            git commit -m "Automatic Port Charlottetown cruise schedule update"
             git pull --rebase origin main
             git push origin main
           fi
