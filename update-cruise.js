@@ -1,592 +1,608 @@
 const fs = require("fs");
 
-const APIFY_TOKEN = process.env.APIFY_TOKEN;
-const ACTOR_ID = "QkfiudQbVbhHCif5r";
+const SCHEDULE_URL =
+    "https://portcharlottetown.com/cruise-schedule/";
 
-if (!APIFY_TOKEN) {
-    console.error("ERROR: APIFY_TOKEN GitHub secret is missing.");
-    process.exit(1);
-}
-
-function sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-}
-
-// ============================================================
-// JAMAICA PORTS
-// ============================================================
-
-const JAMAICA_PORTS = [
-    { name: "Ocho Rios", matches: ["ocho rios"] },
-    { name: "Montego Bay", matches: ["montego bay"] },
-    { name: "Falmouth", matches: ["falmouth"] },
-    { name: "Kingston", matches: ["kingston"] },
-    { name: "Port Antonio", matches: ["port antonio"] }
-];
-
-function identifyJamaicaPort(port) {
-    const portName = String(
-        port?.portName ||
-        port?.name ||
-        ""
-    ).toLowerCase().trim();
-
-    for (const jamaicaPort of JAMAICA_PORTS) {
-        if (
-            jamaicaPort.matches.some(match =>
-                portName.includes(match)
-            )
-        ) {
-            return jamaicaPort.name;
-        }
-    }
-
-    return null;
-}
-
-// ============================================================
-// DATE HANDLING
-// ============================================================
-
-const MONTHS = {
-    jan: "01",
-    feb: "02",
-    mar: "03",
-    apr: "04",
-    may: "05",
-    jun: "06",
-    jul: "07",
-    aug: "08",
-    sep: "09",
-    oct: "10",
-    nov: "11",
-    dec: "12"
-};
+const OUTPUT_FILE = "cruise-data.json";
 
 /*
-CruiseMapper may return:
-
-23 Sep 08:00 - 16:00
-
-We need:
-
-2026-09-23
+============================================================
+HELPERS
+============================================================
 */
 
+function cleanText(value) {
+    return String(value || "")
+        .replace(/<[^>]*>/g, " ")
+        .replace(/&nbsp;/gi, " ")
+        .replace(/&amp;/gi, "&")
+        .replace(/&#038;/gi, "&")
+        .replace(/&#8211;|&#8212;/gi, "-")
+        .replace(/&#(\d+);/g, (_, n) =>
+            String.fromCharCode(Number(n))
+        )
+        .replace(/\s+/g, " ")
+        .trim();
+}
+
+function monthNumber(month) {
+    const months = {
+        january: "01",
+        february: "02",
+        march: "03",
+        april: "04",
+        may: "05",
+        june: "06",
+        july: "07",
+        august: "08",
+        september: "09",
+        october: "10",
+        november: "11",
+        december: "12"
+    };
+
+    return months[
+        String(month).toLowerCase()
+    ] || "";
+}
+
 function normalizeDate(value) {
-    if (!value) {
-        return "";
-    }
 
-    const text = String(value).trim();
+    const text = cleanText(value);
 
-    // Already correct
-    if (/^\d{4}-\d{2}-\d{2}$/.test(text)) {
-        return text;
-    }
+    /*
+       Examples supported:
 
-    // Look for:
-    // 23 Sep
-    // 23 September
-    const match = text.match(
-        /(\d{1,2})\s+([A-Za-z]{3,9})/i
+       October 20, 2026
+       Oct 20, 2026
+       20 October 2026
+    */
+
+    let match = text.match(
+        /(January|February|March|April|May|June|July|August|September|October|November|December)\s+(\d{1,2}),?\s+(\d{4})/i
     );
 
     if (match) {
-        const day = String(
-            parseInt(match[1], 10)
-        ).padStart(2, "0");
-
-        const monthText =
-            match[2]
-                .substring(0, 3)
-                .toLowerCase();
 
         const month =
-            MONTHS[monthText];
-
-        if (month) {
-            /*
-            Determine year.
-
-            Cruise schedules may cross New Year.
-            If the cruise month is far behind the
-            current month, treat it as next year.
-            */
-
-            const now = new Date();
-
-            const jamaicaNow = new Date(
-                now.getTime() -
-                (5 * 60 * 60 * 1000)
-            );
-
-            let year =
-                jamaicaNow.getUTCFullYear();
-
-            const currentMonth =
-                jamaicaNow.getUTCMonth() + 1;
-
-            const cruiseMonth =
-                parseInt(month, 10);
-
-            // Example:
-            // December current date + January cruise
-            // means January of next year.
-            if (
-                cruiseMonth <
-                currentMonth - 6
-            ) {
-                year += 1;
-            }
-
-            return `${year}-${month}-${day}`;
-        }
-    }
-
-    // Last attempt for other date formats
-    const parsed = new Date(text);
-
-    if (!Number.isNaN(parsed.getTime())) {
-        const year =
-            parsed.getUTCFullYear();
-
-        const month =
-            String(
-                parsed.getUTCMonth() + 1
-            ).padStart(2, "0");
+            monthNumber(match[1]);
 
         const day =
             String(
-                parsed.getUTCDate()
+                Number(match[2])
             ).padStart(2, "0");
 
-        return `${year}-${month}-${day}`;
+        return `${match[3]}-${month}-${day}`;
     }
 
-    console.warn(
-        `Could not normalize date: ${text}`
+    match = text.match(
+        /(\d{1,2})\s+(January|February|March|April|May|June|July|August|September|October|November|December)\s+(\d{4})/i
     );
+
+    if (match) {
+
+        const month =
+            monthNumber(match[2]);
+
+        const day =
+            String(
+                Number(match[1])
+            ).padStart(2, "0");
+
+        return `${match[3]}-${month}-${day}`;
+    }
 
     return "";
 }
 
-// ============================================================
-// TIME HANDLING
-// ============================================================
-
 function normalizeTime(value) {
-    if (!value) {
+
+    const text =
+        cleanText(value);
+
+    /*
+       08:00
+       8:00 AM
+       4:30 PM
+    */
+
+    let match =
+        text.match(
+            /(\d{1,2}):(\d{2})\s*(AM|PM)?/i
+        );
+
+    if (!match) {
         return "--:--";
     }
 
-    const text =
-        String(value).trim();
+    let hour =
+        Number(match[1]);
 
-    // Find HH:MM anywhere in the value
-    const match =
-        text.match(
-            /(\d{1,2}):(\d{2})/
-        );
+    const minute =
+        match[2];
 
-    if (match) {
-        return (
-            `${String(
-                parseInt(match[1], 10)
-            ).padStart(2, "0")}:` +
-            `${match[2]}`
-        );
+    const period =
+        match[3]
+            ? match[3].toUpperCase()
+            : "";
+
+    if (period === "PM" && hour < 12) {
+        hour += 12;
     }
 
-    return "--:--";
+    if (period === "AM" && hour === 12) {
+        hour = 0;
+    }
+
+    return (
+        String(hour).padStart(2, "0") +
+        ":" +
+        minute
+    );
 }
 
-function extractDepartureTime(port) {
-    const direct =
-        port.departureTime ||
-        port.departTime ||
-        port.departure ||
-        port.timeOut;
+function extractNumber(value) {
 
-    if (direct) {
-        return normalizeTime(direct);
+    const text =
+        cleanText(value);
+
+    const match =
+        text.match(
+            /[\d,]+/
+        );
+
+    if (!match) {
+        return 0;
+    }
+
+    return Number(
+        match[0].replace(/,/g, "")
+    ) || 0;
+}
+
+/*
+============================================================
+EXTRACT TABLE ROWS
+============================================================
+*/
+
+function extractRows(html) {
+
+    const rows = [];
+
+    const rowRegex =
+        /<tr\b[^>]*>([\s\S]*?)<\/tr>/gi;
+
+    let rowMatch;
+
+    while (
+        (rowMatch = rowRegex.exec(html))
+        !== null
+    ) {
+
+        const rowHtml =
+            rowMatch[1];
+
+        const cells = [];
+
+        const cellRegex =
+            /<t[dh]\b[^>]*>([\s\S]*?)<\/t[dh]>/gi;
+
+        let cellMatch;
+
+        while (
+            (cellMatch =
+                cellRegex.exec(rowHtml))
+            !== null
+        ) {
+
+            cells.push(
+                cleanText(
+                    cellMatch[1]
+                )
+            );
+        }
+
+        if (cells.length > 0) {
+            rows.push(cells);
+        }
+    }
+
+    return rows;
+}
+
+/*
+============================================================
+INTERPRET PORT CHARLOTTETOWN TABLE
+============================================================
+*/
+
+function buildDataset(rows) {
+
+    if (!rows.length) {
+        throw new Error(
+            "No table rows found on Port Charlottetown schedule page."
+        );
     }
 
     /*
-    CruiseMapper may put both times into:
-
-    23 Sep 08:00 - 16:00
+       Find the header row instead of assuming
+       exact column positions.
     */
 
-    const combined = String(
-        port.date ||
-        port.arrivalDate ||
-        port.portDate ||
-        ""
+    let headerIndex = -1;
+    let headers = [];
+
+    for (
+        let i = 0;
+        i < rows.length;
+        i++
+    ) {
+
+        const lower =
+            rows[i].map(value =>
+                value.toLowerCase()
+            );
+
+        const hasShip =
+            lower.some(value =>
+                value.includes("ship") ||
+                value.includes("vessel")
+            );
+
+        const hasArrival =
+            lower.some(value =>
+                value.includes("arrival")
+            );
+
+        if (hasShip && hasArrival) {
+
+            headerIndex = i;
+            headers = lower;
+
+            break;
+        }
+    }
+
+    if (headerIndex === -1) {
+
+        throw new Error(
+            "Could not identify the cruise schedule table header."
+        );
+    }
+
+    console.log(
+        "Schedule headers:",
+        rows[headerIndex]
     );
 
-    const match =
-        combined.match(
-            /(\d{1,2}:\d{2})\s*-\s*(\d{1,2}:\d{2})/
-        );
+    function findColumn(words) {
 
-    if (match) {
-        return normalizeTime(match[2]);
-    }
-
-    return "--:--";
-}
-
-function extractArrivalTime(port) {
-    const direct =
-        port.arrivalTime ||
-        port.arriveTime ||
-        port.arrival ||
-        port.timeIn;
-
-    if (direct) {
-        return normalizeTime(direct);
-    }
-
-    const combined = String(
-        port.date ||
-        port.arrivalDate ||
-        port.portDate ||
-        ""
-    );
-
-    const match =
-        combined.match(
-            /(\d{1,2}:\d{2})\s*-\s*(\d{1,2}:\d{2})/
-        );
-
-    if (match) {
-        return normalizeTime(match[1]);
-    }
-
-    return "--:--";
-}
-
-// ============================================================
-// CONVERT TO DASHBOARD FORMAT
-// ============================================================
-
-function buildJamaicaDataset(rawData) {
-    const portMap = new Map();
-
-    for (const jamaicaPort of JAMAICA_PORTS) {
-        portMap.set(
-            jamaicaPort.name,
-            {
-                recordType: "port",
-                name: jamaicaPort.name,
-                upcomingArrivals: [],
-                scrapedAt:
-                    new Date().toISOString()
-            }
+        return headers.findIndex(
+            header =>
+                words.some(
+                    word =>
+                        header.includes(word)
+                )
         );
     }
 
-    for (const cruise of rawData) {
+    const dateColumn =
+        findColumn(["date"]);
+
+    const arrivalColumn =
+        findColumn(["arrival"]);
+
+    const departureColumn =
+        findColumn(["departure"]);
+
+    const shipColumn =
+        findColumn(["ship", "vessel"]);
+
+    const passengersColumn =
+        findColumn([
+            "passenger",
+            "guest"
+        ]);
+
+    const cruiseLineColumn =
+        findColumn([
+            "cruise line",
+            "line"
+        ]);
+
+    const statusColumn =
+        findColumn([
+            "status"
+        ]);
+
+    if (shipColumn === -1) {
+
+        throw new Error(
+            "Ship column was not found."
+        );
+    }
+
+    const arrivals = [];
+
+    for (
+        let i = headerIndex + 1;
+        i < rows.length;
+        i++
+    ) {
+
+        const cells =
+            rows[i];
+
         const shipName =
-            cruise.shipName ||
-            cruise.ship ||
-            cruise.name ||
-            cruise.vesselName ||
-            "Unknown Ship";
+            shipColumn >= 0
+                ? cleanText(
+                    cells[shipColumn]
+                )
+                : "";
 
-        const ports =
-            cruise.ports ||
-            cruise.itinerary ||
-            cruise.portCalls ||
-            cruise.schedule ||
-            [];
-
-        if (!Array.isArray(ports)) {
+        if (!shipName) {
             continue;
         }
 
-        for (const port of ports) {
-            const jamaicaPortName =
-                identifyJamaicaPort(port);
+        /*
+           Date may be in its own column.
+           If not, search the whole row.
+        */
 
-            if (!jamaicaPortName) {
-                continue;
+        let rawDate =
+            dateColumn >= 0
+                ? cells[dateColumn]
+                : cells.join(" ");
+
+        let date =
+            normalizeDate(rawDate);
+
+        if (!date) {
+
+            date =
+                normalizeDate(
+                    cells.join(" ")
+                );
+        }
+
+        if (!date) {
+
+            console.warn(
+                "Skipping row because date could not be read:",
+                cells
+            );
+
+            continue;
+        }
+
+        const arrivalTime =
+            arrivalColumn >= 0
+                ? normalizeTime(
+                    cells[arrivalColumn]
+                )
+                : "--:--";
+
+        const departureTime =
+            departureColumn >= 0
+                ? normalizeTime(
+                    cells[departureColumn]
+                )
+                : "--:--";
+
+        const passengers =
+            passengersColumn >= 0
+                ? extractNumber(
+                    cells[
+                        passengersColumn
+                    ]
+                )
+                : 0;
+
+        const cruiseLine =
+            cruiseLineColumn >= 0
+                ? cleanText(
+                    cells[
+                        cruiseLineColumn
+                    ]
+                )
+                : "";
+
+        const status =
+            statusColumn >= 0
+                ? cleanText(
+                    cells[statusColumn]
+                )
+                : "";
+
+        arrivals.push({
+            shipName,
+            date,
+            arrivalTime,
+            departureTime,
+            passengers,
+            cruiseLine,
+            status
+        });
+    }
+
+    /*
+       Remove duplicates.
+    */
+
+    const unique = [];
+
+    const seen =
+        new Set();
+
+    for (const arrival of arrivals) {
+
+        const key = [
+            arrival.shipName,
+            arrival.date,
+            arrival.arrivalTime,
+            arrival.departureTime
+        ].join("|");
+
+        if (seen.has(key)) {
+            continue;
+        }
+
+        seen.add(key);
+
+        unique.push(arrival);
+    }
+
+    unique.sort(
+        (a, b) => {
+
+            if (a.date !== b.date) {
+
+                return a.date.localeCompare(
+                    b.date
+                );
             }
 
-            const rawDate =
-                port.date ||
-                port.arrivalDate ||
-                port.arriveDate ||
-                port.portDate ||
-                port.day ||
-                "";
-
-            const date =
-                normalizeDate(rawDate);
-
-            const arrivalTime =
-                extractArrivalTime(port);
-
-            const departureTime =
-                extractDepartureTime(port);
-
-            if (!date) {
-                console.warn(
-                    `Skipping ${shipName} at ${jamaicaPortName}: bad date "${rawDate}"`
-                );
-                continue;
-            }
-
-            const portRecord =
-                portMap.get(
-                    jamaicaPortName
-                );
-
-            portRecord.upcomingArrivals.push({
-                shipName,
-                date,
-                arrivalTime,
-                departureTime
-            });
-
-            console.log(
-                `JAMAICA: ${date} | ` +
-                `${jamaicaPortName} | ` +
-                `${shipName} | ` +
-                `${arrivalTime}-${departureTime}`
+            return String(
+                a.arrivalTime
+            ).localeCompare(
+                String(
+                    b.arrivalTime
+                )
             );
         }
-    }
-
-    // Remove duplicates
-    for (const portRecord of portMap.values()) {
-        const seen = new Set();
-
-        portRecord.upcomingArrivals =
-            portRecord.upcomingArrivals.filter(
-                arrival => {
-                    const key = [
-                        arrival.shipName,
-                        arrival.date,
-                        arrival.arrivalTime,
-                        arrival.departureTime
-                    ].join("|");
-
-                    if (seen.has(key)) {
-                        return false;
-                    }
-
-                    seen.add(key);
-                    return true;
-                }
-            );
-
-        portRecord.upcomingArrivals.sort(
-            (a, b) => {
-                if (a.date !== b.date) {
-                    return a.date.localeCompare(
-                        b.date
-                    );
-                }
-
-                return a.arrivalTime.localeCompare(
-                    b.arrivalTime
-                );
-            }
-        );
-    }
-
-    return Array.from(
-        portMap.values()
     );
+
+    return [
+        {
+            recordType: "port",
+            name: "Charlottetown",
+            upcomingArrivals:
+                unique,
+            scrapedAt:
+                new Date().toISOString()
+        }
+    ];
 }
 
-// ============================================================
-// MAIN
-// ============================================================
+/*
+============================================================
+MAIN
+============================================================
+*/
 
 async function main() {
+
     console.log(
-        "Jamaica CruiseMapper updater starting..."
+        "Port Charlottetown cruise updater starting..."
     );
 
     console.log(
         new Date().toISOString()
     );
 
-    // Start ONE Apify run
-    const startResponse =
+    console.log(
+        `Downloading: ${SCHEDULE_URL}`
+    );
+
+    const response =
         await fetch(
-            `https://api.apify.com/v2/acts/${ACTOR_ID}/runs?token=${APIFY_TOKEN}`,
+            SCHEDULE_URL,
             {
-                method: "POST",
                 headers: {
-                    "Content-Type":
-                        "application/json"
+                    "User-Agent":
+                        "Mozilla/5.0 (compatible; VMM-Cruise-Schedule/1.0)",
+                    "Accept":
+                        "text/html,application/xhtml+xml"
                 }
             }
         );
 
-    if (!startResponse.ok) {
+    if (!response.ok) {
+
         throw new Error(
-            `Could not start CruiseMapper Actor: HTTP ${startResponse.status}`
+            `Port Charlottetown returned HTTP ${response.status}`
         );
     }
 
-    const startResult =
-        await startResponse.json();
-
-    const runId =
-        startResult?.data?.id;
-
-    if (!runId) {
-        throw new Error(
-            "Apify did not return a run ID."
-        );
-    }
+    const html =
+        await response.text();
 
     console.log(
-        `Started Apify run: ${runId}`
+        `Downloaded ${html.length} characters.`
     );
-
-    let run = null;
-
-    for (
-        let attempt = 1;
-        attempt <= 40;
-        attempt++
-    ) {
-        await sleep(5000);
-
-        const statusResponse =
-            await fetch(
-                `https://api.apify.com/v2/actor-runs/${runId}?token=${APIFY_TOKEN}`
-            );
-
-        if (!statusResponse.ok) {
-            throw new Error(
-                `Could not check Apify run: HTTP ${statusResponse.status}`
-            );
-        }
-
-        const statusResult =
-            await statusResponse.json();
-
-        run =
-            statusResult.data;
-
-        console.log(
-            `Run status: ${run.status}`
-        );
-
-        if (
-            run.status ===
-            "SUCCEEDED"
-        ) {
-            break;
-        }
-
-        if (
-            run.status === "FAILED" ||
-            run.status === "ABORTED" ||
-            run.status === "TIMED-OUT"
-        ) {
-            throw new Error(
-                `CruiseMapper Actor ended with status ${run.status}`
-            );
-        }
-    }
 
     if (
-        !run ||
-        run.status !== "SUCCEEDED"
+        !html
+            .toLowerCase()
+            .includes("cruise")
     ) {
+
         throw new Error(
-            "CruiseMapper Actor did not finish in time."
+            "Downloaded page does not appear to contain cruise information."
         );
     }
 
-    const datasetId =
-        run.defaultDatasetId;
-
-    if (!datasetId) {
-        throw new Error(
-            "Completed run did not provide a dataset ID."
-        );
-    }
-
-    const dataResponse =
-        await fetch(
-            `https://api.apify.com/v2/datasets/${datasetId}/items?clean=true&format=json&token=${APIFY_TOKEN}`
-        );
-
-    if (!dataResponse.ok) {
-        throw new Error(
-            `Could not download CruiseMapper dataset: HTTP ${dataResponse.status}`
-        );
-    }
-
-    const rawData =
-        await dataResponse.json();
-
-    if (!Array.isArray(rawData)) {
-        throw new Error(
-            "CruiseMapper returned an unexpected dataset."
-        );
-    }
+    const rows =
+        extractRows(html);
 
     console.log(
-        `CruiseMapper returned ${rawData.length} raw records.`
+        `Found ${rows.length} HTML table rows.`
     );
 
-    const jamaicaData =
-        buildJamaicaDataset(
-            rawData
-        );
+    const data =
+        buildDataset(rows);
 
-    const totalJamaicaCalls =
-        jamaicaData.reduce(
-            (total, port) =>
-                total +
-                port.upcomingArrivals.length,
-            0
-        );
+    const total =
+        data[0]
+            .upcomingArrivals
+            .length;
 
     console.log(
-        `Jamaica cruise calls found: ${totalJamaicaCalls}`
+        `Charlottetown cruise calls found: ${total}`
     );
 
-    jamaicaData.forEach(port => {
-        console.log(
-            `${port.name}: ` +
-            `${port.upcomingArrivals.length}`
-        );
-    });
+    /*
+       IMPORTANT:
+       Never destroy the existing working JSON
+       if the website changes or blocks GitHub.
+    */
 
-    // Never overwrite working data
-    // if the scraper unexpectedly returns nothing.
-    if (totalJamaicaCalls === 0) {
+    if (total === 0) {
+
         throw new Error(
-            "No Jamaica cruise calls were found. Existing cruise-data.json was NOT overwritten."
+            "No Charlottetown cruise calls were found. Existing cruise-data.json was NOT overwritten."
         );
     }
+
+    data[0]
+        .upcomingArrivals
+        .forEach(arrival => {
+
+            console.log(
+                `${arrival.date} | ` +
+                `${arrival.shipName} | ` +
+                `${arrival.arrivalTime}-${arrival.departureTime} | ` +
+                `${arrival.passengers} passengers`
+            );
+        });
 
     fs.writeFileSync(
-        "cruise-data.json",
+        OUTPUT_FILE,
         JSON.stringify(
-            jamaicaData,
+            data,
             null,
             2
         )
     );
 
     console.log(
-        "cruise-data.json updated successfully."
+        `${OUTPUT_FILE} updated successfully.`
     );
 }
 
 main().catch(error => {
+
     console.error(
         "CRUISE UPDATE FAILED:"
     );
