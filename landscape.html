@@ -4,285 +4,264 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Port Charlottetown Cruise Schedule - Landscape</title>
+<title>Jamaica Cruise Traffic Dashboard - Landscape</title>
 
 <style>
-    * {
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
-    }
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
 
-    html, body {
-        width: 100%;
-        height: 100%;
-        overflow: hidden;
-        font-family: Arial, Helvetica, sans-serif;
-        background:
-            linear-gradient(
-                135deg,
-                #071b2b 0%,
-                #0b3046 55%,
-                #0d4158 100%
-            );
-        color: white;
-    }
+html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    font-family: Arial, Helvetica, sans-serif;
+    background: linear-gradient(
+        135deg,
+        #071b2b 0%,
+        #0b3046 55%,
+        #0d4158 100%
+    );
+    color: white;
+}
 
+body {
+    display: flex;
+    flex-direction: column;
+    padding: 24px 32px 18px;
+}
+
+/* HEADER */
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 110px;
+    border-bottom: 2px solid rgba(255,255,255,0.16);
+    padding-bottom: 16px;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 22px;
+}
+
+.logo {
+    width: 110px;
+    height: 80px;
+    object-fit: contain;
+    background: white;
+    border-radius: 10px;
+    padding: 7px;
+}
+
+.title-block h1 {
+    font-size: clamp(28px, 2.7vw, 50px);
+    font-weight: 800;
+    letter-spacing: 1px;
+    line-height: 1;
+}
+
+.title-block p {
+    margin-top: 10px;
+    color: #b9d8e5;
+    font-size: clamp(14px, 1.2vw, 22px);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+}
+
+.clock {
+    text-align: right;
+}
+
+#time {
+    font-size: clamp(30px, 3vw, 54px);
+    font-weight: 800;
+}
+
+#date {
+    margin-top: 5px;
+    color: #b9d8e5;
+    font-size: clamp(14px, 1.2vw, 21px);
+}
+
+/* SUMMARY */
+
+.summary {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+    padding: 18px 0;
+}
+
+.card {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.14);
+    border-radius: 14px;
+    padding: 13px 20px;
+    text-align: center;
+}
+
+.card .number {
+    font-size: clamp(28px, 2.8vw, 48px);
+    font-weight: 800;
+}
+
+.card .label {
+    margin-top: 4px;
+    color: #b9d8e5;
+    font-size: clamp(12px, 1vw, 18px);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* TABLE */
+
+.board {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    background: rgba(0,0,0,0.17);
+    border: 1px solid rgba(255,255,255,0.13);
+    border-radius: 14px;
+    overflow: hidden;
+}
+
+.table-header,
+.row {
+    display: grid;
+    grid-template-columns:
+        0.9fr
+        1.25fr
+        0.75fr
+        2.25fr
+        0.75fr
+        0.8fr
+        1fr;
+    align-items: center;
+    column-gap: 12px;
+}
+
+.table-header {
+    min-height: 55px;
+    padding: 0 22px;
+    background: rgba(0,0,0,0.32);
+    color: #a9d5e6;
+    font-size: clamp(12px, 1vw, 18px);
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.7px;
+}
+
+#rows {
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
+}
+
+.row {
+    min-height: 62px;
+    padding: 9px 22px;
+    border-top: 1px solid rgba(255,255,255,0.09);
+    font-size: clamp(14px, 1.2vw, 21px);
+}
+
+.row:nth-child(even) {
+    background: rgba(255,255,255,0.035);
+}
+
+.ship {
+    font-weight: 800;
+    font-size: clamp(15px, 1.3vw, 23px);
+}
+
+.port {
+    font-weight: 700;
+    color: #9eddf1;
+}
+
+.guests {
+    font-weight: 700;
+}
+
+.status {
+    display: inline-block;
+    width: fit-content;
+    padding: 7px 13px;
+    border-radius: 18px;
+    font-size: clamp(11px, 0.9vw, 16px);
+    font-weight: bold;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.status-upcoming {
+    background: #1976d2;
+}
+
+.status-today {
+    background: #148b72;
+}
+
+.status-inport {
+    background: #138a4a;
+}
+
+.empty {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: #b9d8e5;
+    font-size: clamp(22px, 2vw, 36px);
+    font-weight: bold;
+}
+
+/* FOOTER */
+
+.footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 12px;
+    color: #91b6c5;
+    font-size: clamp(11px, 0.9vw, 16px);
+}
+
+.live {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #2bd17e;
+    box-shadow: 0 0 8px #2bd17e;
+}
+
+@media (max-width: 1100px) {
     body {
-        display: flex;
-        flex-direction: column;
-        padding: 24px 32px 18px;
-    }
-
-    /* ==============================
-       HEADER
-    ============================== */
-
-    .header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        min-height: 110px;
-        border-bottom: 2px solid rgba(255,255,255,0.16);
-        padding-bottom: 16px;
-    }
-
-    .brand {
-        display: flex;
-        align-items: center;
-        gap: 22px;
+        padding: 16px 20px 12px;
     }
 
     .logo {
-        width: 110px;
-        height: 80px;
-        object-fit: contain;
-        background: white;
-        border-radius: 10px;
-        padding: 7px;
-    }
-
-    .title-block h1 {
-        font-size: clamp(28px, 2.7vw, 50px);
-        font-weight: 800;
-        letter-spacing: 1px;
-        line-height: 1;
-    }
-
-    .title-block p {
-        margin-top: 10px;
-        color: #b9d8e5;
-        font-size: clamp(14px, 1.2vw, 22px);
-        letter-spacing: 1.5px;
-        text-transform: uppercase;
-    }
-
-    .clock {
-        text-align: right;
-    }
-
-    #time {
-        font-size: clamp(30px, 3vw, 54px);
-        font-weight: 800;
-    }
-
-    #date {
-        margin-top: 5px;
-        color: #b9d8e5;
-        font-size: clamp(14px, 1.2vw, 21px);
-    }
-
-    /* ==============================
-       SUMMARY
-    ============================== */
-
-    .summary {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 18px;
-        padding: 18px 0;
-    }
-
-    .card {
-        background: rgba(255,255,255,0.08);
-        border: 1px solid rgba(255,255,255,0.14);
-        border-radius: 14px;
-        padding: 13px 20px;
-        text-align: center;
-    }
-
-    .card .number {
-        font-size: clamp(28px, 2.8vw, 48px);
-        font-weight: 800;
-        color: #ffffff;
-    }
-
-    .card .label {
-        margin-top: 4px;
-        color: #b9d8e5;
-        font-size: clamp(12px, 1vw, 18px);
-        text-transform: uppercase;
-        letter-spacing: 1px;
-    }
-
-    /* ==============================
-       TABLE
-    ============================== */
-
-    .board {
-        flex: 1;
-        min-height: 0;
-        display: flex;
-        flex-direction: column;
-        background: rgba(0,0,0,0.17);
-        border: 1px solid rgba(255,255,255,0.13);
-        border-radius: 14px;
-        overflow: hidden;
-    }
-
-    .table-header,
-    .row {
-        display: grid;
-
-        grid-template-columns:
-            0.8fr
-            0.75fr
-            2fr
-            1.6fr
-            0.75fr
-            0.9fr
-            1fr;
-
-        align-items: center;
-        column-gap: 12px;
-    }
-
-    .table-header {
-        min-height: 55px;
-        padding: 0 22px;
-        background: rgba(0,0,0,0.32);
-        color: #a9d5e6;
-        font-size: clamp(12px, 1vw, 18px);
-        font-weight: bold;
-        text-transform: uppercase;
-        letter-spacing: 0.7px;
-    }
-
-    #rows {
-        flex: 1;
-        min-height: 0;
-        overflow: hidden;
+        width: 85px;
+        height: 65px;
     }
 
     .row {
-        min-height: 62px;
-        padding: 9px 22px;
-        border-top: 1px solid rgba(255,255,255,0.09);
-        font-size: clamp(14px, 1.2vw, 21px);
+        min-height: 52px;
     }
-
-    .row:nth-child(even) {
-        background: rgba(255,255,255,0.035);
-    }
-
-    .ship {
-        font-weight: 800;
-        font-size: clamp(15px, 1.3vw, 23px);
-    }
-
-    .line {
-        font-weight: 700;
-        color: #9eddf1;
-    }
-
-    .passengers {
-        font-weight: 700;
-    }
-
-    .status {
-        display: inline-block;
-        width: fit-content;
-        padding: 7px 13px;
-        border-radius: 18px;
-        font-size: clamp(11px, 0.9vw, 16px);
-        font-weight: bold;
-        text-transform: uppercase;
-        white-space: nowrap;
-    }
-
-    .status-ontime {
-        background: #138a4a;
-        color: white;
-    }
-
-    .status-change {
-        background: #d47b13;
-        color: white;
-    }
-
-    .status-inport {
-        background: #1976d2;
-        color: white;
-    }
-
-    .status-other {
-        background: #586977;
-        color: white;
-    }
-
-    .empty {
-        height: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        text-align: center;
-        color: #b9d8e5;
-        font-size: clamp(22px, 2vw, 36px);
-        font-weight: bold;
-    }
-
-    /* ==============================
-       FOOTER
-    ============================== */
-
-    .footer {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding-top: 12px;
-        color: #91b6c5;
-        font-size: clamp(11px, 0.9vw, 16px);
-    }
-
-    .live {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-    }
-
-    .dot {
-        width: 10px;
-        height: 10px;
-        border-radius: 50%;
-        background: #2bd17e;
-        box-shadow: 0 0 8px #2bd17e;
-    }
-
-    @media (max-width: 1100px) {
-
-        body {
-            padding: 16px 20px 12px;
-        }
-
-        .logo {
-            width: 85px;
-            height: 65px;
-        }
-
-        .row {
-            min-height: 52px;
-        }
-    }
+}
 </style>
 </head>
 
@@ -299,27 +278,15 @@
         >
 
         <div class="title-block">
-
-            <h1>PORT CHARLOTTETOWN CRUISE TRAFFIC</h1>
-
-            <p>
-                Upcoming Cruise Arrivals • Prince Edward Island
-            </p>
-
+            <h1>JAMAICA CRUISE TRAFFIC</h1>
+            <p>Upcoming Cruise Arrivals Across Jamaica</p>
         </div>
 
     </div>
 
     <div class="clock">
-
-        <div id="time">
-            --:--
-        </div>
-
-        <div id="date">
-            Loading...
-        </div>
-
+        <div id="time">--:--</div>
+        <div id="date">Loading...</div>
     </div>
 
 </header>
@@ -328,50 +295,18 @@
 <section class="summary">
 
     <div class="card">
-
-        <div
-            class="number"
-            id="shipCount"
-        >
-            0
-        </div>
-
-        <div class="label">
-            Upcoming Ships
-        </div>
-
+        <div class="number" id="shipCount">0</div>
+        <div class="label">Upcoming Ships</div>
     </div>
 
-
     <div class="card">
-
-        <div
-            class="number"
-            id="passengerCount"
-        >
-            0
-        </div>
-
-        <div class="label">
-            Upcoming Passengers
-        </div>
-
+        <div class="number" id="guestCount">0</div>
+        <div class="label">Upcoming Guests</div>
     </div>
 
-
     <div class="card">
-
-        <div
-            class="number"
-            id="crewCount"
-        >
-            0
-        </div>
-
-        <div class="label">
-            Upcoming Crew
-        </div>
-
+        <div class="number" id="portCount">0</div>
+        <div class="label">Active Ports</div>
     </div>
 
 </section>
@@ -380,30 +315,19 @@
 <main class="board">
 
     <div class="table-header">
-
         <div>Date</div>
-
+        <div>Port</div>
         <div>Arrival</div>
-
         <div>Ship</div>
-
-        <div>Cruise Line</div>
-
         <div>Departure</div>
-
-        <div>Passengers</div>
-
+        <div>Guests</div>
         <div>Status</div>
-
     </div>
 
-
     <div id="rows">
-
         <div class="empty">
-            Loading Port Charlottetown cruise schedule...
+            Loading Jamaica cruise schedule...
         </div>
-
     </div>
 
 </main>
@@ -412,23 +336,13 @@
 <footer class="footer">
 
     <div class="live">
-
         <span class="dot"></span>
-
-        <span>
-            LIVE PORT CHARLOTTETOWN SCHEDULE
-        </span>
-
+        <span>LIVE JAMAICA CRUISE SCHEDULE</span>
     </div>
 
     <div>
-
-        Schedule Updated:
-
-        <span id="lastUpdated">
-            --
-        </span>
-
+        Last Updated:
+        <span id="lastUpdated">--</span>
     </div>
 
 </footer>
@@ -436,25 +350,20 @@
 
 <script>
 
-/* ============================================================
-   SETTINGS
-============================================================ */
-
-const DATA_URL =
-    "cruise-data.json";
+const DATA_URL = "cruise-data.json";
 
 const REFRESH_INTERVAL =
     15 * 60 * 1000;
 
 const TIME_ZONE =
-    "America/Halifax";
+    "America/Jamaica";
 
 
 /* ============================================================
-   CHARLOTTETOWN DATE
+   JAMAICA DATE
 ============================================================ */
 
-function getCharlottetownDateString() {
+function getJamaicaDateString() {
 
     const parts =
         new Intl.DateTimeFormat(
@@ -465,17 +374,13 @@ function getCharlottetownDateString() {
                 month: "2-digit",
                 day: "2-digit"
             }
-        ).formatToParts(
-            new Date()
-        );
+        ).formatToParts(new Date());
 
     const values = {};
 
     parts.forEach(part => {
 
-        if (
-            part.type !== "literal"
-        ) {
+        if (part.type !== "literal") {
             values[part.type] =
                 part.value;
         }
@@ -534,9 +439,7 @@ function updateClock() {
    FORMATTING
 ============================================================ */
 
-function formatDate(
-    dateString
-) {
+function formatDate(dateString) {
 
     if (!dateString) {
         return "—";
@@ -545,9 +448,7 @@ function formatDate(
     const parts =
         dateString.split("-");
 
-    if (
-        parts.length !== 3
-    ) {
+    if (parts.length !== 3) {
         return dateString;
     }
 
@@ -568,9 +469,7 @@ function formatDate(
 }
 
 
-function formatNumber(
-    value
-) {
+function formatNumber(value) {
 
     return Number(
         value || 0
@@ -580,9 +479,7 @@ function formatNumber(
 }
 
 
-function formatTime(
-    time
-) {
+function formatTime(time) {
 
     if (
         !time ||
@@ -614,9 +511,7 @@ function formatTime(
     hour =
         hour % 12;
 
-    if (
-        hour === 0
-    ) {
+    if (hour === 0) {
         hour = 12;
     }
 
@@ -631,12 +526,10 @@ function formatTime(
 
 
 /* ============================================================
-   TIME
+   STATUS
 ============================================================ */
 
-function timeToMinutes(
-    time
-) {
+function timeToMinutes(time) {
 
     if (
         !time ||
@@ -661,7 +554,7 @@ function timeToMinutes(
 }
 
 
-function getCharlottetownMinutes() {
+function getJamaicaMinutes() {
 
     const parts =
         new Intl.DateTimeFormat(
@@ -681,16 +574,12 @@ function getCharlottetownMinutes() {
 
     parts.forEach(part => {
 
-        if (
-            part.type === "hour"
-        ) {
+        if (part.type === "hour") {
             hour =
                 Number(part.value);
         }
 
-        if (
-            part.type === "minute"
-        ) {
+        if (part.type === "minute") {
             minute =
                 Number(part.value);
         }
@@ -704,105 +593,61 @@ function getCharlottetownMinutes() {
 }
 
 
-/* ============================================================
-   STATUS
-============================================================ */
-
-function getStatus(
-    arrival
-) {
+function getStatus(arrival) {
 
     const today =
-        getCharlottetownDateString();
-
-    /*
-       If the ship is physically in port,
-       show IN PORT regardless of the
-       website's schedule status.
-    */
+        getJamaicaDateString();
 
     if (
-        arrival.date === today
+        arrival.date > today
     ) {
-
-        const nowMinutes =
-            getCharlottetownMinutes();
-
-        const arrivalMinutes =
-            timeToMinutes(
-                arrival.arrivalTime
-            );
-
-        const departureMinutes =
-            timeToMinutes(
-                arrival.departureTime
-            );
-
-        if (
-            arrivalMinutes !== null &&
-            departureMinutes !== null &&
-            nowMinutes >= arrivalMinutes &&
-            nowMinutes <= departureMinutes
-        ) {
-
-            return {
-                text: "In Port",
-                className:
-                    "status-inport"
-            };
-        }
-    }
-
-    /*
-       Otherwise display the status
-       supplied by Port Charlottetown.
-    */
-
-    const sourceStatus =
-        String(
-            arrival.status || ""
-        ).trim();
-
-    const lower =
-        sourceStatus.toLowerCase();
-
-    if (
-        lower === "on time"
-    ) {
-
         return {
-            text: "On Time",
+            text: "Upcoming",
             className:
-                "status-ontime"
+                "status-upcoming"
         };
     }
 
     if (
-        lower.includes(
-            "time change"
-        )
+        arrival.date < today
     ) {
-
         return {
-            text: sourceStatus,
+            text: "Completed",
             className:
-                "status-change"
+                "status-upcoming"
         };
     }
 
-    if (sourceStatus) {
+    const currentMinutes =
+        getJamaicaMinutes();
 
+    const arrivalMinutes =
+        timeToMinutes(
+            arrival.arrivalTime
+        );
+
+    const departureMinutes =
+        timeToMinutes(
+            arrival.departureTime
+        );
+
+    if (
+        arrivalMinutes !== null &&
+        departureMinutes !== null &&
+        currentMinutes >= arrivalMinutes &&
+        currentMinutes <= departureMinutes
+    ) {
         return {
-            text: sourceStatus,
+            text: "In Port",
             className:
-                "status-other"
+                "status-inport"
         };
     }
 
     return {
-        text: "Scheduled",
+        text: "Today",
         className:
-            "status-other"
+            "status-today"
     };
 }
 
@@ -811,52 +656,41 @@ function getStatus(
    FLATTEN DATA
 ============================================================ */
 
-function flattenData(
-    data
-) {
+function flattenData(data) {
 
     const arrivals = [];
 
-    if (
-        !Array.isArray(data)
-    ) {
+    if (!Array.isArray(data)) {
         return arrivals;
     }
 
-    data.forEach(
-        port => {
+    data.forEach(port => {
 
-            if (
-                port.recordType !==
-                "port"
-            ) {
-                return;
-            }
-
-            if (
-                !Array.isArray(
-                    port.upcomingArrivals
-                )
-            ) {
-                return;
-            }
-
-            port.upcomingArrivals
-                .forEach(
-                    arrival => {
-
-                        arrivals.push({
-                            ...arrival,
-                            portName:
-                                port.name,
-                            scrapedAt:
-                                port.scrapedAt
-                        });
-
-                    }
-                );
+        if (
+            port.recordType !== "port"
+        ) {
+            return;
         }
-    );
+
+        if (
+            !Array.isArray(
+                port.upcomingArrivals
+            )
+        ) {
+            return;
+        }
+
+        port.upcomingArrivals
+            .forEach(arrival => {
+
+                arrivals.push({
+                    ...arrival,
+                    portName:
+                        port.name
+                });
+
+            });
+    });
 
     return arrivals;
 }
@@ -866,22 +700,16 @@ function flattenData(
    RENDER
 ============================================================ */
 
-function render(
-    data
-) {
+function render(data) {
 
     const today =
-        getCharlottetownDateString();
+        getJamaicaDateString();
 
     let arrivals =
-        flattenData(
-            data
-        );
+        flattenData(data);
 
 
-    /*
-       Today and future only
-    */
+    /* TODAY AND FUTURE ONLY */
 
     arrivals =
         arrivals.filter(
@@ -891,9 +719,7 @@ function render(
         );
 
 
-    /*
-       Sort chronologically
-    */
+    /* SORT */
 
     arrivals.sort(
         (a, b) => {
@@ -901,7 +727,6 @@ function render(
             if (
                 a.date !== b.date
             ) {
-
                 return (
                     a.date.localeCompare(
                         b.date
@@ -920,20 +745,15 @@ function render(
     );
 
 
-    /* ========================================================
-       SUMMARY
-    ======================================================== */
+    /* SUMMARY */
 
     const shipCount =
         arrivals.length;
 
 
-    const passengerCount =
+    const guestCount =
         arrivals.reduce(
-            (
-                total,
-                arrival
-            ) =>
+            (total, arrival) =>
                 total +
                 Number(
                     arrival.passengers ||
@@ -943,19 +763,13 @@ function render(
         );
 
 
-    const crewCount =
-        arrivals.reduce(
-            (
-                total,
-                arrival
-            ) =>
-                total +
-                Number(
-                    arrival.crew ||
-                    0
-                ),
-            0
-        );
+    const activePorts =
+        new Set(
+            arrivals.map(
+                arrival =>
+                    arrival.portName
+            )
+        ).size;
 
 
     document.getElementById(
@@ -967,62 +781,22 @@ function render(
 
 
     document.getElementById(
-        "passengerCount"
+        "guestCount"
     ).textContent =
         formatNumber(
-            passengerCount
+            guestCount
         );
 
 
     document.getElementById(
-        "crewCount"
+        "portCount"
     ).textContent =
         formatNumber(
-            crewCount
+            activePorts
         );
 
 
-    /* ========================================================
-       LAST SCHEDULE UPDATE
-    ======================================================== */
-
-    if (
-        Array.isArray(data) &&
-        data.length &&
-        data[0].scrapedAt
-    ) {
-
-        const updated =
-            new Date(
-                data[0].scrapedAt
-            );
-
-        document.getElementById(
-            "lastUpdated"
-        ).textContent =
-            updated.toLocaleString(
-                "en-US",
-                {
-                    timeZone:
-                        TIME_ZONE,
-                    month:
-                        "short",
-                    day:
-                        "numeric",
-                    hour:
-                        "numeric",
-                    minute:
-                        "2-digit",
-                    hour12:
-                        true
-                }
-            );
-    }
-
-
-    /* ========================================================
-       ROWS
-    ======================================================== */
+    /* ROWS */
 
     const rows =
         document.getElementById(
@@ -1036,86 +810,78 @@ function render(
 
         rows.innerHTML =
             `<div class="empty">
-                No upcoming Port Charlottetown cruise arrivals found.
+                No upcoming Jamaica cruise arrivals found.
              </div>`;
 
         return;
     }
 
 
-    /*
-       Keep maximum of 10 calls
-       so the landscape screen
-       does not scroll.
-    */
-
     const displayArrivals =
-        arrivals.slice(
-            0,
-            10
-        );
+        arrivals.slice(0, 10);
 
 
     rows.innerHTML =
         displayArrivals
-            .map(
-                arrival => {
+            .map(arrival => {
 
-                    const status =
-                        getStatus(
-                            arrival
-                        );
+                const status =
+                    getStatus(
+                        arrival
+                    );
 
-                    return `
-                        <div class="row">
+                return `
+                    <div class="row">
 
-                            <div>
-                                ${formatDate(
-                                    arrival.date
-                                )}
-                            </div>
+                        <div>
+                            ${formatDate(
+                                arrival.date
+                            )}
+                        </div>
 
-                            <div>
-                                ${formatTime(
-                                    arrival.arrivalTime
-                                )}
-                            </div>
+                        <div class="port">
+                            ${arrival.portName}
+                        </div>
 
-                            <div class="ship">
-                                ${arrival.shipName || "—"}
-                            </div>
+                        <div>
+                            ${formatTime(
+                                arrival.arrivalTime
+                            )}
+                        </div>
 
-                            <div class="line">
-                                ${arrival.cruiseLine || "—"}
-                            </div>
+                        <div class="ship">
+                            ${arrival.shipName || "—"}
+                        </div>
 
-                            <div>
-                                ${formatTime(
-                                    arrival.departureTime
-                                )}
-                            </div>
+                        <div>
+                            ${formatTime(
+                                arrival.departureTime
+                            )}
+                        </div>
 
-                            <div class="passengers">
-                                ${formatNumber(
+                        <div class="guests">
+                            ${arrival.passengers
+                                ? formatNumber(
                                     arrival.passengers
-                                )}
-                            </div>
+                                  )
+                                : "—"
+                            }
+                        </div>
 
-                            <div>
+                        <div>
 
-                                <span class="
-                                    status
-                                    ${status.className}
-                                ">
-                                    ${status.text}
-                                </span>
-
-                            </div>
+                            <span class="
+                                status
+                                ${status.className}
+                            ">
+                                ${status.text}
+                            </span>
 
                         </div>
-                    `;
-                }
-            )
+
+                    </div>
+                `;
+            })
             .join("");
 }
 
@@ -1137,30 +903,75 @@ async function loadCruiseData() {
                 }
             );
 
-
-        if (
-            !response.ok
-        ) {
+        if (!response.ok) {
 
             throw new Error(
                 `HTTP ${response.status}`
             );
         }
 
-
         const data =
             await response.json();
 
+        render(data);
 
-        render(
-            data
-        );
+
+        /* USE ACTUAL SCRAPE TIME */
+
+        let scrapedAt = null;
+
+        if (
+            Array.isArray(data) &&
+            data.length
+        ) {
+
+            scrapedAt =
+                data
+                    .map(port =>
+                        port.scrapedAt
+                    )
+                    .filter(Boolean)
+                    .sort()
+                    .pop();
+        }
+
+
+        if (scrapedAt) {
+
+            document.getElementById(
+                "lastUpdated"
+            ).textContent =
+                new Date(
+                    scrapedAt
+                ).toLocaleString(
+                    "en-US",
+                    {
+                        timeZone:
+                            TIME_ZONE,
+                        month:
+                            "short",
+                        day:
+                            "numeric",
+                        hour:
+                            "numeric",
+                        minute:
+                            "2-digit",
+                        hour12:
+                            true
+                    }
+                );
+
+        } else {
+
+            document.getElementById(
+                "lastUpdated"
+            ).textContent =
+                "Live";
+        }
 
     }
 
-    catch (
-        error
-    ) {
+    catch (error) {
 
         console.error(
             "Cruise data error:",
@@ -1187,7 +998,6 @@ setInterval(
     updateClock,
     30000
 );
-
 
 loadCruiseData();
 
