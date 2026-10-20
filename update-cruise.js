@@ -7,7 +7,7 @@ const OUTPUT_FILE = "cruise-data.json";
 
 /*
 ============================================================
-HELPERS
+CLEAN TEXT
 ============================================================
 */
 
@@ -24,6 +24,12 @@ function cleanText(value) {
         .replace(/\s+/g, " ")
         .trim();
 }
+
+/*
+============================================================
+DATE
+============================================================
+*/
 
 function normalizeDate(value) {
 
@@ -57,78 +63,48 @@ function normalizeDate(value) {
     };
 
     /*
-       Port Charlottetown format:
-       Oct 23, 2026 1:00 pm
+       Port Charlottetown:
+       Oct 20, 2026 8:00 am
     */
 
-    let match = text.match(
+    const match = text.match(
         /\b([A-Za-z]{3,9})\s+(\d{1,2}),?\s+(\d{4})\b/i
     );
 
-    if (match) {
-
-        const month =
-            months[
-                match[1].toLowerCase()
-            ];
-
-        if (month) {
-
-            const day =
-                String(
-                    Number(match[2])
-                ).padStart(2, "0");
-
-            return `${match[3]}-${month}-${day}`;
-        }
+    if (!match) {
+        return "";
     }
 
-    /*
-       Also support:
-       23 Oct 2026
-       23 October 2026
-    */
+    const month =
+        months[
+            match[1].toLowerCase()
+        ];
 
-    match = text.match(
-        /\b(\d{1,2})\s+([A-Za-z]{3,9})\s+(\d{4})\b/i
-    );
-
-    if (match) {
-
-        const month =
-            months[
-                match[2].toLowerCase()
-            ];
-
-        if (month) {
-
-            const day =
-                String(
-                    Number(match[1])
-                ).padStart(2, "0");
-
-            return `${match[3]}-${month}-${day}`;
-        }
+    if (!month) {
+        return "";
     }
 
-    return "";
+    const day =
+        String(
+            Number(match[2])
+        ).padStart(2, "0");
+
+    return `${match[3]}-${month}-${day}`;
 }
+
+/*
+============================================================
+TIME
+============================================================
+*/
 
 function normalizeTime(value) {
 
-    const text =
-        cleanText(value);
-
-    /*
-       Supports:
-       08:00
-       8:00 AM
-       4:30 PM
-    */
+    const text = cleanText(value);
 
     const match =
         text.match(
-            /(\d{1,2}):(\d{2})\s*(AM|PM)?/i
+            /(\d{1,2}):(\d{2})\s*(am|pm)/i
         );
 
     if (!match) {
@@ -142,19 +118,17 @@ function normalizeTime(value) {
         match[2];
 
     const period =
-        match[3]
-            ? match[3].toUpperCase()
-            : "";
+        match[3].toLowerCase();
 
     if (
-        period === "PM" &&
-        hour < 12
+        period === "pm" &&
+        hour !== 12
     ) {
         hour += 12;
     }
 
     if (
-        period === "AM" &&
+        period === "am" &&
         hour === 12
     ) {
         hour = 0;
@@ -166,6 +140,12 @@ function normalizeTime(value) {
         minute
     );
 }
+
+/*
+============================================================
+NUMBER
+============================================================
+*/
 
 function extractNumber(value) {
 
@@ -186,7 +166,7 @@ function extractNumber(value) {
 
 /*
 ============================================================
-EXTRACT TABLE ROWS
+EXTRACT HTML TABLE ROWS
 ============================================================
 */
 
@@ -227,7 +207,7 @@ function extractRows(html) {
             );
         }
 
-        if (cells.length > 0) {
+        if (cells.length) {
             rows.push(cells);
         }
     }
@@ -237,225 +217,148 @@ function extractRows(html) {
 
 /*
 ============================================================
-BUILD PORT CHARLOTTETOWN DATA
+REMOVE LABEL CELLS
+
+The first Port Charlottetown row can contain:
+
+Oct 20, 2026 8:00 am
+Arrival
+Oct 20, 2026 4:00 pm
+Departure
+Silver Shadow
+Ship
+Silversea
+Cruise Line
+392
+Passengers
+302
+Crew
+On Time
+Status
+
+We remove the label cells so it becomes the same
+7-column structure as all the following rows.
+============================================================
+*/
+
+function removeLabelCells(cells) {
+
+    const labels = new Set([
+        "arrival",
+        "departure",
+        "ship",
+        "vessel",
+        "cruise line",
+        "passengers",
+        "passenger",
+        "guests",
+        "guest",
+        "crew",
+        "status"
+    ]);
+
+    return cells.filter(cell => {
+
+        const value =
+            cleanText(cell)
+                .toLowerCase();
+
+        return !labels.has(value);
+    });
+}
+
+/*
+============================================================
+BUILD CHARLOTTETOWN DATA
 ============================================================
 */
 
 function buildDataset(rows) {
 
-    if (!rows.length) {
-
-        throw new Error(
-            "No table rows found on Port Charlottetown schedule page."
-        );
-    }
-
-    let headerIndex = -1;
-    let headers = [];
-
-    for (
-        let i = 0;
-        i < rows.length;
-        i++
-    ) {
-
-        const lower =
-            rows[i].map(value =>
-                value.toLowerCase()
-            );
-
-        const hasShip =
-            lower.some(value =>
-                value.includes("ship") ||
-                value.includes("vessel")
-            );
-
-        const hasArrival =
-            lower.some(value =>
-                value.includes("arrival")
-            );
-
-        if (
-            hasShip &&
-            hasArrival
-        ) {
-
-            headerIndex = i;
-            headers = lower;
-
-            break;
-        }
-    }
-
-    if (headerIndex === -1) {
-
-        throw new Error(
-            "Could not identify the cruise schedule table header."
-        );
-    }
-
-    console.log(
-        "Schedule headers:",
-        rows[headerIndex]
-    );
-
-    function findColumn(words) {
-
-        return headers.findIndex(
-            header =>
-                words.some(
-                    word =>
-                        header.includes(word)
-                )
-        );
-    }
-
-    const dateColumn =
-        findColumn(["date"]);
-
-    const arrivalColumn =
-        findColumn(["arrival"]);
-
-    const departureColumn =
-        findColumn(["departure"]);
-
-    const shipColumn =
-        findColumn([
-            "ship",
-            "vessel"
-        ]);
-
-    const passengersColumn =
-        findColumn([
-            "passenger",
-            "guest"
-        ]);
-
-    const cruiseLineColumn =
-        findColumn([
-            "cruise line",
-            "line"
-        ]);
-
-    const statusColumn =
-        findColumn([
-            "status"
-        ]);
-
-    if (shipColumn === -1) {
-
-        throw new Error(
-            "Ship column was not found."
-        );
-    }
-
     const arrivals = [];
 
-    for (
-        let i = headerIndex + 1;
-        i < rows.length;
-        i++
-    ) {
+    for (const originalRow of rows) {
 
         const cells =
-            rows[i];
+            removeLabelCells(
+                originalRow
+            );
 
-        const shipName =
-            shipColumn >= 0
-                ? cleanText(
-                    cells[shipColumn]
-                )
-                : "";
+        /*
+           Expected after labels removed:
 
-        if (!shipName) {
+           0 Arrival date/time
+           1 Departure date/time
+           2 Ship
+           3 Cruise Line
+           4 Passengers
+           5 Crew
+           6 Status
+        */
+
+        if (cells.length < 7) {
             continue;
         }
 
-        /*
-           Port Charlottetown puts the date
-           together with the arrival time.
+        const arrivalRaw =
+            cells[0];
 
-           Example:
-           Oct 23, 2026 1:00 pm
-        */
+        const departureRaw =
+            cells[1];
 
-        let rawDate =
-            arrivalColumn >= 0
-                ? cells[arrivalColumn]
-                : "";
+        const shipName =
+            cleanText(
+                cells[2]
+            );
 
-        if (
-            !rawDate &&
-            dateColumn >= 0
-        ) {
-            rawDate =
-                cells[dateColumn];
-        }
+        const cruiseLine =
+            cleanText(
+                cells[3]
+            );
 
-        if (!rawDate) {
-            rawDate =
-                cells.join(" ");
-        }
+        const passengers =
+            extractNumber(
+                cells[4]
+            );
 
-        let date =
-            normalizeDate(rawDate);
+        const crew =
+            extractNumber(
+                cells[5]
+            );
+
+        const status =
+            cleanText(
+                cells[6]
+            );
+
+        const date =
+            normalizeDate(
+                arrivalRaw
+            );
 
         if (!date) {
 
-            date =
-                normalizeDate(
-                    cells.join(" ")
-                );
-        }
-
-        if (!date) {
-
-            console.warn(
-                "Skipping row because date could not be read:",
+            console.log(
+                "Ignoring non-cruise row:",
                 cells
             );
 
             continue;
         }
 
+        if (!shipName) {
+            continue;
+        }
+
         const arrivalTime =
-            arrivalColumn >= 0
-                ? normalizeTime(
-                    cells[arrivalColumn]
-                )
-                : "--:--";
+            normalizeTime(
+                arrivalRaw
+            );
 
         const departureTime =
-            departureColumn >= 0
-                ? normalizeTime(
-                    cells[departureColumn]
-                )
-                : "--:--";
-
-        const passengers =
-            passengersColumn >= 0
-                ? extractNumber(
-                    cells[
-                        passengersColumn
-                    ]
-                )
-                : 0;
-
-        const cruiseLine =
-            cruiseLineColumn >= 0
-                ? cleanText(
-                    cells[
-                        cruiseLineColumn
-                    ]
-                )
-                : "";
-
-        const status =
-            statusColumn >= 0
-                ? cleanText(
-                    cells[statusColumn]
-                )
-                : "";
+            normalizeTime(
+                departureRaw
+            );
 
         arrivals.push({
             shipName,
@@ -463,13 +366,25 @@ function buildDataset(rows) {
             arrivalTime,
             departureTime,
             passengers,
+            crew,
             cruiseLine,
             status
         });
+
+        console.log(
+            `FOUND: ${date} | ` +
+            `${shipName} | ` +
+            `${arrivalTime}-${departureTime} | ` +
+            `${passengers} passengers | ` +
+            `${crew} crew | ` +
+            `${status}`
+        );
     }
 
     /*
-       REMOVE DUPLICATES
+    ========================================================
+    REMOVE DUPLICATES
+    ========================================================
     */
 
     const unique = [];
@@ -477,10 +392,7 @@ function buildDataset(rows) {
     const seen =
         new Set();
 
-    for (
-        const arrival
-        of arrivals
-    ) {
+    for (const arrival of arrivals) {
 
         const key = [
             arrival.shipName,
@@ -499,27 +411,23 @@ function buildDataset(rows) {
     }
 
     /*
-       SORT BY DATE AND ARRIVAL TIME
+    ========================================================
+    SORT
+    ========================================================
     */
 
     unique.sort(
         (a, b) => {
 
-            if (
-                a.date !== b.date
-            ) {
+            if (a.date !== b.date) {
 
                 return a.date.localeCompare(
                     b.date
                 );
             }
 
-            return String(
-                a.arrivalTime
-            ).localeCompare(
-                String(
-                    b.arrivalTime
-                )
+            return a.arrivalTime.localeCompare(
+                b.arrivalTime
             );
         }
     );
@@ -553,7 +461,7 @@ async function main() {
     );
 
     console.log(
-        `Downloading: ${SCHEDULE_URL}`
+        `Downloading ${SCHEDULE_URL}`
     );
 
     const response =
@@ -562,7 +470,7 @@ async function main() {
             {
                 headers: {
                     "User-Agent":
-                        "Mozilla/5.0 (compatible; VMM-Cruise-Schedule/1.0)",
+                        "Mozilla/5.0 (compatible; VMM Cruise Display/1.0)",
 
                     "Accept":
                         "text/html,application/xhtml+xml"
@@ -584,17 +492,6 @@ async function main() {
         `Downloaded ${html.length} characters.`
     );
 
-    if (
-        !html
-            .toLowerCase()
-            .includes("cruise")
-    ) {
-
-        throw new Error(
-            "Downloaded page does not appear to contain cruise information."
-        );
-    }
-
     const rows =
         extractRows(html);
 
@@ -615,9 +512,12 @@ async function main() {
     );
 
     /*
-       SAFETY:
-       Never overwrite existing data with
-       an empty schedule if scraping fails.
+    ========================================================
+    SAFETY
+
+    Never replace the existing JSON with an empty file
+    if Port Charlottetown changes its website.
+    ========================================================
     */
 
     if (total === 0) {
@@ -627,18 +527,11 @@ async function main() {
         );
     }
 
-    data[0]
-        .upcomingArrivals
-        .forEach(arrival => {
-
-            console.log(
-                `${arrival.date} | ` +
-                `${arrival.shipName} | ` +
-                `${arrival.arrivalTime}-${arrival.departureTime} | ` +
-                `${arrival.passengers} passengers | ` +
-                `${arrival.status}`
-            );
-        });
+    /*
+    ========================================================
+    WRITE JSON
+    ========================================================
+    */
 
     fs.writeFileSync(
         OUTPUT_FILE,
@@ -650,9 +543,19 @@ async function main() {
     );
 
     console.log(
-        `${OUTPUT_FILE} updated successfully.`
+        "cruise-data.json updated successfully."
+    );
+
+    console.log(
+        `${total} Charlottetown cruise calls saved.`
     );
 }
+
+/*
+============================================================
+RUN
+============================================================
+*/
 
 main().catch(error => {
 
