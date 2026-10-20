@@ -135,21 +135,24 @@ function isValidShipName(name) {
         String(name).trim();
 
     /*
-       Ship names must contain at least
-       two normal Latin letters.
-
-       This rejects junk characters such
-       as 留 that were accidentally parsed
-       as a ship name.
+       A real ship name must contain
+       normal A-Z letters.
     */
 
-    if (!/[A-Za-z].*[A-Za-z]/.test(cleaned)) {
+    if (!/[A-Za-z]/.test(cleaned)) {
         return false;
     }
 
     /*
-       Reject obvious page/navigation text.
+       Require at least two Latin letters.
     */
+
+    const letters =
+        cleaned.match(/[A-Za-z]/g);
+
+    if (!letters || letters.length < 2) {
+        return false;
+    }
 
     const badText = [
         "cruise timetable",
@@ -173,17 +176,11 @@ function isValidShipName(name) {
 
     if (
         badText.some(
-            item =>
-                lower === item
+            item => lower === item
         )
     ) {
         return false;
     }
-
-    /*
-       Avoid extremely long page text
-       accidentally becoming a ship name.
-    */
 
     if (cleaned.length > 80) {
         return false;
@@ -265,9 +262,9 @@ function parseScheduleText(text, portName) {
         }
 
 
-        /* ==========================================
-           NORMAL RECORD WITH TIMES
-        ========================================== */
+        /* ====================================================
+           RECORD WITH ARRIVAL AND DEPARTURE TIMES
+        ==================================================== */
 
         const timeMatch =
             line.match(
@@ -278,11 +275,6 @@ function parseScheduleText(text, portName) {
 
             let shipName = null;
 
-
-            /*
-               Search backwards for the first
-               sensible ship name.
-            */
 
             for (
                 let back = i - 1;
@@ -312,11 +304,8 @@ function parseScheduleText(text, portName) {
             }
 
 
-            /*
-               Look forward for passenger count.
-            */
-
             let passengers = null;
+
 
             for (
                 let forward = i + 1;
@@ -379,23 +368,15 @@ function parseScheduleText(text, portName) {
         }
 
 
-        /* ==========================================
-           RECORD WITHOUT TIMES
-        ========================================== */
+        /* ====================================================
+           RECORD WITHOUT PUBLISHED TIMES
+        ==================================================== */
 
         if (
             isValidShipName(line)
         ) {
 
-            /*
-               Check nearby lines for a
-               passenger number.
-            */
-
             let passengers = null;
-
-            let passengerLineIndex =
-                null;
 
 
             for (
@@ -423,17 +404,9 @@ function parseScheduleText(text, portName) {
                             candidate
                         );
 
-                    passengerLineIndex =
-                        forward;
-
                     break;
                 }
 
-
-                /*
-                   Stop if we reach another
-                   obvious date/day.
-                */
 
                 if (
                     /^(?:Mon|Tue|Wed|Thu|Fri|Sat|Sun)\s+\d{1,2}$/i
@@ -446,10 +419,7 @@ function parseScheduleText(text, portName) {
             }
 
 
-            if (
-                passengers &&
-                passengerLineIndex
-            ) {
+            if (passengers) {
 
                 arrivals.push({
 
@@ -486,132 +456,87 @@ function parseScheduleText(text, portName) {
 
 
 /* ============================================================
-   DEDUPLICATE
+   CLEAN AND DEDUPLICATE ARRIVALS
 ============================================================ */
 
-function deduplicateArrivals(arrivals) {
+function cleanArrivals(arrivals) {
 
     /*
-       FIRST:
-       Remove exact duplicates.
+       ABSOLUTE JUNK FILTER
+
+       Any record without a normal A-Z
+       letter in the ship name is deleted.
+       This removes the bogus 留 record.
+    */
+
+    let cleaned =
+        arrivals.filter(
+            arrival => {
+
+                const shipName =
+                    String(
+                        arrival.shipName || ""
+                    ).trim();
+
+                return (
+                    /[A-Za-z]/.test(
+                        shipName
+                    )
+                );
+            }
+        );
+
+
+    /*
+       REMOVE EXACT DUPLICATES
     */
 
     const exactMap =
         new Map();
 
-    arrivals.forEach(arrival => {
 
-        const key = [
-            arrival.date,
-            arrival.shipName
-                .toLowerCase()
-                .trim(),
-            arrival.arrivalTime,
-            arrival.departureTime,
-            arrival.passengers
-        ].join("|");
+    cleaned.forEach(
+        arrival => {
 
-        if (!exactMap.has(key)) {
-            exactMap.set(
-                key,
-                arrival
-            );
+            const key = [
+                arrival.date,
+                String(
+                    arrival.shipName
+                )
+                    .toLowerCase()
+                    .trim(),
+                arrival.arrivalTime,
+                arrival.departureTime,
+                arrival.passengers
+            ].join("|");
+
+
+            if (
+                !exactMap.has(
+                    key
+                )
+            ) {
+
+                exactMap.set(
+                    key,
+                    arrival
+                );
+            }
         }
-    });
+    );
 
 
-    let cleaned =
+    cleaned =
         Array.from(
             exactMap.values()
         );
 
 
     /*
-       SECOND:
-       On the same date, if two records
-       have the same passenger count and
-       one record is clearly weaker/junk,
-       keep the better ship-name record.
-
-       This specifically prevents the
-       bogus Oct 23 entry from surviving
-       beside Viking Mars.
+       SORT BY DATE AND ARRIVAL TIME
     */
 
-    const groups =
-        new Map();
-
-    cleaned.forEach(arrival => {
-
-        const key = [
-            arrival.date,
-            arrival.passengers
-        ].join("|");
-
-        if (!groups.has(key)) {
-            groups.set(
-                key,
-                []
-            );
-        }
-
-        groups.get(key)
-            .push(arrival);
-    });
-
-
-    const finalArrivals = [];
-
-
-    groups.forEach(group => {
-
-        if (group.length === 1) {
-
-            finalArrivals.push(
-                group[0]
-            );
-
-            return;
-        }
-
-
-        /*
-           Do not blindly remove legitimate
-           ships if they happen to have the
-           same passenger capacity.
-
-           Only remove entries whose ship
-           name fails our validation.
-        */
-
-        const valid =
-            group.filter(
-                arrival =>
-                    isValidShipName(
-                        arrival.shipName
-                    )
-            );
-
-
-        if (valid.length > 0) {
-
-            valid.forEach(
-                arrival =>
-                    finalArrivals.push(
-                        arrival
-                    )
-            );
-
-        } else {
-
-            finalArrivals.push(
-                group[0]
-            );
-        }
-    });
-
-
-    finalArrivals.sort(
+    cleaned.sort(
         (a, b) => {
 
             if (
@@ -649,8 +574,10 @@ function deduplicateArrivals(arrivals) {
             }
 
 
-            return (
-                a.shipName.localeCompare(
+            return String(
+                a.shipName
+            ).localeCompare(
+                String(
                     b.shipName
                 )
             );
@@ -658,7 +585,7 @@ function deduplicateArrivals(arrivals) {
     );
 
 
-    return finalArrivals;
+    return cleaned;
 }
 
 
@@ -672,13 +599,16 @@ async function downloadPort(port) {
         `Downloading ${port.name}...`
     );
 
+
     const response =
         await fetch(
             port.url,
             {
                 headers: {
+
                     "User-Agent":
                         "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/155 Safari/537.36",
+
                     "Accept":
                         "text/html,application/xhtml+xml"
                 }
@@ -717,7 +647,7 @@ async function downloadPort(port) {
 
 
     const arrivals =
-        deduplicateArrivals(
+        cleanArrivals(
             rawArrivals
         );
 
@@ -738,9 +668,16 @@ async function downloadPort(port) {
 
 
     return {
-        recordType: "port",
-        name: port.name,
-        upcomingArrivals: arrivals,
+
+        recordType:
+            "port",
+
+        name:
+            port.name,
+
+        upcomingArrivals:
+            arrivals,
+
         scrapedAt:
             new Date().toISOString()
     };
@@ -777,9 +714,8 @@ async function main() {
 
 
     /*
-       Safety check:
-       Never overwrite the working JSON
-       if one of the Jamaica ports failed.
+       MAKE SURE ALL THREE JAMAICA
+       PORTS DOWNLOADED SUCCESSFULLY
     */
 
     if (
@@ -791,6 +727,50 @@ async function main() {
             "Not all Jamaica ports were successfully downloaded."
         );
     }
+
+
+    /* ========================================================
+       FINAL ABSOLUTE SAFETY FILTER
+
+       This runs immediately before the JSON
+       file is written.
+
+       A bogus name such as 留 cannot survive
+       this filter.
+    ======================================================== */
+
+    results.forEach(
+        port => {
+
+            port.upcomingArrivals =
+                port.upcomingArrivals.filter(
+                    arrival => {
+
+                        const shipName =
+                            String(
+                                arrival.shipName || ""
+                            ).trim();
+
+
+                        if (
+                            !/[A-Za-z]/.test(
+                                shipName
+                            )
+                        ) {
+
+                            console.log(
+                                `REMOVED bogus ship entry: ${shipName}`
+                            );
+
+                            return false;
+                        }
+
+
+                        return true;
+                    }
+                );
+        }
+    );
 
 
     const totalCalls =
@@ -812,6 +792,10 @@ async function main() {
     }
 
 
+    /*
+       WRITE THE CLEAN JAMAICA DATA
+    */
+
     fs.writeFileSync(
         OUTPUT_FILE,
         JSON.stringify(
@@ -830,8 +814,8 @@ async function main() {
 
 
     /*
-       Show the first upcoming records
-       in the GitHub Actions log.
+       DISPLAY FIRST UPCOMING CRUISES
+       IN THE ACTION LOG
     */
 
     const allCalls =
@@ -861,11 +845,21 @@ async function main() {
                         );
                     }
 
-                    return String(
-                        a.arrivalTime
-                    ).localeCompare(
-                        String(
-                            b.arrivalTime
+
+                    const timeA =
+                        a.arrivalTime === "--:--"
+                            ? "99:99"
+                            : a.arrivalTime;
+
+                    const timeB =
+                        b.arrivalTime === "--:--"
+                            ? "99:99"
+                            : b.arrivalTime;
+
+
+                    return (
+                        timeA.localeCompare(
+                            timeB
                         )
                     );
                 }
@@ -896,16 +890,18 @@ async function main() {
 ============================================================ */
 
 main()
-    .catch(error => {
+    .catch(
+        error => {
 
-        console.error("");
-        console.error(
-            "Jamaica cruise update FAILED:"
-        );
+            console.error("");
+            console.error(
+                "Jamaica cruise update FAILED:"
+            );
 
-        console.error(
-            error.message
-        );
+            console.error(
+                error.message
+            );
 
-        process.exit(1);
-    });
+            process.exit(1);
+        }
+    );
