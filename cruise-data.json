@@ -291,19 +291,12 @@
         "passengers": 1200
       }
     ],
-    "scrapedAt": "2026-10-21T01:18:46.825Z"
+    "scrapedAt": "2026-10-21T06:19:55.404Z"
   },
   {
     "recordType": "port",
     "name": "Ocho Rios",
     "upcomingArrivals": [
-      {
-        "shipName": "MSC Poesia",
-        "date": "2026-10-20",
-        "arrivalTime": "08:00",
-        "departureTime": "16:00",
-        "passengers": 2446
-      },
       {
         "shipName": "Norwegian Joy",
         "date": "2026-10-21",
@@ -599,7 +592,7 @@
         "passengers": 2134
       }
     ],
-    "scrapedAt": "2026-10-21T01:18:47.203Z"
+    "scrapedAt": "2026-10-21T06:19:55.697Z"
   },
   {
     "recordType": "port",
@@ -907,6 +900,6 @@
         "passengers": 4132
       }
     ],
-    "scrapedAt": "2026-10-21T01:18:47.508Z"
+    "scrapedAt": "2026-10-21T06:19:55.998Z"
   }
 ]
