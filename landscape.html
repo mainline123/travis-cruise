@@ -28,6 +28,7 @@ body {
     padding: 12px 24px 8px;
 }
 
+
 /* HEADER */
 
 .header {
@@ -85,6 +86,7 @@ body {
     font-size: clamp(13px, 1.1vw, 19px);
 }
 
+
 /* SUMMARY */
 
 .summary {
@@ -122,6 +124,7 @@ body {
     letter-spacing: 1px;
 }
 
+
 /* TABLE */
 
 .board {
@@ -142,7 +145,7 @@ body {
         0.9fr
         1.25fr
         0.75fr
-        2.25fr
+        2.55fr
         0.75fr
         0.8fr
         1fr;
@@ -181,10 +184,51 @@ body {
     background: rgba(255,255,255,0.035);
 }
 
+
+/* SHIP + CRUISE LINE LOGO */
+
 .ship {
     font-weight: 800;
     font-size: clamp(13px, 1.1vw, 20px);
+
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    min-width: 0;
 }
+
+.cruise-logo-box {
+    width: 72px;
+    height: 40px;
+    flex: 0 0 72px;
+
+    background: white;
+
+    border-radius: 6px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 3px;
+
+    overflow: hidden;
+}
+
+.cruise-logo {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.ship-name {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
 
 .port {
     font-weight: 700;
@@ -228,6 +272,7 @@ body {
     font-size: clamp(20px, 1.8vw, 32px);
     font-weight: bold;
 }
+
 
 /* FOOTER */
 
@@ -279,6 +324,7 @@ body {
 
 </header>
 
+
 <section class="summary">
 
     <div class="card">
@@ -298,6 +344,7 @@ body {
 
 </section>
 
+
 <main class="board">
 
     <div class="table-header">
@@ -316,6 +363,7 @@ body {
 
 </main>
 
+
 <footer class="footer">
 
     <div class="live">
@@ -330,12 +378,204 @@ body {
 
 </footer>
 
+
 <script>
 
 const DATA_URL = "cruise-data.json";
 const REFRESH_INTERVAL = 15 * 60 * 1000;
 const TIME_ZONE = "America/Jamaica";
 const MAX_SHIPS = 10;
+
+
+/* =====================================================
+   CRUISE LINE LOGOS
+===================================================== */
+
+const CRUISE_LINES = [
+
+    {
+        logo: "logos/royal-caribbean.png",
+        keywords: [
+            "royal caribbean",
+            "icon of the seas",
+            "wonder of the seas",
+            "utopia of the seas",
+            "star of the seas",
+            "oasis of the seas",
+            "allure of the seas",
+            "harmony of the seas",
+            "symphony of the seas",
+            "odyssey of the seas",
+            "independence of the seas",
+            "freedom of the seas",
+            "liberty of the seas",
+            "adventure of the seas",
+            "explorer of the seas",
+            "voyager of the seas",
+            "mariner of the seas",
+            "navigator of the seas",
+            "radiance of the seas",
+            "brilliance of the seas",
+            "serenade of the seas",
+            "jewel of the seas",
+            "vision of the seas",
+            "rhapsody of the seas",
+            "grandeur of the seas",
+            "enchantment of the seas"
+        ]
+    },
+
+    {
+        logo: "logos/carnival.png",
+        keywords: [
+            "carnival"
+        ]
+    },
+
+    {
+        logo: "logos/msc.png",
+        keywords: [
+            "msc"
+        ]
+    },
+
+    {
+        logo: "logos/norwegian.png",
+        keywords: [
+            "norwegian",
+            "ncl"
+        ]
+    },
+
+    {
+        logo: "logos/celebrity.png",
+        keywords: [
+            "celebrity"
+        ]
+    },
+
+    {
+        logo: "logos/disney.png",
+        keywords: [
+            "disney"
+        ]
+    },
+
+    {
+        logo: "logos/princess.png",
+        keywords: [
+            "princess"
+        ]
+    },
+
+    {
+        logo: "logos/holland-america.png",
+        keywords: [
+            "holland america",
+            "nieuw amsterdam",
+            "nieuw statendam",
+            "rotterdam",
+            "eurodam",
+            "zuiderdam",
+            "oosterdam",
+            "westerdam",
+            "noordam",
+            "koningsdam",
+            "volendam",
+            "zaandam"
+        ]
+    },
+
+    {
+        logo: "logos/virgin-voyages.png",
+        keywords: [
+            "virgin voyages",
+            "scarlet lady",
+            "valiant lady",
+            "resilient lady",
+            "brilliant lady"
+        ]
+    }
+
+];
+
+
+function getCruiseLogo(shipName) {
+
+    if (!shipName) {
+        return null;
+    }
+
+    const ship =
+        String(shipName)
+            .toLowerCase()
+            .trim();
+
+
+    for (const cruiseLine of CRUISE_LINES) {
+
+        const match =
+            cruiseLine.keywords.some(
+                keyword =>
+                    ship.includes(keyword)
+            );
+
+        if (match) {
+            return cruiseLine.logo;
+        }
+    }
+
+    return null;
+}
+
+
+function buildShipDisplay(shipName) {
+
+    const name =
+        shipName || "—";
+
+    const logo =
+        getCruiseLogo(name);
+
+
+    if (!logo) {
+
+        return `
+            <div class="ship">
+                <span class="ship-name">
+                    ${name}
+                </span>
+            </div>
+        `;
+    }
+
+
+    return `
+        <div class="ship">
+
+            <div class="cruise-logo-box">
+
+                <img
+                    src="${logo}"
+                    class="cruise-logo"
+                    alt=""
+                    onerror="this.parentElement.style.display='none';"
+                >
+
+            </div>
+
+            <span class="ship-name">
+                ${name}
+            </span>
+
+        </div>
+    `;
+}
+
+
+/* =====================================================
+   DATE / TIME
+===================================================== */
 
 function getJamaicaDateString() {
 
@@ -352,13 +592,18 @@ function getJamaicaDateString() {
     const values = {};
 
     parts.forEach(part => {
+
         if (part.type !== "literal") {
             values[part.type] = part.value;
         }
+
     });
 
-    return values.year + "-" + values.month + "-" + values.day;
+    return values.year + "-" +
+           values.month + "-" +
+           values.day;
 }
+
 
 function updateClock() {
 
@@ -388,19 +633,24 @@ function updateClock() {
         );
 }
 
+
 function formatDate(dateString) {
 
     if (!dateString) return "—";
 
-    const parts = dateString.split("-");
+    const parts =
+        dateString.split("-");
 
-    if (parts.length !== 3) return dateString;
+    if (parts.length !== 3) {
+        return dateString;
+    }
 
-    const date = new Date(
-        Number(parts[0]),
-        Number(parts[1]) - 1,
-        Number(parts[2])
-    );
+    const date =
+        new Date(
+            Number(parts[0]),
+            Number(parts[1]) - 1,
+            Number(parts[2])
+        );
 
     return date.toLocaleDateString(
         "en-US",
@@ -411,9 +661,14 @@ function formatDate(dateString) {
     );
 }
 
+
 function formatNumber(value) {
-    return Number(value || 0).toLocaleString("en-US");
+
+    return Number(
+        value || 0
+    ).toLocaleString("en-US");
 }
+
 
 function formatTime(time) {
 
@@ -421,21 +676,39 @@ function formatTime(time) {
         return "—";
     }
 
-    const match = String(time).match(/^(\d{1,2}):(\d{2})$/);
+    const match =
+        String(time)
+            .match(/^(\d{1,2}):(\d{2})$/);
 
-    if (!match) return time;
+    if (!match) {
+        return time;
+    }
 
-    let hour = Number(match[1]);
-    const minute = match[2];
+    let hour =
+        Number(match[1]);
 
-    const period = hour >= 12 ? "PM" : "AM";
+    const minute =
+        match[2];
 
-    hour = hour % 12;
+    const period =
+        hour >= 12
+        ? "PM"
+        : "AM";
 
-    if (hour === 0) hour = 12;
+    hour =
+        hour % 12;
 
-    return hour + ":" + minute + " " + period;
+    if (hour === 0) {
+        hour = 12;
+    }
+
+    return hour +
+           ":" +
+           minute +
+           " " +
+           period;
 }
+
 
 function timeToMinutes(time) {
 
@@ -443,24 +716,31 @@ function timeToMinutes(time) {
         return null;
     }
 
-    const match = String(time).match(/(\d{1,2}):(\d{2})/);
+    const match =
+        String(time)
+            .match(/(\d{1,2}):(\d{2})/);
 
-    if (!match) return null;
+    if (!match) {
+        return null;
+    }
 
-    return Number(match[1]) * 60 + Number(match[2]);
+    return Number(match[1]) * 60 +
+           Number(match[2]);
 }
+
 
 function getJamaicaMinutes() {
 
-    const parts = new Intl.DateTimeFormat(
-        "en-US",
-        {
-            timeZone: TIME_ZONE,
-            hour: "2-digit",
-            minute: "2-digit",
-            hourCycle: "h23"
-        }
-    ).formatToParts(new Date());
+    const parts =
+        new Intl.DateTimeFormat(
+            "en-US",
+            {
+                timeZone: TIME_ZONE,
+                hour: "2-digit",
+                minute: "2-digit",
+                hourCycle: "h23"
+            }
+        ).formatToParts(new Date());
 
     let hour = 0;
     let minute = 0;
@@ -474,32 +754,53 @@ function getJamaicaMinutes() {
         if (part.type === "minute") {
             minute = Number(part.value);
         }
+
     });
 
     return hour * 60 + minute;
 }
 
+
+/* =====================================================
+   STATUS
+===================================================== */
+
 function getStatus(arrival) {
 
-    const today = getJamaicaDateString();
+    const today =
+        getJamaicaDateString();
 
     if (arrival.date > today) {
+
         return {
             text: "Upcoming",
             className: "status-upcoming"
         };
+
     }
 
     if (arrival.date < today) {
+
         return {
             text: "Completed",
             className: "status-upcoming"
         };
+
     }
 
-    const currentMinutes = getJamaicaMinutes();
-    const arrivalMinutes = timeToMinutes(arrival.arrivalTime);
-    const departureMinutes = timeToMinutes(arrival.departureTime);
+    const currentMinutes =
+        getJamaicaMinutes();
+
+    const arrivalMinutes =
+        timeToMinutes(
+            arrival.arrivalTime
+        );
+
+    const departureMinutes =
+        timeToMinutes(
+            arrival.departureTime
+        );
+
 
     if (
         arrivalMinutes !== null &&
@@ -507,17 +808,25 @@ function getStatus(arrival) {
         currentMinutes >= arrivalMinutes &&
         currentMinutes <= departureMinutes
     ) {
+
         return {
             text: "In Port",
             className: "status-inport"
         };
+
     }
+
 
     return {
         text: "Today",
         className: "status-today"
     };
 }
+
+
+/* =====================================================
+   DATA
+===================================================== */
 
 function flattenData(data) {
 
@@ -545,64 +854,105 @@ function flattenData(data) {
             });
 
         });
+
     });
 
     return arrivals;
 }
 
+
+/* =====================================================
+   RENDER
+===================================================== */
+
 function render(data) {
 
-    const today = getJamaicaDateString();
+    const today =
+        getJamaicaDateString();
 
-    let arrivals = flattenData(data);
+    let arrivals =
+        flattenData(data);
 
-    arrivals = arrivals.filter(
-        arrival =>
-            arrival.date &&
-            arrival.date >= today
-    );
+
+    arrivals =
+        arrivals.filter(
+            arrival =>
+                arrival.date &&
+                arrival.date >= today
+        );
+
 
     arrivals.sort((a, b) => {
 
         if (a.date !== b.date) {
-            return a.date.localeCompare(b.date);
+
+            return a.date
+                .localeCompare(b.date);
+
         }
 
         return String(a.arrivalTime)
-            .localeCompare(String(b.arrivalTime));
+            .localeCompare(
+                String(b.arrivalTime)
+            );
+
     });
 
+
     const displayArrivals =
-        arrivals.slice(0, MAX_SHIPS);
+        arrivals.slice(
+            0,
+            MAX_SHIPS
+        );
+
 
     const shipCount =
         displayArrivals.length;
 
+
     const guestCount =
         displayArrivals.reduce(
             (total, arrival) =>
-                total + Number(arrival.passengers || 0),
+                total +
+                Number(
+                    arrival.passengers || 0
+                ),
             0
         );
+
 
     const activePorts =
         new Set(
             displayArrivals.map(
-                arrival => arrival.portName
+                arrival =>
+                    arrival.portName
             )
         ).size;
 
-    document.getElementById("shipCount").textContent =
+
+    document.getElementById(
+        "shipCount"
+    ).textContent =
         formatNumber(shipCount);
 
-    document.getElementById("guestCount").textContent =
+
+    document.getElementById(
+        "guestCount"
+    ).textContent =
         formatNumber(guestCount);
 
-    document.getElementById("portCount").textContent =
+
+    document.getElementById(
+        "portCount"
+    ).textContent =
         formatNumber(activePorts);
 
+
     const rows =
-        document.getElementById("rows");
+        document.getElementById(
+            "rows"
+        );
+
 
     if (displayArrivals.length === 0) {
 
@@ -614,7 +964,9 @@ function render(data) {
         return;
     }
 
+
     rows.innerHTML =
+
         displayArrivals
             .map(arrival => {
 
@@ -622,6 +974,7 @@ function render(data) {
                     getStatus(arrival);
 
                 return `
+
                     <div class="row">
 
                         <div>
@@ -636,33 +989,46 @@ function render(data) {
                             ${formatTime(arrival.arrivalTime)}
                         </div>
 
-                        <div class="ship">
-                            ${arrival.shipName || "—"}
-                        </div>
+                        ${buildShipDisplay(
+                            arrival.shipName
+                        )}
 
                         <div>
                             ${formatTime(arrival.departureTime)}
                         </div>
 
                         <div class="guests">
+
                             ${
                                 arrival.passengers
-                                ? formatNumber(arrival.passengers)
+                                ? formatNumber(
+                                    arrival.passengers
+                                  )
                                 : "—"
                             }
+
                         </div>
 
                         <div>
+
                             <span class="status ${status.className}">
                                 ${status.text}
                             </span>
+
                         </div>
 
                     </div>
+
                 `;
+
             })
             .join("");
 }
+
+
+/* =====================================================
+   LOAD CRUISE DATA
+===================================================== */
 
 async function loadCruiseData() {
 
@@ -676,30 +1042,51 @@ async function loadCruiseData() {
                 }
             );
 
+
         if (!response.ok) {
-            throw new Error(`HTTP ${response.status}`);
+
+            throw new Error(
+                `HTTP ${response.status}`
+            );
+
         }
+
 
         const data =
             await response.json();
 
+
         render(data);
 
-        let scrapedAt = null;
 
-        if (Array.isArray(data) && data.length) {
+        let scrapedAt =
+            null;
+
+
+        if (
+            Array.isArray(data) &&
+            data.length
+        ) {
 
             scrapedAt =
                 data
-                    .map(port => port.scrapedAt)
+                    .map(
+                        port =>
+                            port.scrapedAt
+                    )
                     .filter(Boolean)
                     .sort()
                     .pop();
+
         }
+
 
         if (scrapedAt) {
 
-            document.getElementById("lastUpdated").textContent =
+            document.getElementById(
+                "lastUpdated"
+            ).textContent =
+
                 new Date(scrapedAt)
                     .toLocaleString(
                         "en-US",
@@ -713,22 +1100,41 @@ async function loadCruiseData() {
                         }
                     );
 
-        } else {
-
-            document.getElementById("lastUpdated").textContent =
-                "Live";
         }
 
-    } catch (error) {
+        else {
 
-        console.error("Cruise data error:", error);
+            document.getElementById(
+                "lastUpdated"
+            ).textContent =
+                "Live";
 
-        document.getElementById("rows").innerHTML =
+        }
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Cruise data error:",
+            error
+        );
+
+        document.getElementById(
+            "rows"
+        ).innerHTML =
+
             `<div class="empty">
                 Cruise schedule temporarily unavailable.
              </div>`;
+
     }
 }
+
+
+/* =====================================================
+   START
+===================================================== */
 
 updateClock();
 
@@ -736,6 +1142,7 @@ setInterval(
     updateClock,
     30000
 );
+
 
 loadCruiseData();
 
