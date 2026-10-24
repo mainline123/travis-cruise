@@ -4,13 +4,6 @@
     "name": "Montego Bay",
     "upcomingArrivals": [
       {
-        "shipName": "Viking Mars",
-        "date": "2026-10-23",
-        "arrivalTime": "--:--",
-        "departureTime": "--:--",
-        "passengers": 930
-      },
-      {
         "shipName": "Norwegian Joy",
         "date": "2026-11-03",
         "arrivalTime": "--:--",
@@ -284,7 +277,7 @@
         "passengers": 1200
       }
     ],
-    "scrapedAt": "2026-10-24T01:48:34.200Z"
+    "scrapedAt": "2026-10-24T06:53:49.074Z"
   },
   {
     "recordType": "port",
@@ -578,7 +571,7 @@
         "passengers": 2134
       }
     ],
-    "scrapedAt": "2026-10-24T01:48:34.228Z"
+    "scrapedAt": "2026-10-24T06:53:49.234Z"
   },
   {
     "recordType": "port",
@@ -879,6 +872,6 @@
         "passengers": 4132
       }
     ],
-    "scrapedAt": "2026-10-24T01:48:34.256Z"
+    "scrapedAt": "2026-10-24T06:53:49.409Z"
   }
 ]
