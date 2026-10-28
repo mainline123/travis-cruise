@@ -277,7 +277,7 @@
         "passengers": 1200
       }
     ],
-    "scrapedAt": "2026-10-27T23:30:28.551Z"
+    "scrapedAt": "2026-10-28T04:12:35.391Z"
   },
   {
     "recordType": "port",
@@ -571,19 +571,12 @@
         "passengers": 2134
       }
     ],
-    "scrapedAt": "2026-10-27T23:30:28.745Z"
+    "scrapedAt": "2026-10-28T04:12:35.626Z"
   },
   {
     "recordType": "port",
     "name": "Falmouth",
     "upcomingArrivals": [
-      {
-        "shipName": "Norwegian Bliss",
-        "date": "2026-10-27",
-        "arrivalTime": "07:00",
-        "departureTime": "15:00",
-        "passengers": 4010
-      },
       {
         "shipName": "Norwegian Prima",
         "date": "2026-10-28",
@@ -872,6 +865,6 @@
         "passengers": 4132
       }
     ],
-    "scrapedAt": "2026-10-27T23:30:28.908Z"
+    "scrapedAt": "2026-10-28T04:12:35.861Z"
   }
 ]
