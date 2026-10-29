@@ -277,19 +277,12 @@
         "passengers": 1200
       }
     ],
-    "scrapedAt": "2026-10-29T01:34:20.213Z"
+    "scrapedAt": "2026-10-29T08:04:13.581Z"
   },
   {
     "recordType": "port",
     "name": "Ocho Rios",
     "upcomingArrivals": [
-      {
-        "shipName": "Carnival Dream",
-        "date": "2026-10-28",
-        "arrivalTime": "08:00",
-        "departureTime": "16:00",
-        "passengers": 3646
-      },
       {
         "shipName": "MSC Poesia",
         "date": "2026-10-30",
@@ -571,26 +564,12 @@
         "passengers": 2134
       }
     ],
-    "scrapedAt": "2026-10-29T01:34:20.516Z"
+    "scrapedAt": "2026-10-29T08:04:13.740Z"
   },
   {
     "recordType": "port",
     "name": "Falmouth",
     "upcomingArrivals": [
-      {
-        "shipName": "Norwegian Prima",
-        "date": "2026-10-28",
-        "arrivalTime": "07:00",
-        "departureTime": "16:00",
-        "passengers": 3099
-      },
-      {
-        "shipName": "Norwegian Viva",
-        "date": "2026-10-28",
-        "arrivalTime": "09:00",
-        "departureTime": "16:00",
-        "passengers": 3100
-      },
       {
         "shipName": "Rotterdam",
         "date": "2026-11-03",
@@ -865,6 +844,6 @@
         "passengers": 4132
       }
     ],
-    "scrapedAt": "2026-10-29T01:34:20.820Z"
+    "scrapedAt": "2026-10-29T08:04:13.897Z"
   }
 ]
