@@ -277,19 +277,12 @@
         "passengers": 1200
       }
     ],
-    "scrapedAt": "2026-10-31T02:02:18.093Z"
+    "scrapedAt": "2026-10-31T08:40:31.341Z"
   },
   {
     "recordType": "port",
     "name": "Ocho Rios",
     "upcomingArrivals": [
-      {
-        "shipName": "MSC Poesia",
-        "date": "2026-10-30",
-        "arrivalTime": "08:00",
-        "departureTime": "16:00",
-        "passengers": 2446
-      },
       {
         "shipName": "MSC Poesia",
         "date": "2026-11-03",
@@ -564,7 +557,7 @@
         "passengers": 2134
       }
     ],
-    "scrapedAt": "2026-10-31T02:02:18.403Z"
+    "scrapedAt": "2026-10-31T08:40:31.576Z"
   },
   {
     "recordType": "port",
@@ -844,6 +837,6 @@
         "passengers": 4132
       }
     ],
-    "scrapedAt": "2026-10-31T02:02:18.640Z"
+    "scrapedAt": "2026-10-31T08:40:31.854Z"
   }
 ]
