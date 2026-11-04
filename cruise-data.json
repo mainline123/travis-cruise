@@ -4,13 +4,6 @@
     "name": "Montego Bay",
     "upcomingArrivals": [
       {
-        "shipName": "Norwegian Joy",
-        "date": "2026-11-03",
-        "arrivalTime": "--:--",
-        "departureTime": "--:--",
-        "passengers": 3776
-      },
-      {
         "shipName": "Carnival Horizon",
         "date": "2026-11-04",
         "arrivalTime": "09:00",
@@ -277,19 +270,12 @@
         "passengers": 1200
       }
     ],
-    "scrapedAt": "2026-11-04T00:05:05.107Z"
+    "scrapedAt": "2026-11-04T06:51:48.276Z"
   },
   {
     "recordType": "port",
     "name": "Ocho Rios",
     "upcomingArrivals": [
-      {
-        "shipName": "MSC Poesia",
-        "date": "2026-11-03",
-        "arrivalTime": "09:00",
-        "departureTime": "18:00",
-        "passengers": 2446
-      },
       {
         "shipName": "Resilient Lady",
         "date": "2026-11-04",
@@ -557,19 +543,12 @@
         "passengers": 2134
       }
     ],
-    "scrapedAt": "2026-11-04T00:05:05.226Z"
+    "scrapedAt": "2026-11-04T06:51:48.372Z"
   },
   {
     "recordType": "port",
     "name": "Falmouth",
     "upcomingArrivals": [
-      {
-        "shipName": "Rotterdam",
-        "date": "2026-11-03",
-        "arrivalTime": "08:00",
-        "departureTime": "17:00",
-        "passengers": 2668
-      },
       {
         "shipName": "Disney Treasure",
         "date": "2026-11-04",
@@ -837,6 +816,6 @@
         "passengers": 4132
       }
     ],
-    "scrapedAt": "2026-11-04T00:05:05.373Z"
+    "scrapedAt": "2026-11-04T06:51:48.465Z"
   }
 ]
