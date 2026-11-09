@@ -256,7 +256,7 @@
         "passengers": 1200
       }
     ],
-    "scrapedAt": "2026-11-09T10:05:45.558Z"
+    "scrapedAt": "2026-11-09T20:56:48.150Z"
   },
   {
     "recordType": "port",
@@ -515,7 +515,7 @@
         "passengers": 2134
       }
     ],
-    "scrapedAt": "2026-11-09T10:05:45.894Z"
+    "scrapedAt": "2026-11-09T20:56:48.442Z"
   },
   {
     "recordType": "port",
@@ -781,6 +781,6 @@
         "passengers": 4132
       }
     ],
-    "scrapedAt": "2026-11-09T10:05:46.291Z"
+    "scrapedAt": "2026-11-09T20:56:48.740Z"
   }
 ]
