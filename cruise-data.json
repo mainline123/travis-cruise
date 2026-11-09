@@ -4,13 +4,6 @@
     "name": "Montego Bay",
     "upcomingArrivals": [
       {
-        "shipName": "Norwegian Joy",
-        "date": "2026-11-08",
-        "arrivalTime": "--:--",
-        "departureTime": "--:--",
-        "passengers": 3776
-      },
-      {
         "shipName": "Mein Schiff 1",
         "date": "2026-11-09",
         "arrivalTime": "07:00",
@@ -263,19 +256,12 @@
         "passengers": 1200
       }
     ],
-    "scrapedAt": "2026-11-09T02:23:50.662Z"
+    "scrapedAt": "2026-11-09T10:05:45.558Z"
   },
   {
     "recordType": "port",
     "name": "Ocho Rios",
     "upcomingArrivals": [
-      {
-        "shipName": "Mein Schiff 1",
-        "date": "2026-11-08",
-        "arrivalTime": "07:00",
-        "departureTime": "20:00",
-        "passengers": 2894
-      },
       {
         "shipName": "Norwegian Joy",
         "date": "2026-11-14",
@@ -529,7 +515,7 @@
         "passengers": 2134
       }
     ],
-    "scrapedAt": "2026-11-09T02:23:50.734Z"
+    "scrapedAt": "2026-11-09T10:05:45.894Z"
   },
   {
     "recordType": "port",
@@ -795,6 +781,6 @@
         "passengers": 4132
       }
     ],
-    "scrapedAt": "2026-11-09T02:23:50.818Z"
+    "scrapedAt": "2026-11-09T10:05:46.291Z"
   }
 ]
