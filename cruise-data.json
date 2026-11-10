@@ -4,13 +4,6 @@
     "name": "Montego Bay",
     "upcomingArrivals": [
       {
-        "shipName": "Mein Schiff 1",
-        "date": "2026-11-09",
-        "arrivalTime": "07:00",
-        "departureTime": "22:00",
-        "passengers": 2894
-      },
-      {
         "shipName": "Eurodam",
         "date": "2026-11-10",
         "arrivalTime": "--:--",
@@ -256,7 +249,7 @@
         "passengers": 1200
       }
     ],
-    "scrapedAt": "2026-11-10T03:18:19.700Z"
+    "scrapedAt": "2026-11-10T11:31:44.918Z"
   },
   {
     "recordType": "port",
@@ -515,7 +508,7 @@
         "passengers": 2134
       }
     ],
-    "scrapedAt": "2026-11-10T03:18:19.936Z"
+    "scrapedAt": "2026-11-10T11:31:44.928Z"
   },
   {
     "recordType": "port",
@@ -781,6 +774,6 @@
         "passengers": 4132
       }
     ],
-    "scrapedAt": "2026-11-10T03:18:20.185Z"
+    "scrapedAt": "2026-11-10T11:31:45.297Z"
   }
 ]
