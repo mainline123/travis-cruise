@@ -4,13 +4,6 @@
     "name": "Montego Bay",
     "upcomingArrivals": [
       {
-        "shipName": "Eurodam",
-        "date": "2026-11-10",
-        "arrivalTime": "--:--",
-        "departureTime": "--:--",
-        "passengers": 1850
-      },
-      {
         "shipName": "Artania",
         "date": "2026-11-18",
         "arrivalTime": "08:00",
@@ -249,7 +242,7 @@
         "passengers": 1200
       }
     ],
-    "scrapedAt": "2026-11-11T00:10:55.709Z"
+    "scrapedAt": "2026-11-11T06:55:49.972Z"
   },
   {
     "recordType": "port",
@@ -508,7 +501,7 @@
         "passengers": 2134
       }
     ],
-    "scrapedAt": "2026-11-11T00:10:55.814Z"
+    "scrapedAt": "2026-11-11T06:55:50.275Z"
   },
   {
     "recordType": "port",
@@ -774,6 +767,6 @@
         "passengers": 4132
       }
     ],
-    "scrapedAt": "2026-11-11T00:10:55.897Z"
+    "scrapedAt": "2026-11-11T06:55:50.636Z"
   }
 ]
