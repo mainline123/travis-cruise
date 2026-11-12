@@ -242,7 +242,7 @@
         "passengers": 1200
       }
     ],
-    "scrapedAt": "2026-11-12T02:42:41.128Z"
+    "scrapedAt": "2026-11-12T10:40:50.290Z"
   },
   {
     "recordType": "port",
@@ -501,19 +501,12 @@
         "passengers": 2134
       }
     ],
-    "scrapedAt": "2026-11-12T02:42:41.229Z"
+    "scrapedAt": "2026-11-12T10:40:50.491Z"
   },
   {
     "recordType": "port",
     "name": "Falmouth",
     "upcomingArrivals": [
-      {
-        "shipName": "Mariner Of The Seas",
-        "date": "2026-11-11",
-        "arrivalTime": "08:00",
-        "departureTime": "17:00",
-        "passengers": 3114
-      },
       {
         "shipName": "Independence Of The Seas",
         "date": "2026-11-12",
@@ -767,6 +760,6 @@
         "passengers": 4132
       }
     ],
-    "scrapedAt": "2026-11-12T02:42:41.342Z"
+    "scrapedAt": "2026-11-12T10:40:50.666Z"
   }
 ]
