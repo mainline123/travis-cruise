@@ -242,7 +242,7 @@
         "passengers": 1200
       }
     ],
-    "scrapedAt": "2026-11-12T23:58:16.115Z"
+    "scrapedAt": "2026-11-13T06:20:40.491Z"
   },
   {
     "recordType": "port",
@@ -501,19 +501,12 @@
         "passengers": 2134
       }
     ],
-    "scrapedAt": "2026-11-12T23:58:16.399Z"
+    "scrapedAt": "2026-11-13T06:20:40.771Z"
   },
   {
     "recordType": "port",
     "name": "Falmouth",
     "upcomingArrivals": [
-      {
-        "shipName": "Independence Of The Seas",
-        "date": "2026-11-12",
-        "arrivalTime": "07:00",
-        "departureTime": "16:00",
-        "passengers": 3858
-      },
       {
         "shipName": "Norwegian Joy",
         "date": "2026-11-13",
@@ -760,6 +753,6 @@
         "passengers": 4132
       }
     ],
-    "scrapedAt": "2026-11-12T23:58:16.647Z"
+    "scrapedAt": "2026-11-13T06:20:41.061Z"
   }
 ]
