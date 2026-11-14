@@ -242,7 +242,7 @@
         "passengers": 1200
       }
     ],
-    "scrapedAt": "2026-11-14T01:35:21.076Z"
+    "scrapedAt": "2026-11-14T08:38:34.521Z"
   },
   {
     "recordType": "port",
@@ -501,19 +501,12 @@
         "passengers": 2134
       }
     ],
-    "scrapedAt": "2026-11-14T01:35:21.287Z"
+    "scrapedAt": "2026-11-14T08:38:34.528Z"
   },
   {
     "recordType": "port",
     "name": "Falmouth",
     "upcomingArrivals": [
-      {
-        "shipName": "Norwegian Joy",
-        "date": "2026-11-13",
-        "arrivalTime": "--:--",
-        "departureTime": "--:--",
-        "passengers": 3776
-      },
       {
         "shipName": "Oceania Vista",
         "date": "2026-11-14",
@@ -753,6 +746,6 @@
         "passengers": 4132
       }
     ],
-    "scrapedAt": "2026-11-14T01:35:21.512Z"
+    "scrapedAt": "2026-11-14T08:38:34.831Z"
   }
 ]
