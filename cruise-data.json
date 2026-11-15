@@ -242,7 +242,7 @@
         "passengers": 1200
       }
     ],
-    "scrapedAt": "2026-11-15T00:06:24.863Z"
+    "scrapedAt": "2026-11-15T06:57:28.522Z"
   },
   {
     "recordType": "port",
@@ -501,19 +501,12 @@
         "passengers": 2134
       }
     ],
-    "scrapedAt": "2026-11-15T00:06:24.870Z"
+    "scrapedAt": "2026-11-15T06:57:28.545Z"
   },
   {
     "recordType": "port",
     "name": "Falmouth",
     "upcomingArrivals": [
-      {
-        "shipName": "Oceania Vista",
-        "date": "2026-11-14",
-        "arrivalTime": "09:00",
-        "departureTime": "18:00",
-        "passengers": 1200
-      },
       {
         "shipName": "Freedom Of The Seas",
         "date": "2026-11-17",
@@ -746,6 +739,6 @@
         "passengers": 4132
       }
     ],
-    "scrapedAt": "2026-11-15T00:06:24.878Z"
+    "scrapedAt": "2026-11-15T06:57:28.569Z"
   }
 ]
