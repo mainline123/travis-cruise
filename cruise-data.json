@@ -431,40 +431,12 @@
         "passengers": 1200
       }
     ],
-    "scrapedAt": "2026-11-18T01:08:49.558Z"
+    "scrapedAt": "2026-11-18T08:53:15.193Z"
   },
   {
     "recordType": "port",
     "name": "Ocho Rios",
     "upcomingArrivals": [
-      {
-        "shipName": "8am-4pm",
-        "date": "2026-11-17",
-        "arrivalTime": "--:--",
-        "departureTime": "--:--",
-        "passengers": 1850
-      },
-      {
-        "shipName": "9am-4pm",
-        "date": "2026-11-17",
-        "arrivalTime": "--:--",
-        "departureTime": "--:--",
-        "passengers": 3560
-      },
-      {
-        "shipName": "Eurodam",
-        "date": "2026-11-17",
-        "arrivalTime": "--:--",
-        "departureTime": "--:--",
-        "passengers": 1850
-      },
-      {
-        "shipName": "Regal Princess",
-        "date": "2026-11-17",
-        "arrivalTime": "--:--",
-        "departureTime": "--:--",
-        "passengers": 3560
-      },
       {
         "shipName": "8am-4pm",
         "date": "2026-11-18",
@@ -893,26 +865,12 @@
         "passengers": 2134
       }
     ],
-    "scrapedAt": "2026-11-18T01:08:49.857Z"
+    "scrapedAt": "2026-11-18T08:53:15.390Z"
   },
   {
     "recordType": "port",
     "name": "Falmouth",
     "upcomingArrivals": [
-      {
-        "shipName": "7am-4pm",
-        "date": "2026-11-17",
-        "arrivalTime": "--:--",
-        "departureTime": "--:--",
-        "passengers": 3634
-      },
-      {
-        "shipName": "Freedom Of The Seas",
-        "date": "2026-11-17",
-        "arrivalTime": "--:--",
-        "departureTime": "--:--",
-        "passengers": 3634
-      },
       {
         "shipName": "7:30am-4:45pm",
         "date": "2026-11-18",
@@ -1355,6 +1313,6 @@
         "passengers": 4132
       }
     ],
-    "scrapedAt": "2026-11-18T01:08:50.122Z"
+    "scrapedAt": "2026-11-18T08:53:15.597Z"
   }
 ]
