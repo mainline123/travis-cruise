@@ -358,14 +358,14 @@
         "date": "2026-12-25",
         "arrivalTime": "--:--",
         "departureTime": "--:--",
-        "passengers": 1258
+        "passengers": 1248
       },
       {
         "shipName": "Oceania Marina",
         "date": "2026-12-25",
         "arrivalTime": "--:--",
         "departureTime": "--:--",
-        "passengers": 1258
+        "passengers": 1248
       },
       {
         "shipName": "Viking Mars",
@@ -389,7 +389,7 @@
         "passengers": 1200
       }
     ],
-    "scrapedAt": "2026-11-21T09:36:22.542Z"
+    "scrapedAt": "2026-11-21T22:17:12.398Z"
   },
   {
     "recordType": "port",
@@ -795,7 +795,7 @@
         "passengers": 2134
       }
     ],
-    "scrapedAt": "2026-11-21T09:36:22.842Z"
+    "scrapedAt": "2026-11-21T22:17:12.525Z"
   },
   {
     "recordType": "port",
@@ -1201,6 +1201,6 @@
         "passengers": 4132
       }
     ],
-    "scrapedAt": "2026-11-21T09:36:23.208Z"
+    "scrapedAt": "2026-11-21T22:17:12.642Z"
   }
 ]
