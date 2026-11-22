@@ -4,20 +4,6 @@
     "name": "Montego Bay",
     "upcomingArrivals": [
       {
-        "shipName": "9am-7pm",
-        "date": "2026-11-21",
-        "arrivalTime": "--:--",
-        "departureTime": "--:--",
-        "passengers": 606
-      },
-      {
-        "shipName": "Crystal Symphony",
-        "date": "2026-11-21",
-        "arrivalTime": "--:--",
-        "departureTime": "--:--",
-        "passengers": 606
-      },
-      {
         "shipName": "8am-9pm",
         "date": "2026-11-22",
         "arrivalTime": "--:--",
@@ -389,7 +375,7 @@
         "passengers": 1200
       }
     ],
-    "scrapedAt": "2026-11-22T02:29:47.361Z"
+    "scrapedAt": "2026-11-22T10:11:25.126Z"
   },
   {
     "recordType": "port",
@@ -795,7 +781,7 @@
         "passengers": 2134
       }
     ],
-    "scrapedAt": "2026-11-22T02:29:47.605Z"
+    "scrapedAt": "2026-11-22T10:11:25.360Z"
   },
   {
     "recordType": "port",
@@ -1201,6 +1187,6 @@
         "passengers": 4132
       }
     ],
-    "scrapedAt": "2026-11-22T02:29:47.862Z"
+    "scrapedAt": "2026-11-22T10:11:25.593Z"
   }
 ]
