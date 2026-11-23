@@ -4,34 +4,6 @@
     "name": "Montego Bay",
     "upcomingArrivals": [
       {
-        "shipName": "8am-9pm",
-        "date": "2026-11-22",
-        "arrivalTime": "--:--",
-        "departureTime": "--:--",
-        "passengers": 2030
-      },
-      {
-        "shipName": "9am-5pm",
-        "date": "2026-11-22",
-        "arrivalTime": "--:--",
-        "departureTime": "--:--",
-        "passengers": 750
-      },
-      {
-        "shipName": "AIDAdiva",
-        "date": "2026-11-22",
-        "arrivalTime": "--:--",
-        "departureTime": "--:--",
-        "passengers": 2030
-      },
-      {
-        "shipName": "Seven Seas Splendor",
-        "date": "2026-11-22",
-        "arrivalTime": "--:--",
-        "departureTime": "--:--",
-        "passengers": 750
-      },
-      {
         "shipName": "7am-10pm",
         "date": "2026-11-23",
         "arrivalTime": "--:--",
@@ -375,26 +347,12 @@
         "passengers": 1200
       }
     ],
-    "scrapedAt": "2026-11-23T03:56:38.384Z"
+    "scrapedAt": "2026-11-23T14:12:06.412Z"
   },
   {
     "recordType": "port",
     "name": "Ocho Rios",
     "upcomingArrivals": [
-      {
-        "shipName": "7am-8pm",
-        "date": "2026-11-22",
-        "arrivalTime": "--:--",
-        "departureTime": "--:--",
-        "passengers": 2894
-      },
-      {
-        "shipName": "Mein Schiff 1",
-        "date": "2026-11-22",
-        "arrivalTime": "--:--",
-        "departureTime": "--:--",
-        "passengers": 2894
-      },
       {
         "shipName": "8am-5pm",
         "date": "2026-11-24",
@@ -781,7 +739,7 @@
         "passengers": 2134
       }
     ],
-    "scrapedAt": "2026-11-23T03:56:38.396Z"
+    "scrapedAt": "2026-11-23T14:12:06.420Z"
   },
   {
     "recordType": "port",
@@ -1187,6 +1145,6 @@
         "passengers": 4132
       }
     ],
-    "scrapedAt": "2026-11-23T03:56:38.732Z"
+    "scrapedAt": "2026-11-23T14:12:06.427Z"
   }
 ]
