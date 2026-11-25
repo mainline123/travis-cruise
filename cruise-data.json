@@ -5,20 +5,6 @@
     "upcomingArrivals": [
       {
         "shipName": "8am-5pm",
-        "date": "2026-11-24",
-        "arrivalTime": "--:--",
-        "departureTime": "--:--",
-        "passengers": 3646
-      },
-      {
-        "shipName": "Carnival Dream",
-        "date": "2026-11-24",
-        "arrivalTime": "--:--",
-        "departureTime": "--:--",
-        "passengers": 3646
-      },
-      {
-        "shipName": "8am-5pm",
         "date": "2026-11-25",
         "arrivalTime": "--:--",
         "departureTime": "--:--",
@@ -333,40 +319,12 @@
         "passengers": 1200
       }
     ],
-    "scrapedAt": "2026-11-24T22:40:53.632Z"
+    "scrapedAt": "2026-11-25T05:14:37.776Z"
   },
   {
     "recordType": "port",
     "name": "Ocho Rios",
     "upcomingArrivals": [
-      {
-        "shipName": "8am-5pm",
-        "date": "2026-11-24",
-        "arrivalTime": "--:--",
-        "departureTime": "--:--",
-        "passengers": 1964
-      },
-      {
-        "shipName": "9am-6pm",
-        "date": "2026-11-24",
-        "arrivalTime": "--:--",
-        "departureTime": "--:--",
-        "passengers": 2446
-      },
-      {
-        "shipName": "MSC Poesia",
-        "date": "2026-11-24",
-        "arrivalTime": "--:--",
-        "departureTime": "--:--",
-        "passengers": 2446
-      },
-      {
-        "shipName": "Zuiderdam",
-        "date": "2026-11-24",
-        "arrivalTime": "--:--",
-        "departureTime": "--:--",
-        "passengers": 1964
-      },
       {
         "shipName": "8am-5pm",
         "date": "2026-11-25",
@@ -725,26 +683,12 @@
         "passengers": 2134
       }
     ],
-    "scrapedAt": "2026-11-24T22:40:53.780Z"
+    "scrapedAt": "2026-11-25T05:14:37.867Z"
   },
   {
     "recordType": "port",
     "name": "Falmouth",
     "upcomingArrivals": [
-      {
-        "shipName": "8am-5pm",
-        "date": "2026-11-24",
-        "arrivalTime": "--:--",
-        "departureTime": "--:--",
-        "passengers": 2668
-      },
-      {
-        "shipName": "Rotterdam",
-        "date": "2026-11-24",
-        "arrivalTime": "--:--",
-        "departureTime": "--:--",
-        "passengers": 2668
-      },
       {
         "shipName": "8am-5pm",
         "date": "2026-11-25",
@@ -1131,6 +1075,6 @@
         "passengers": 4132
       }
     ],
-    "scrapedAt": "2026-11-24T22:40:53.910Z"
+    "scrapedAt": "2026-11-25T05:14:37.981Z"
   }
 ]
