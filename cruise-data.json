@@ -4,27 +4,6 @@
     "name": "Montego Bay",
     "upcomingArrivals": [
       {
-        "shipName": "7am-5pm",
-        "date": "2026-11-26",
-        "arrivalTime": "--:--",
-        "departureTime": "--:--",
-        "passengers": 3903
-      },
-      {
-        "shipName": "Norwegian Getaway",
-        "date": "2026-11-26",
-        "arrivalTime": "--:--",
-        "departureTime": "--:--",
-        "passengers": 3903
-      },
-      {
-        "shipName": "Viking Mars",
-        "date": "2026-11-26",
-        "arrivalTime": "--:--",
-        "departureTime": "--:--",
-        "passengers": 930
-      },
-      {
         "shipName": "8am-4pm",
         "date": "2026-11-29",
         "arrivalTime": "--:--",
@@ -305,26 +284,12 @@
         "passengers": 1200
       }
     ],
-    "scrapedAt": "2026-11-27T02:02:14.603Z"
+    "scrapedAt": "2026-11-27T11:12:30.239Z"
   },
   {
     "recordType": "port",
     "name": "Ocho Rios",
     "upcomingArrivals": [
-      {
-        "shipName": "8am-4pm",
-        "date": "2026-11-26",
-        "arrivalTime": "--:--",
-        "departureTime": "--:--",
-        "passengers": 2984
-      },
-      {
-        "shipName": "Carnival Sunrise",
-        "date": "2026-11-26",
-        "arrivalTime": "--:--",
-        "departureTime": "--:--",
-        "passengers": 2984
-      },
       {
         "shipName": "9am-5pm",
         "date": "2026-12-01",
@@ -648,26 +613,12 @@
         "passengers": 2134
       }
     ],
-    "scrapedAt": "2026-11-27T02:02:14.877Z"
+    "scrapedAt": "2026-11-27T11:12:30.391Z"
   },
   {
     "recordType": "port",
     "name": "Falmouth",
     "upcomingArrivals": [
-      {
-        "shipName": "7am-5pm",
-        "date": "2026-11-26",
-        "arrivalTime": "--:--",
-        "departureTime": "--:--",
-        "passengers": 1936
-      },
-      {
-        "shipName": "Norwegian Sun",
-        "date": "2026-11-26",
-        "arrivalTime": "--:--",
-        "departureTime": "--:--",
-        "passengers": 1936
-      },
       {
         "shipName": "7:30am-4:45pm",
         "date": "2026-12-02",
@@ -1019,6 +970,6 @@
         "passengers": 4132
       }
     ],
-    "scrapedAt": "2026-11-27T02:02:15.154Z"
+    "scrapedAt": "2026-11-27T11:12:30.541Z"
   }
 ]
